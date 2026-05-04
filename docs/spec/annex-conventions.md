@@ -18,8 +18,8 @@ load-bearing parts.
 If you are implementing an interoperable node — for example, an
 organisation's node that synchronises a scoped slice of a user's
 graph — you can ignore this annex entirely. The substrate and the
-inference pipeline are sufficient to participate in a Cortex
-Protocol mesh. Applications that depend on the conventions in
+inference pipeline are sufficient to participate in a Likewise
+mesh. Applications that depend on the conventions in
 this annex will simply not find the records they expect, and that
 is allowed.
 

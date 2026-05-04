@@ -28,8 +28,8 @@ canonical reference is the
 ### 1.1 v1.0 migration
 
 The UCAN working group has moved on to v1.0, which uses a
-DAG-CBOR plus Varsig envelope and CIDv1 references. Cortex
-Protocol's v0.1 specifies v0.10 because that is what the
+DAG-CBOR plus Varsig envelope and CIDv1 references. Likewise's
+v0.1 specifies v0.10 because that is what the
 reference implementation uses. The v0.10 → v1.0 migration is a
 known [open issue](99-open-issues.md) and is expected to land
 as part of the next major version.

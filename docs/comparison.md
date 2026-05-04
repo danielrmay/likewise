@@ -194,8 +194,8 @@ multiple users — it is single-user-mesh, not multi-user-collab.
 
 The manifesto is also silent on something Likewise has a
 strong opinion about: derived intelligence with auditable
-provenance. Local-first thinking informed Likewise; Cortex
-Protocol commits to a stance the manifesto does not take.
+provenance. Local-first thinking informed Likewise; Likewise
+commits to a stance the manifesto does not take.
 
 **Source:** [Local-First Software](https://www.inkandswitch.com/essay/local-first/).
 
@@ -215,8 +215,8 @@ JWT-shaped revision.
 
 **How Likewise uses UCAN.** Every `DelegateUcan` op carries
 a v0.10 token; an implementation's UCAN view materialises the
-delegation graph and enforces strict attenuation per hop. Cortex
-Protocol **extends UCAN's policy/caveat slot** with a domain-specific
+delegation graph and enforces strict attenuation per hop. Likewise
+**extends UCAN's policy/caveat slot** with a domain-specific
 caveat set: `source_types`, `predicates`, `kind_prefix`,
 `time_range`, and a `sanitize` directive (StripGeo,
 RedactParticipants, TruncateContent, StripCustomMetadata). These
@@ -242,8 +242,8 @@ history; the sync protocol exchanges Bloom-filtered have/need
 summaries until peers converge. Works over any byte transport.
 
 **Where it overlaps with Likewise.** Both are
-append-history-based and target offline-first multi-device. Cortex
-Protocol's "rebuild projections from op log" is structurally
+append-history-based and target offline-first multi-device.
+Likewise's "rebuild projections from op log" is structurally
 similar to Automerge's "materialise document state from op
 history."
 
@@ -252,8 +252,8 @@ generic JSON. Likewise's ops are typed and domain-specific.
 Automerge has no built-in authorization model; Likewise has
 UCAN end-to-end. Conflict resolution: Automerge uses CRDT merge
 semantics per field; Likewise uses last-write-wins-by-OpId
-for entities (with deterministic cycle resolution). Cortex
-Protocol's approach is simpler and less expressive, but it is
+for entities (with deterministic cycle resolution). Its
+approach is simpler and less expressive, but it is
 better suited to derived data, where "the latest user assertion
 wins" is the right rule.
 
@@ -298,8 +298,8 @@ its capability filter server-side, where Willow's design prevents
 peers from probing for unauthorised data at all. This is a real
 gap, and one we expect to close some day; it is tracked as an
 [open issue](spec/99-open-issues.md). Willow's destructive
-editing via prefix-pruning is also more aggressive than Cortex
-Protocol's tombstone-cascade (which preserves the log and only
+editing via prefix-pruning is also more aggressive than
+Likewise's tombstone-cascade (which preserves the log and only
 invalidates derivations).
 
 If Willow had existed when Likewise started, this

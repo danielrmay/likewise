@@ -188,7 +188,7 @@ answer consisting of evidence and claims.
 
 The snapshot artefact's required content (model identity,
 retrieved context, prompt, output, telemetry) is specified in
-[Inference Audit §2](13-inference-audit.md#2-the-cortexinferencesnapshot-artefact).
+[Inference Audit §2](13-inference-audit.md#2-the-likewiseinferencesnapshot-artefact).
 
 ## I-10. Authority is verified per op
 

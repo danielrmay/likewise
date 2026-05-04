@@ -3,7 +3,7 @@
 This chapter is the mental model in depth. It is non-normative — the
 [specification chapters](spec/00-conventions.md) are where the
 must-haves live — but a reader who finishes this chapter should be
-able to predict how a Cortex-Protocol node would behave in most
+able to predict how a Likewise node would behave in most
 situations, and should be able to read the spec without surprise.
 
 ## The shape
@@ -216,7 +216,7 @@ itself an op that the inference pipeline must respect.
 Both are documented because the reference implementation emits
 them and other implementations may want to interoperate with
 applications that consume them. They are not, however, what
-makes a node Cortex-Protocol-conformant; the substrate is.
+makes a node Likewise-conformant; the substrate is.
 
 ## Projections
 
