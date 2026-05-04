@@ -29,14 +29,8 @@
 - [Mesh Coordination](spec/09-mesh-coordination.md)
 - [Inference Audit](spec/13-inference-audit.md)
 
-# Annex — Application conventions
+# Appendices
 
-- [Episodes, Suggested Actions, Salience](spec/annex-conventions.md)
-
-# Open issues
-
-- [Known cross-implementation hazards](spec/99-open-issues.md)
-
-# Implementations
-
-- [Reference implementation and conformance](implementations.md)
+- [Application conventions](spec/annex-conventions.md)
+- [Open issues](spec/99-open-issues.md)
+- [Implementations](implementations.md)
