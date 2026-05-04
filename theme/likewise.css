@@ -157,7 +157,7 @@ html {
 /* Content typography
    mdBook sets :root { font-size: 62.5% } so 1rem = 10px here. */
 .content {
-  font-size: 1.95rem;
+  font-size: 1.75rem;
   line-height: 1.7;
 }
 
@@ -193,7 +193,7 @@ html {
 }
 
 .content h4 {
-  font-size: 1.65rem;
+  font-size: 1.75rem;
   margin: 1.75rem 0 0.6rem;
 }
 
