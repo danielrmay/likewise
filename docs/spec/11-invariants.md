@@ -215,7 +215,7 @@ condition the protocol exists to prevent.
 
 A v0.1 conformance test consists of demonstrating that each
 invariant holds under a battery of concrete operations and
-sequences. The seven scenarios planned to ship with the Cortex
+sequences. The seven scenarios planned to ship with the
 reference implementation (see
 [Implementations](../implementations.md)) are intended to
 collectively cover I-1 through I-10. Until those scenarios are

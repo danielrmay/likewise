@@ -63,10 +63,11 @@ interoperate over a single user's knowledge graph.
 ## Status
 
 **v0.1 — draft for public review.** The wire format was developed
-alongside an in-progress reference implementation (Cortex,
-currently private). It is not yet stable across major versions,
-and there is no public implementation an interested party can run
-today. See [Implementations](implementations.md) for status, and
+alongside an in-progress reference implementation (currently
+private, working codename Cortex — provisional). It is not yet
+stable across major versions, and there is no public
+implementation an interested party can run today. See
+[Implementations](implementations.md) for status, and
 [Open Issues](spec/99-open-issues.md) for known
 cross-implementation hazards.
 

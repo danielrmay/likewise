@@ -373,10 +373,11 @@ it, fork it, write a better version. We would rather lose to a
 better protocol than win with a worse one.
 
 If you are a user: there is no public implementation you can run
-today. The protocol's first reference implementation, Cortex, is
-in private development and not yet released. The point of
-publishing the specification before the implementation is to
-ensure the standard — and the property it gives you, of *owning
-what the system says about you* — is not a luxury feature. It is
-the precondition for any of this being something done *for* you
-instead of *to* you. The implementation will follow.
+today. The protocol's first reference implementation (provisional
+codename Cortex) is in private development and not yet released.
+The point of publishing the specification before the
+implementation is to ensure the standard — and the property it
+gives you, of *owning what the system says about you* — is not a
+luxury feature. It is the precondition for any of this being
+something done *for* you instead of *to* you. The implementation
+will follow.

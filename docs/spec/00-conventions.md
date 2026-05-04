@@ -120,11 +120,11 @@ order:
    clarified in subsequent revisions of the specification.
 
 The protocol was developed alongside an in-progress reference
-implementation called Cortex (see
-[Implementations](../implementations.md)). Cortex is not yet
-publicly available; once it is, its observed behaviour will become
-the practical fall-back authority for v0.1 ambiguities. Until
-then, file an issue.
+implementation (working codename Cortex — provisional; see
+[Implementations](../implementations.md)). The implementation is
+not yet publicly available; once it is, its observed behaviour
+will become the practical fall-back authority for v0.1
+ambiguities. Until then, file an issue.
 
 ## How to cite
 

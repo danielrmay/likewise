@@ -1,6 +1,6 @@
 # Annex: Application Conventions
 
-This annex describes conventions the Cortex reference
+This annex describes conventions the reference
 implementation uses to surface the substrate to a user. The
 material here is **non-normative**. A v0.1 conformant node MAY
 implement these conventions, MAY substitute alternatives, or MAY

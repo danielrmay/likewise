@@ -7,36 +7,44 @@ what conformance means.
 
 There is no public Likewise implementation at the time this
 specification was first published. The protocol was developed
-alongside an in-progress Rust implementation called **Cortex**,
-which is currently in private development on macOS and iOS.
-Cortex is not yet released, and this page makes no commitments
-about its release timing. When it does become public, this page
-will be updated with repository links and conformance notes.
+alongside an in-progress Rust implementation that the authors
+have been working under the **codename "Cortex"**. The codename
+is *not* a committed product name — the implementation may
+eventually ship as the baseline Likewise app itself, or under a
+different name entirely; that decision has not been made. Where
+this specification refers to "Cortex," read it as "the
+in-development reference implementation."
+
+Cortex is currently in private development on macOS and iOS. It
+is not yet released, and this page makes no commitments about
+its release timing. When it does become public, this page will
+be updated with repository links, the final name, and conformance
+notes.
 
 The text below describes the *intended* shape of the reference
 implementation and the *intended* behavioural-conformance suite.
 Both should be read as forward-looking; neither is currently
 available for download.
 
-### Cortex (in development)
+### The reference implementation (codename Cortex)
 
-Cortex is a Rust implementation of Likewise that runs on macOS
-and iOS as a small mesh of nodes communicating over HTTP. The
-user runs a node on each of their devices. Cortex was the
-implementation against which this specification was written, so
-where the specification is silent or ambiguous, Cortex's intended
-behaviour is the strongest signal about what was meant —
-practically, this matters less than it would for a published
-specification, because Cortex is not yet available for an
-implementer to compare against.
+The reference implementation is a Rust implementation of Likewise
+that runs on macOS and iOS as a small mesh of nodes
+communicating over HTTP. The user runs a node on each of their
+devices. It was the implementation against which this
+specification was written, so where the specification is silent
+or ambiguous, its intended behaviour is the strongest signal
+about what was meant — practically, this matters less than it
+would for a published specification, because the implementation
+is not yet available for an implementer to compare against.
 
 ### Intended reference behavioural tests
 
-When Cortex is published, it will ship seven end-to-end scenarios
-that exercise the wire surface against a real engine, real SQLite
-storage, and real HTTP loopback transport. The intent is that
-these scenarios constitute the reference suite for behavioural
-conformance:
+When the reference implementation is published, it will ship
+seven end-to-end scenarios that exercise the wire surface against
+a real engine, real SQLite storage, and real HTTP loopback
+transport. The intent is that these scenarios constitute the
+reference suite for behavioural conformance:
 
 1. **`solo`** — single-node ingest, derivation, projection rebuild.
 2. **`warm-restart`** — node restart recovers state from the log
@@ -59,7 +67,7 @@ scenarios — wired into its own engine and transport, against its
 own storage — is what "behaviourally conformant for v0.1" is
 intended to mean. The scenarios are not the spec; the spec is the
 spec. The scenarios are how we plan to operationalise it once
-Cortex is public.
+the reference implementation is public.
 
 ## Compatible implementations
 
@@ -142,8 +150,17 @@ implementation that may save another implementer time:
 
 ## Calling the project
 
-The protocol is "Likewise." When citing it, please use that
-name and a link to this specification. The reference
-implementation is "Cortex." The two are deliberately different
-nouns, even if the family resemblance is obvious — the protocol is
-the standard, the implementation is one realisation of it.
+The protocol is **"Likewise."** When citing it, please use that
+name and a link to this specification.
+
+The reference implementation is currently working under the
+**codename Cortex**. The codename is provisional. Its eventual
+public name is not fixed — it may ship as the baseline Likewise
+app itself, or under another name. Treat any "Cortex" references
+in this specification as shorthand for "the in-development
+reference implementation"; if and when the implementation is
+released under its final name, this page will be updated.
+
+What is committed: the protocol is Likewise, the standard is
+this document, and the implementation — whatever its final name
+— is one realisation of it.

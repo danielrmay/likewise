@@ -17,8 +17,9 @@ The full specification is in [`docs/`](docs/SUMMARY.md). Start with
 then [Concepts](docs/concepts.md). The normative wire-level spec begins
 at [Conventions](docs/spec/00-conventions.md).
 
-An in-progress Rust reference implementation called **Cortex** is
-under private development. It is not yet publicly available; see
+An in-progress Rust reference implementation (working codename
+**Cortex** — provisional, not committed) is under private
+development. It is not yet publicly available; see
 [`docs/implementations.md`](docs/implementations.md) for status.
 
 ## Status
@@ -38,5 +39,5 @@ This specification is licensed under
 (CC-BY-4.0). You may share and adapt it, including commercially, with
 attribution.
 
-The Cortex implementation, when released, will be licensed
+The reference implementation, when released, will be licensed
 separately.
