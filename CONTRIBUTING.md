@@ -1,6 +1,6 @@
-# Contributing to Cortex Protocol
+# Contributing to Likewise
 
-Cortex Protocol is a specification, not a piece of software. Contributions
+Likewise is a specification, not a piece of software. Contributions
 take the form of clarifications, corrections, and proposals to evolve the
 spec — not pull requests against an implementation.
 

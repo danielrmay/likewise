@@ -1,30 +1,42 @@
 # Implementations
 
-This page lists known implementations of Cortex Protocol and explains
+This page lists known implementations of Likewise and explains
 what conformance means.
 
-## Reference implementation
+## Status
 
-**Cortex** — a Rust reference implementation maintained by the
-authors of this specification. It implements the full v0.1 wire
-surface and is the source of truth for what the protocol *currently
-behaves like* on the wire. Where the specification is silent or
-ambiguous, the reference implementation's behaviour is the
-fall-back authority for v0.1, and its observed behaviour is what
-later revisions of the specification clarify.
+There is no public Likewise implementation at the time this
+specification was first published. The protocol was developed
+alongside an in-progress Rust implementation called **Cortex**,
+which is currently in private development on macOS and iOS.
+Cortex is not yet released, and this page makes no commitments
+about its release timing. When it does become public, this page
+will be updated with repository links and conformance notes.
 
-Cortex runs on macOS and iOS today and consists of a small mesh of
-nodes communicating over HTTP. The user runs a node on each of
-their devices.
+The text below describes the *intended* shape of the reference
+implementation and the *intended* behavioural-conformance suite.
+Both should be read as forward-looking; neither is currently
+available for download.
 
-Repository and binaries are linked from the project README.
+### Cortex (in development)
 
-### Reference behavioural tests
+Cortex is a Rust implementation of Likewise that runs on macOS
+and iOS as a small mesh of nodes communicating over HTTP. The
+user runs a node on each of their devices. Cortex was the
+implementation against which this specification was written, so
+where the specification is silent or ambiguous, Cortex's intended
+behaviour is the strongest signal about what was meant —
+practically, this matters less than it would for a published
+specification, because Cortex is not yet available for an
+implementer to compare against.
 
-The reference implementation ships seven end-to-end scenarios that
-exercise the wire surface against a real engine, real SQLite
-storage, and real HTTP loopback transport. Together they constitute
-the reference suite for behavioural conformance:
+### Intended reference behavioural tests
+
+When Cortex is published, it will ship seven end-to-end scenarios
+that exercise the wire surface against a real engine, real SQLite
+storage, and real HTTP loopback transport. The intent is that
+these scenarios constitute the reference suite for behavioural
+conformance:
 
 1. **`solo`** — single-node ingest, derivation, projection rebuild.
 2. **`warm-restart`** — node restart recovers state from the log
@@ -44,18 +56,20 @@ the reference suite for behavioural conformance:
 
 A second implementation that passes equivalents of these seven
 scenarios — wired into its own engine and transport, against its
-own storage — is what we mean by "behaviourally conformant for
-v0.1." The scenarios are not the spec; the spec is the spec. The
-scenarios are how we operationalise it.
+own storage — is what "behaviourally conformant for v0.1" is
+intended to mean. The scenarios are not the spec; the spec is the
+spec. The scenarios are how we plan to operationalise it once
+Cortex is public.
 
 ## Compatible implementations
 
-There are no third-party implementations at the time of writing.
-This page is the place to list them as they appear. To submit one,
-see [Contributing](https://github.com/danielmay/cortex-protocol/blob/main/CONTRIBUTING.md).
+There are no public implementations of any kind at the time of
+writing. When implementations exist, this page will list them. To
+submit one, see
+[Contributing](https://github.com/danielmay/likewise/blob/main/CONTRIBUTING.md).
 
-(Or — open an issue, paste a link to your implementation and a brief
-description of what it covers, and we will add it.)
+(Or — open an issue, paste a link to your implementation and a
+brief description of what it covers, and we will add it.)
 
 ## What conformance means
 
@@ -92,7 +106,7 @@ The specification is versioned (see
 [Conventions](spec/00-conventions.md) for the current version).
 Two implementations on the same major version SHOULD interoperate
 without negotiation. Two implementations on different major
-versions MAY refuse to interoperate; the `X-Cortex-Mesh-Rules-Hash`
+versions MAY refuse to interoperate; the `X-Likewise-Mesh-Rules-Hash`
 header on the sync endpoint is the v0.1 mechanism by which a
 mismatched pair detects this and pauses sync rather than corrupting
 each other.
@@ -128,7 +142,7 @@ implementation that may save another implementer time:
 
 ## Calling the project
 
-The protocol is "Cortex Protocol." When citing it, please use that
+The protocol is "Likewise." When citing it, please use that
 name and a link to this specification. The reference
 implementation is "Cortex." The two are deliberately different
 nouns, even if the family resemblance is obvious — the protocol is

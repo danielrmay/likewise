@@ -36,7 +36,7 @@ as part of the next major version.
 
 ## 2. Capabilities in v0.10's `att` field
 
-Every entry in a UCAN's `att` array is a Cortex Protocol
+Every entry in a UCAN's `att` array is a Likewise
 capability. The protocol places its capability schema directly
 in the UCAN policy slot:
 
@@ -211,7 +211,7 @@ authorised chain MUST cause the op to be rejected.
 ### 5.6 `audit_inference`
 
 Requires the delegated node to emit
-`cortex.inference.snapshot` artefacts (see
+`likewise.inference.snapshot` artefacts (see
 [Inference Audit](13-inference-audit.md))
 for every model call performed against data covered by this
 delegation.
@@ -219,7 +219,7 @@ delegation.
 | Form | Meaning |
 |------|---------|
 | absent or `false` | No requirement. The delegated node MAY emit snapshots for its own bookkeeping but is not obliged to. |
-| `true` | The delegated node MUST emit a `cortex.inference.snapshot` artefact for every inference call performed against ops admitted by this delegation. |
+| `true` | The delegated node MUST emit a `likewise.inference.snapshot` artefact for every inference call performed against ops admitted by this delegation. |
 
 Narrowing: a child caveat with `audit_inference: true` is
 admissible under any parent (the parent did not require audit;
@@ -231,7 +231,7 @@ relaxed.
 
 This caveat is the mechanism by which the user requires
 auditable inference from a delegated party — for example, an
-organisation running a Cortex Protocol node under a scoped
+organisation running a Likewise node under a scoped
 delegation. When a delegation carries `audit_inference: true`,
 the snapshots that the delegated node emits become themselves
 operations on the user's log (subject to the user's read

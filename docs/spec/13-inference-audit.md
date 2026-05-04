@@ -7,7 +7,7 @@
 > for job and lease semantics. It specifies the convention by
 > which inference calls become recoverable artefacts on the log.
 
-The Cortex Protocol substrate (Part 1) lets a user own the
+The Likewise substrate (Part 1) lets a user own the
 canonical record of facts derived about them. The mesh
 coordination layer (the previous chapter in Part 2) lets
 multiple nodes cooperate on the work of producing those derived
@@ -21,7 +21,7 @@ recommendation, a derived claim, a synthesised episode — each
 can be traced back, mechanically, to the model call that
 produced it, the prompt and context fed to that call, and the
 model's literal output. The mechanism is the
-`cortex.inference.snapshot` artefact: a typed artefact emitted
+`likewise.inference.snapshot` artefact: a typed artefact emitted
 alongside any audited inference call, riding the substrate's
 generic artefact machinery.
 
@@ -37,7 +37,7 @@ Each is specified in turn below.
 
 ## 1. When a snapshot must be emitted
 
-A node MUST emit a `cortex.inference.snapshot` artefact for every
+A node MUST emit a `likewise.inference.snapshot` artefact for every
 model call it performs in either of the following cases:
 
 1. **The node is operating under the user's root delegation.**
@@ -73,12 +73,12 @@ universally would be unenforceable across organisational
 boundaries; making it caveat-controlled gives the user the lever
 they need without overreaching.
 
-## 2. The `cortex.inference.snapshot` artefact
+## 2. The `likewise.inference.snapshot` artefact
 
-A `cortex.inference.snapshot` artefact is a `CreateArtifact` op
+A `likewise.inference.snapshot` artefact is a `CreateArtifact` op
 (see [Operations §8.1](02-operations.md#81-createartifact)) whose
 `artifact_type` is the literal string
-`"cortex.inference.snapshot"`. The artefact's content (the
+`"likewise.inference.snapshot"`. The artefact's content (the
 bytes referenced by `content_hash`, optionally inlined via
 `content_inline`) MUST be a postcard-encoded record with the
 following fields, in this order:
@@ -182,7 +182,7 @@ implementing the audit layer reads this chapter.
 The audit mechanism specified here is deliberately narrow. It
 covers:
 
-- **Inference performed by a Cortex Protocol node**, where
+- **Inference performed by a Likewise node**, where
   "inference" means a call to a model that produces user-visible
   derived records.
 
@@ -190,7 +190,7 @@ It does *not* cover:
 
 - **Inference performed off-protocol.** A delegated party that
   receives a slice of the user's data and trains an internal
-  model on it has not made a "Cortex Protocol inference call"
+  model on it has not made a "Likewise inference call"
   for the purposes of this chapter, regardless of whether the
   user might wish they had. The protocol's lever for that
   scenario is the delegation's caveats — the user can refuse to

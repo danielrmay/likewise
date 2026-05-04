@@ -1,7 +1,7 @@
 # Mesh Coordination
 
 > **Part 2 of the specification, first chapter.** This chapter
-> is the work-distribution layer of Cortex Protocol. It depends
+> is the work-distribution layer of Likewise. It depends
 > on the substrate (Part 1) for op log, sync, signatures,
 > capabilities, and projections; it adds the vocabulary by
 > which multiple nodes cooperate on a single user's work.
@@ -271,7 +271,7 @@ records the call must leave behind.
 
 The relevant interactions with this chapter are:
 
-- The `source_job` field of a `cortex.inference.snapshot`
+- The `source_job` field of a `likewise.inference.snapshot`
   artefact links the snapshot back to the job whose
   `CompleteJob` op closed it. Implementations correlate the
   two via the substrate's `causal_deps` mechanism.

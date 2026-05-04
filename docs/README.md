@@ -1,4 +1,4 @@
-# Cortex Protocol
+# Likewise
 
 A protocol for **decentralized personal knowledge graphs**.
 
@@ -12,7 +12,7 @@ This book is the protocol specification.
 
 ## How to read it
 
-If you are encountering Cortex Protocol for the first time, read in
+If you are encountering Likewise for the first time, read in
 this order:
 
 1. **[Motivation](motivation.md)** — why this protocol exists, and what
@@ -62,10 +62,13 @@ interoperate over a single user's knowledge graph.
 
 ## Status
 
-**v0.1 — draft for public review.** The wire format is exercised by
-an end-to-end reference implementation. It is not yet stable across
-major versions. Known cross-implementation hazards are catalogued in
-[Open Issues](spec/99-open-issues.md).
+**v0.1 — draft for public review.** The wire format was developed
+alongside an in-progress reference implementation (Cortex,
+currently private). It is not yet stable across major versions,
+and there is no public implementation an interested party can run
+today. See [Implementations](implementations.md) for status, and
+[Open Issues](spec/99-open-issues.md) for known
+cross-implementation hazards.
 
 ## License
 

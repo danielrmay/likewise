@@ -6,7 +6,7 @@ how to read them.
 
 ## Status of this document
 
-This is **Cortex Protocol, version 0.1 — draft for public review**.
+This is **Likewise, version 0.1 — draft for public review**.
 
 The wire format described in this specification is exercised by an
 end-to-end reference implementation. It is not yet stable across
@@ -45,7 +45,7 @@ informative.
 
 ## Versioning
 
-Cortex Protocol follows a semantic-versioning shape:
+Likewise follows a semantic-versioning shape:
 
 - **Major version** changes are backwards-incompatible. An
   implementation MUST NOT silently interoperate across major
@@ -64,7 +64,7 @@ Cortex Protocol follows a semantic-versioning shape:
 
 Two implementations on the same major version SHOULD interoperate
 without negotiation. Two implementations on different major
-versions MAY refuse to interoperate; the `X-Cortex-Mesh-Rules-Hash`
+versions MAY refuse to interoperate; the `X-Likewise-Mesh-Rules-Hash`
 sync header is the v0.1 mechanism by which a mismatched pair
 detects this and pauses sync rather than corrupting each other
 (see [Sync](04-sync.md)).
@@ -116,19 +116,21 @@ order:
 
 1. The relevant RFC for any externally-defined primitive
    (RFC 7515 for JWS, the UCAN specification for tokens, etc.).
-2. The reference implementation's observed behaviour at v0.1.
-3. The maintainers' issue tracker, which is where ambiguities
-   become normative clarifications in subsequent revisions.
+2. The maintainers' issue tracker, which is where ambiguities are
+   clarified in subsequent revisions of the specification.
 
-The reference implementation is not the specification. But while
-v0.1 is being stabilised, its behaviour is the strongest signal
-about what the specification meant where the prose is unclear.
+The protocol was developed alongside an in-progress reference
+implementation called Cortex (see
+[Implementations](../implementations.md)). Cortex is not yet
+publicly available; once it is, its observed behaviour will become
+the practical fall-back authority for v0.1 ambiguities. Until
+then, file an issue.
 
 ## How to cite
 
 When citing this specification, use the form:
 
-> Cortex Protocol, version 0.1. <https://danielmay.github.io/cortex-protocol/>
+> Likewise, version 0.1. <https://danielmay.github.io/likewise/>
 
 The protocol is licensed CC-BY-4.0 (see `LICENSE` at the repository
 root). Attribution is required.

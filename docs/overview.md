@@ -142,7 +142,7 @@ deliberate intent rather than a corruption.
 A node does not have to be one of the user's own devices. The same
 delegation machinery scopes what an *invited third party* — an
 organisation, a clinic, a service the user has chosen to share with
-— can see. A retailer running a Cortex Protocol node receives only
+— can see. A retailer running a Likewise node receives only
 the claims the user delegated to them, sanitised per the caveats
 the user attached. The same wire format that synchronises a phone
 and a laptop also synchronises a personal mesh and a partner the
@@ -174,7 +174,7 @@ When a node operating under audit calls a model — to summarise a
 window, to draft a recommendation, to extract entities from a
 photo caption — the call itself becomes an operation. The
 retrieved context, the prompt, the model identity, the timing,
-and the output are all recorded as a `cortex.inference.snapshot`
+and the output are all recorded as a `likewise.inference.snapshot`
 artefact on the log.
 
 Audit is in force in two cases:

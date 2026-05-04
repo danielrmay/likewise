@@ -177,10 +177,12 @@ operation* that:
    continues normally.
 
 Rebuild is the recovery mechanism for projection corruption
-and the verification mechanism for new implementations
-(rebuilding from a known log and comparing the result to the
-reference implementation's output is the strongest test of
-projection correctness). Rebuild SHOULD be deterministic up
+and the verification mechanism for new implementations.
+Rebuilding from a known log and comparing the result to a
+trusted reference output is intended to be the strongest test
+of projection correctness; once the Cortex reference
+implementation is public, its rebuilds will serve as that
+reference. Rebuild SHOULD be deterministic up
 to algorithm-internal choices: the same implementation must
 produce the same projection from the same log every time, and
 two implementations that satisfy this chapter's contract must

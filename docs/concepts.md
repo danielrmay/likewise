@@ -293,7 +293,7 @@ The capability machinery is symmetric: a delegation chain that
 admits a personal device (the user's laptop, an inference server
 the user runs at home) is structurally identical to one that admits
 an *organisation* the user has chosen to invite in. A retailer
-deploying a Cortex Protocol node, a clinic running a scheduling
+deploying a Likewise node, a clinic running a scheduling
 assistant against a user-authorised slice of their calendar, an
 employer's scheduling helper that sees only the predicates the
 employee has consented to share — all of these are the same kind of
@@ -338,7 +338,7 @@ scheduling a job requires `Schedule` on `Job`; claiming requires
 ## Inference auditing
 
 When a node operating under audit calls a model, the call itself
-becomes an op. Specifically, a `cortex.inference.snapshot`
+becomes an op. Specifically, a `likewise.inference.snapshot`
 artefact is written to the log recording the retrieved context
 (the evidence and claims fed into the prompt), the model
 identity, telemetry (latency, token counts, backend), and the

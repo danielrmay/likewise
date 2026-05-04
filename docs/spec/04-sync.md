@@ -41,7 +41,7 @@ Pulls operations the requester does not already have.
 
 ```
 GET /ops?since=<base64url-frontier>&limit=<n>
-X-Cortex-Mesh-Rules-Hash: <hex>
+X-Likewise-Mesh-Rules-Hash: <hex>
 Authorization: Bearer <node-bearer-token>
 ```
 
@@ -67,8 +67,8 @@ specified in [Signatures](06-signatures.md).
 ```
 200 OK
 Content-Type: application/octet-stream
-X-Cortex-Next-Frontier: <base64url>
-X-Cortex-Mesh-Rules-Hash: <hex>
+X-Likewise-Next-Frontier: <base64url>
+X-Likewise-Mesh-Rules-Hash: <hex>
 
 <postcard-encoded Vec<Operation>>
 ```
@@ -79,11 +79,11 @@ capability set (Section 5).
 
 Headers:
 
-- `X-Cortex-Next-Frontier` — the cursor the requester should
+- `X-Likewise-Next-Frontier` — the cursor the requester should
   send on its next pull. This frontier MUST encompass every
   operation in the response and MAY encompass operations the
   server chose to filter.
-- `X-Cortex-Mesh-Rules-Hash` — the server's current mesh-rules
+- `X-Likewise-Mesh-Rules-Hash` — the server's current mesh-rules
   hash. The requester MUST compare to its own; on mismatch the
   pause-on-drift behaviour in Section 6 applies.
 
@@ -102,7 +102,7 @@ Submits operations the sender wants the recipient to apply.
 ```
 POST /ops
 Content-Type: application/octet-stream
-X-Cortex-Mesh-Rules-Hash: <hex>
+X-Likewise-Mesh-Rules-Hash: <hex>
 Authorization: Bearer <node-bearer-token>
 
 <postcard-encoded Vec<Operation>>
@@ -115,7 +115,7 @@ Body: a postcard-encoded sequence of operations.
 ```
 200 OK
 Content-Type: application/json
-X-Cortex-Mesh-Rules-Hash: <hex>
+X-Likewise-Mesh-Rules-Hash: <hex>
 
 { "appended": N, "duplicated": M, "rejected": K }
 ```
@@ -163,7 +163,7 @@ authorised to see.
 
 ## 6. The mesh-rules-hash handshake
 
-Both sides include `X-Cortex-Mesh-Rules-Hash` on every request
+Both sides include `X-Likewise-Mesh-Rules-Hash` on every request
 and response. On mismatch:
 
 - The receiving side MUST treat the request as a "drift"

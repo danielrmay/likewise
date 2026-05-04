@@ -39,7 +39,7 @@ allowing recipients to dispatch on schema version explicitly.
 specification version they implement in their bearer token
 metadata or in a discovery endpoint, so peers can refuse to
 sync with mismatched versions before the wire format issue
-manifests. The `X-Cortex-Mesh-Rules-Hash` header (see
+manifests. The `X-Likewise-Mesh-Rules-Hash` header (see
 [Sync](04-sync.md)) provides a partial signal.
 
 ## OI-2. Causal frontier cursor is opaque
@@ -60,7 +60,7 @@ versioned cursor envelope or to standardise the
 
 **Workaround in v0.1.** Implementations MUST treat cursors as
 write-once-then-echo: a client sends back exactly what the
-server returned in `X-Cortex-Next-Frontier`. Implementations
+server returned in `X-Likewise-Next-Frontier`. Implementations
 SHOULD discard cached cursors on protocol-version upgrades.
 
 ## OI-3. Sanitised ops carry no signature, by design
@@ -88,7 +88,7 @@ the wire. v0.1 does not include this.
 
 ## OI-4. Mesh-rules drift has no negotiation
 
-**Two peers with different `X-Cortex-Mesh-Rules-Hash` values
+**Two peers with different `X-Likewise-Mesh-Rules-Hash` values
 pause sync** (per [Sync](04-sync.md#6-the-mesh-rules-hash-handshake)).
 There is no automatic protocol for resolving the divergence.
 
@@ -250,7 +250,7 @@ it; do not author claims with non-vocabulary predicates.
 
 Each open issue here is a candidate for revision. To propose a
 direction, open an issue on the specification repository (see
-[Contributing](https://github.com/danielmay/cortex-protocol/blob/main/CONTRIBUTING.md))
+[Contributing](https://github.com/danielmay/likewise/blob/main/CONTRIBUTING.md))
 and reference the OI number above. Substantive changes are
 expected to land in v0.2 (additive minor) or v1.0
 (backwards-incompatible major) depending on scope.

@@ -1,4 +1,4 @@
-# Cortex Protocol
+# Likewise
 
 A protocol for **decentralized personal knowledge graphs**.
 
@@ -17,16 +17,19 @@ The full specification is in [`docs/`](docs/SUMMARY.md). Start with
 then [Concepts](docs/concepts.md). The normative wire-level spec begins
 at [Conventions](docs/spec/00-conventions.md).
 
-A reference implementation in Rust is tracked in
-[`docs/implementations.md`](docs/implementations.md).
+An in-progress Rust reference implementation called **Cortex** is
+under private development. It is not yet publicly available; see
+[`docs/implementations.md`](docs/implementations.md) for status.
 
 ## Status
 
-Cortex Protocol is at **v0.1 — draft for public review**. The wire
-format is exercised by an end-to-end reference implementation but is
-not yet considered stable across major versions. See
-[`docs/spec/99-open-issues.md`](docs/spec/99-open-issues.md) for known
-hazards.
+Likewise is at **v0.1 — draft for public review**. The wire
+format was developed alongside an in-progress reference
+implementation but is not yet considered stable across major
+versions, and there is no public implementation an interested
+party can run today. See
+[`docs/spec/99-open-issues.md`](docs/spec/99-open-issues.md) for
+known cross-implementation hazards.
 
 ## License
 
@@ -35,5 +38,5 @@ This specification is licensed under
 (CC-BY-4.0). You may share and adapt it, including commercially, with
 attribution.
 
-The reference implementation is licensed separately; see its repository
-for terms.
+The Cortex implementation, when released, will be licensed
+separately.

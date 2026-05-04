@@ -1,16 +1,16 @@
 # Comparison with adjacent work
 
-This chapter is an honest contrast between Cortex Protocol and other
+This chapter is an honest contrast between Likewise and other
 public work in the decentralized-data and personal-AI space. The aim
 is not to persuade. It is to give a reader who already knows one of
 these projects the shortest possible path to understanding what
-Cortex Protocol does differently — and, importantly, where another
-project does something better and Cortex Protocol should not be
+Likewise does differently — and, importantly, where another
+project does something better and Likewise should not be
 chosen.
 
 The protocol is young. Several of the projects below are not. None
 of what follows is meant to disparage them; they are the reason
-Cortex Protocol could be designed at all.
+Likewise could be designed at all.
 
 ## Solid
 
@@ -28,19 +28,19 @@ Authorization is **Web Access Control** or **Access Control Policy**
 The Solid Notifications Protocol pushes resource updates over
 WebSocket / WebHook.
 
-**Where it overlaps with Cortex Protocol.** Both treat "your data,
+**Where it overlaps with Likewise.** Both treat "your data,
 your server" as the foundational stance. Both decentralize identity.
 Both have capability-flavoured access control. Both expect external
 applications to operate on a graph the user owns.
 
-**Where it diverges.** Solid is CRUD-on-RDF-resources; Cortex Protocol
+**Where it diverges.** Solid is CRUD-on-RDF-resources; Likewise
 is an append-only signed-op log with deterministic projections.
 Solid has no concept of evidence-claim-episode lineage, no causal
 ordering (no HLC or vector clock), no per-op signatures, no inference
 auditing, and no work routing. Pods assume an always-online HTTP
-origin; Cortex Protocol expects a small mesh of user-owned devices
+origin; Likewise expects a small mesh of user-owned devices
 with intermittent connectivity. Solid leans on the open-world
-semantics of RDF; Cortex Protocol's predicate vocabulary is
+semantics of RDF; Likewise's predicate vocabulary is
 centralised and lint-enforced for the same reasons it has typed ops
 in the first place.
 
@@ -63,24 +63,24 @@ IPLD), each commit signed by the account key. Records conform to
 firehose (a WebSocket stream of commits) and CAR-file repo export
 for migration.
 
-**Where it overlaps with Cortex Protocol.** This is the closest cousin
+**Where it overlaps with Likewise.** This is the closest cousin
 in the list. Both: per-user signed log, content-addressed records,
 account/key portability, schema-typed records (Lexicons play the
-role Cortex Protocol's typed op variants play), single-author repos
+role Likewise's typed op variants play), single-author repos
 with cryptographic verification independent of the host. The shape
 "signed append-only repo plus sync from a frontier" is the same
 pattern.
 
 **Where it diverges.** AT Protocol is *public-by-default broadcast*
 designed for global indexing — relays slurp everyone's firehose so
-anyone can build a search engine over the network. Cortex Protocol
+anyone can build a search engine over the network. Likewise
 is *private-by-default mesh*, gated by UCAN delegations with
 sanitisation caveats, where every op crossing the wire passes
 through a capability filter. AT has no UCAN-style delegation, no
 work scheduling or routing, no inference-snapshot artefacts, no
 multi-projection materialisation, no evidence→claim→episode
 derivation DAG, and no derived-data invalidation. AT records are
-user-authored social objects; Cortex Protocol ops include
+user-authored social objects; Likewise ops include
 machine-derived hypotheses with provenance back to evidence and a
 mechanism for the user to refute them.
 
@@ -108,10 +108,10 @@ follows, 30000+ = addressable). Relays speak a small WebSocket
 protocol. There is no causal ordering, no consensus, and no
 required durability.
 
-**Where it overlaps with Cortex Protocol.** Per-event signing with a
+**Where it overlaps with Likewise.** Per-event signing with a
 user-owned key. Multi-host distribution. Client-side verification.
 The "everything is a signed event with a kind" mental model rhymes
-with Cortex Protocol's signed-op log with typed payload variants.
+with Likewise's signed-op log with typed payload variants.
 
 **Where it diverges.** Nostr has no causal frontier — events are
 effectively a flat set ordered by `created_at`, which is whatever
@@ -120,7 +120,7 @@ seen serious adoption (NIP-26 was largely abandoned). There is no
 derived state, no projections, no evidence-or-claim model, no work
 routing. Nostr is intentionally public broadcast; encrypted DMs
 exist but are a thin add-on. Nostr's tag system is freeform and
-emergent; Cortex Protocol's predicate vocabulary is centralised and
+emergent; Likewise's predicate vocabulary is centralised and
 small by design, because predictable derivation requires a closed
 vocabulary.
 
@@ -141,12 +141,12 @@ iroh-docs is a multi-writer key-value replica. iroh-gossip does
 epidemic broadcast. iroh-willow is in development as a next-gen
 replacement using the Willow data model.
 
-**Where it overlaps with Cortex Protocol.** Both target multi-device
+**Where it overlaps with Likewise.** Both target multi-device
 sync over hostile networks. Both are Rust-first. Both use Ed25519
 keys as the identity primitive. Both content-address payloads
-(BLAKE3 in Iroh, hash-referenced evidence in Cortex Protocol).
+(BLAKE3 in Iroh, hash-referenced evidence in Likewise).
 iroh-docs replicas with a per-author key look superficially like
-Cortex Protocol's signed-op log with a per-node identity.
+Likewise's signed-op log with a per-node identity.
 
 **Where it diverges.** Iroh is **transport plus sync primitives**,
 not a domain model. It has no claims, episodes, inference
@@ -154,7 +154,7 @@ snapshots, UCAN delegation graph, projection model, or
 scheduled-work vocabulary. Iroh's authorization story beyond
 namespace write-keys is intentionally underspecified.
 
-This is largely a non-overlap. Cortex Protocol could plausibly be
+This is largely a non-overlap. Likewise could plausibly be
 implemented *over* Iroh's transport — replacing today's HTTP +
 reqwest layer with iroh-net QUIC connections — and the result would
 be additive rather than competitive. Today's reference
@@ -173,7 +173,7 @@ privacy/security, and user ownership. The essay surveys CRDTs (and
 Automerge in particular) as candidate plumbing, but the seven
 ideals are values, not specifications.
 
-**Where it overlaps with Cortex Protocol.** Cortex Protocol is
+**Where it overlaps with Likewise.** Likewise is
 squarely a local-first system by these criteria — every ideal is a
 design goal. The "rebuild projections from the op log" stance
 directly serves longevity (#5: works in 10 years) and ownership
@@ -183,18 +183,18 @@ sharing model serves privacy (#6). And so on.
 
 **Where it diverges.** The manifesto leans on CRDT auto-merge of
 arbitrary structured documents as the canonical answer to
-multi-device sync. Cortex Protocol uses an append-only signed log
+multi-device sync. Likewise uses an append-only signed log
 with deterministic projections and last-write-wins-by-OpId for
 entity merges, not a generic CRDT. This is a deliberate choice:
 the data domain is narrow enough that a typed op vocabulary is
 more precise than a generic mergeable document model, and easier to
-reason about for derivation. The price is that Cortex Protocol is
+reason about for derivation. The price is that Likewise is
 not the right tool for collaborative document editing across
 multiple users — it is single-user-mesh, not multi-user-collab.
 
-The manifesto is also silent on something Cortex Protocol has a
+The manifesto is also silent on something Likewise has a
 strong opinion about: derived intelligence with auditable
-provenance. Local-first thinking informed Cortex Protocol; Cortex
+provenance. Local-first thinking informed Likewise; Cortex
 Protocol commits to a stance the manifesto does not take.
 
 **Source:** [Local-First Software](https://www.inkandswitch.com/essay/local-first/).
@@ -213,7 +213,7 @@ nbf, …}`. UCAN v1.0 (DAG-CBOR + Varsig + CIDv1 envelopes) is the
 current direction of the working group; v0.10 was the last
 JWT-shaped revision.
 
-**How Cortex Protocol uses UCAN.** Every `DelegateUcan` op carries
+**How Likewise uses UCAN.** Every `DelegateUcan` op carries
 a v0.10 token; an implementation's UCAN view materialises the
 delegation graph and enforces strict attenuation per hop. Cortex
 Protocol **extends UCAN's policy/caveat slot** with a domain-specific
@@ -222,11 +222,11 @@ caveat set: `source_types`, `predicates`, `kind_prefix`,
 RedactParticipants, TruncateContent, StripCustomMetadata). These
 plug into a capability policy engine that runs authorization plus
 transitive-cascade plus field-level sanitisation on every outbound
-op stream. Cortex Protocol also extends the Resource and Action
+op stream. Likewise also extends the Resource and Action
 enums with `Job` and `Schedule` so work routing rides the same
 delegation graph.
 
-**Migration cost.** Cortex Protocol is currently on UCAN v0.10. The
+**Migration cost.** Likewise is currently on UCAN v0.10. The
 v0.10 → v1.0 migration is non-trivial (envelope format and
 canonicalisation differ) and is tracked as
 [an open issue](spec/99-open-issues.md).
@@ -241,24 +241,24 @@ document editing. Documents are JSON-shaped CRDTs with full op
 history; the sync protocol exchanges Bloom-filtered have/need
 summaries until peers converge. Works over any byte transport.
 
-**Where it overlaps with Cortex Protocol.** Both are
+**Where it overlaps with Likewise.** Both are
 append-history-based and target offline-first multi-device. Cortex
 Protocol's "rebuild projections from op log" is structurally
 similar to Automerge's "materialise document state from op
 history."
 
 **Where it diverges.** Automerge is content-agnostic — it merges
-generic JSON. Cortex Protocol's ops are typed and domain-specific.
-Automerge has no built-in authorization model; Cortex Protocol has
+generic JSON. Likewise's ops are typed and domain-specific.
+Automerge has no built-in authorization model; Likewise has
 UCAN end-to-end. Conflict resolution: Automerge uses CRDT merge
-semantics per field; Cortex Protocol uses last-write-wins-by-OpId
+semantics per field; Likewise uses last-write-wins-by-OpId
 for entities (with deterministic cycle resolution). Cortex
 Protocol's approach is simpler and less expressive, but it is
 better suited to derived data, where "the latest user assertion
 wins" is the right rule.
 
 For collaborative editing across multiple users, Automerge wins.
-Cortex Protocol is not trying to play that game.
+Likewise is not trying to play that game.
 
 **Source:** [Automerge](https://automerge.org/).
 
@@ -279,21 +279,21 @@ Authorization is **Meadowcap**, a capability system supporting both
 owned (top-down) and communal (bottom-up) namespaces. Confidential
 sync uses private-set-intersection-style techniques.
 
-**Where it overlaps with Cortex Protocol.** This is the closest
+**Where it overlaps with Likewise.** This is the closest
 *architectural* cousin. Capability-based auth (Meadowcap rhymes
 with UCAN-plus-caveats), per-author signed entries (analogous to
-Cortex Protocol's signed ops), partial sync (Willow's range-based
-"area of interest" rhymes with Cortex Protocol's frontier-plus-filter),
+Likewise's signed ops), partial sync (Willow's range-based
+"area of interest" rhymes with Likewise's frontier-plus-filter),
 timestamp ordering. iroh-willow brings these capabilities into the
-same Rust ecosystem Cortex Protocol's reference implementation
+same Rust ecosystem Likewise's reference implementation
 inhabits.
 
 **Where it diverges.** Willow is a **storage and sync substrate**,
 not a knowledge model. It has no claims, episodes, inference
 snapshots, derivation DAG, or work routing. It is the layer
-underneath what Cortex Protocol does. Conversely, Willow's
-confidential sync is **stronger than what Cortex Protocol does
-today** — Cortex Protocol relies on the sender honestly applying
+underneath what Likewise does. Conversely, Willow's
+confidential sync is **stronger than what Likewise does
+today** — Likewise relies on the sender honestly applying
 its capability filter server-side, where Willow's design prevents
 peers from probing for unauthorised data at all. This is a real
 gap, and one we expect to close some day; it is tracked as an
@@ -302,7 +302,7 @@ editing via prefix-pruning is also more aggressive than Cortex
 Protocol's tombstone-cascade (which preserves the log and only
 invalidates derivations).
 
-If Willow had existed when Cortex Protocol started, this
+If Willow had existed when Likewise started, this
 specification might be a knowledge-graph model defined *over*
 Willow rather than alongside it. The right relationship may yet
 turn out to be that one.
@@ -312,7 +312,7 @@ turn out to be that one.
 
 ## Honest synthesis
 
-### What Cortex Protocol contributes that the projects above don't
+### What Likewise contributes that the projects above don't
 
 - **A typed knowledge-graph vocabulary** (evidence → claim → entity
   → episode → action) baked into the op log, not modeled on top of
@@ -320,7 +320,7 @@ turn out to be that one.
   close, but they are schema systems, not lifecycle models with
   derivation DAGs and tombstone-cascade semantics.
 - **Inference auditability as a separable layer.** The protocol
-  defines a `cortex.inference.snapshot` artefact type and a
+  defines a `likewise.inference.snapshot` artefact type and a
   conditional invariant that requires snapshots from any node
   operating under the user's root delegation, or under a
   delegation whose `audit_inference` caveat the user has set. Every
@@ -338,7 +338,7 @@ turn out to be that one.
   (`source_types`, `predicates`, `kind_prefix`, `time_range`,
   `sanitize`, `audit_inference`) covers both data scoping and
   behavioural requirements. UCAN itself is the building block;
-  the caveat vocabulary is Cortex Protocol's contribution.
+  the caveat vocabulary is Likewise's contribution.
 - **Work routing in the same op log** (`ScheduleJob`, `ClaimWork`,
   `RouteKind`) so heterogeneous nodes — phone without inference,
   server with GPU — cooperate via the same delegation graph that
@@ -362,35 +362,35 @@ turn out to be that one.
   makes scoped commercial sharing tractable in practice. See
   [Motivation: Consensual data partnership](motivation.md#consensual-data-partnership).
 
-### What Cortex Protocol doesn't do that one of these does well
+### What Likewise doesn't do that one of these does well
 
 - **Confidential sync.** Willow's design prevents peers from
-  probing for data they are not authorised to see. Cortex Protocol
+  probing for data they are not authorised to see. Likewise
   relies on the sender honestly applying its capability filter
   server-side. Closing this gap is an
   [open issue](spec/99-open-issues.md).
 - **Generic structural merging.** For collaborative text or list
-  editing across users, Automerge is better. Cortex Protocol's
+  editing across users, Automerge is better. Likewise's
   last-write-wins-by-OpId is deliberately coarse, because the
   domain doesn't need finer.
 - **Public discoverability and third-party indexing.** AT
   Protocol's firehose model is the right tool for "anyone can
-  build an app over the public stream." Cortex Protocol is
+  build an app over the public stream." Likewise is
   private-by-default and would have to add new machinery to do
   this; we have no current plans to.
 - **Mature ecosystem of clients and apps.** Solid has Inrupt and
   the Community Solid Server. AT has Bluesky and the wider
-  ATmosphere. Nostr has dozens of clients. Cortex Protocol has one
+  ATmosphere. Nostr has dozens of clients. Likewise has one
   pre-1.0 reference implementation. The ecosystem cost is real.
 - **Account portability across hosts.** AT Protocol's DID +
-  CAR-export migration is more developed than Cortex Protocol's
+  CAR-export migration is more developed than Likewise's
   story, which assumes the user owns all participating nodes
   rather than migrating between hosting providers.
 - **NAT traversal and transport.** Iroh's holepunching plus relay
   stack is what you would want for cross-network device sync.
-  Cortex Protocol's HTTP loopback transport is sufficient for a
+  Likewise's HTTP loopback transport is sufficient for a
   LAN mesh; an Iroh-backed transport is plausible future work.
-- **UCAN v1.0.** Cortex Protocol is on v0.10 (JWT shape); the
+- **UCAN v1.0.** Likewise is on v0.10 (JWT shape); the
   ecosystem is migrating to v1.0 envelopes (DAG-CBOR plus Varsig).
   This is technical debt, not a design choice.
 

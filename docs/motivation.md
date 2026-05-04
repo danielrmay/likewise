@@ -57,7 +57,7 @@ economic value of being the party that holds the record has risen
 by an order of magnitude. So has the asymmetry between you and the
 party that holds it.
 
-Cortex Protocol does not propose that data collection should stop,
+Likewise does not propose that data collection should stop,
 and it does not deny that there is real value in the systems being
 built on top of these records. It proposes something more specific:
 that the question of *who holds the canonical record of the user* —
@@ -269,7 +269,7 @@ issues a UCAN scoped to the retailer's node with caveats:
 - sanitisation rules that strip descriptive content fields,
 - a time-range that auto-expires the delegation in twelve months.
 
-The retailer deploys a Cortex Protocol node — same wire protocol,
+The retailer deploys a Likewise node — same wire protocol,
 same op log, same authority machinery — and that node
 synchronises only the slice of the user's log this delegation
 admits. The node materialises a tiny knowledge graph: possibly
@@ -372,7 +372,11 @@ If you are a researcher: the protocol is licensed CC-BY-4.0. Cite
 it, fork it, write a better version. We would rather lose to a
 better protocol than win with a worse one.
 
-If you are a user: there is one reference implementation today. It
-runs on macOS and iOS. There will be more. Owning what the system
-says about you is not a luxury feature; it is the precondition for
-any of this being something done *for* you instead of *to* you.
+If you are a user: there is no public implementation you can run
+today. The protocol's first reference implementation, Cortex, is
+in private development and not yet released. The point of
+publishing the specification before the implementation is to
+ensure the standard — and the property it gives you, of *owning
+what the system says about you* — is not a luxury feature. It is
+the precondition for any of this being something done *for* you
+instead of *to* you. The implementation will follow.

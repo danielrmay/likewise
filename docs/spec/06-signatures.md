@@ -101,10 +101,14 @@ as the canonical procedure regardless of how the op is held in
 memory.
 
 A reference test vector for cross-implementation interop is
-expected to ship with v0.1.1; until it does, implementers
-SHOULD test against the reference implementation's produced
-signatures byte-for-byte before claiming Level 1 conformance
-(see [Implementations](../implementations.md)).
+expected to ship with v0.1.1, alongside the public release of
+the Cortex reference implementation. Until both exist,
+implementers cannot fully validate signature canonicalisation
+against an authoritative source; the procedure in this section
+and the field-ordering rules in
+[Wire Format](03-wire-format.md) are what to follow in the
+meantime. See [Implementations](../implementations.md) for
+status.
 
 ## 6. Sanitised operations
 

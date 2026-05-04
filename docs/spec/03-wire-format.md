@@ -198,7 +198,7 @@ canonically per Section 1, and its hash is the BLAKE3 of those
 bytes.
 
 The mesh-rules hash is exchanged on every sync exchange via the
-`X-Cortex-Mesh-Rules-Hash` HTTP header (see [Sync](04-sync.md))
+`X-Likewise-Mesh-Rules-Hash` HTTP header (see [Sync](04-sync.md))
 to detect rule drift between peers.
 
 ## 11. Header conventions
@@ -207,13 +207,13 @@ When operations are exchanged over HTTP, the following headers
 have normative meaning:
 
 - `Content-Type: application/octet-stream` for postcard bodies.
-- `X-Cortex-Next-Frontier: <base64url>` — set by a server on
+- `X-Likewise-Next-Frontier: <base64url>` — set by a server on
   successful pull responses; tells the client what frontier to
   send next.
-- `X-Cortex-Mesh-Rules-Hash: <hex>` — set by both sides on every
+- `X-Likewise-Mesh-Rules-Hash: <hex>` — set by both sides on every
   request and response; mismatch triggers the handshake-pause
   behaviour specified in [Sync](04-sync.md).
 
 Implementations MAY define additional headers for diagnostics,
-provided they do not begin with `X-Cortex-` (which is reserved
+provided they do not begin with `X-Likewise-` (which is reserved
 for protocol-defined headers).

@@ -1,7 +1,7 @@
 # Operations
 
 This chapter enumerates the operation variants defined for v0.1.
-Every state change in a Cortex Protocol mesh is one of these
+Every state change in a Likewise mesh is one of these
 variants. The wire encoding of an operation is specified in
 [Wire Format](03-wire-format.md); this chapter describes payloads
 and their semantics.
@@ -301,7 +301,7 @@ Artefacts are generic machine-produced byproducts of derivation:
 embeddings, transcripts, OCR text, and the inference snapshots
 that record model calls. The artefact mechanism is substrate;
 specific artefact types layered on top of it (notably
-`cortex.inference.snapshot`, used by [Part 2](09-mesh-coordination.md))
+`likewise.inference.snapshot`, used by [Part 2](09-mesh-coordination.md))
 inherit lifecycle and storage from this section.
 
 ### 8.1 CreateArtifact
@@ -309,7 +309,7 @@ inherit lifecycle and storage from this section.
 | Field | Purpose |
 |-------|---------|
 | `artifact_id` | An `ArtifactId`. |
-| `artifact_type` | Short identifier (`"image_embedding"`, `"ocr_text"`, `"transcript"`, `"cortex.inference.snapshot"`, ...). |
+| `artifact_type` | Short identifier (`"image_embedding"`, `"ocr_text"`, `"transcript"`, `"likewise.inference.snapshot"`, ...). |
 | `source_job` | Optional link to the producing job. |
 | `inputs_used` | Evidence inputs. |
 | `content_hash` | BLAKE3 of the artefact content. |
@@ -318,7 +318,7 @@ inherit lifecycle and storage from this section.
 | `size_bytes` | Content size. |
 | `ttl_ms` | Optional time-to-live, after which the artefact is eligible for eviction. |
 
-The `cortex.inference.snapshot` artifact type is specified in
+The `likewise.inference.snapshot` artifact type is specified in
 detail in [Inference Audit](13-inference-audit.md).
 
 ### 8.2 EvictArtifact

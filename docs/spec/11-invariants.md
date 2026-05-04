@@ -215,8 +215,10 @@ condition the protocol exists to prevent.
 
 A v0.1 conformance test consists of demonstrating that each
 invariant holds under a battery of concrete operations and
-sequences. The reference implementation's seven scenarios
-(see [Implementations](../implementations.md)) collectively
-cover I-1 through I-10; an alternative implementation
-demonstrating the same coverage on its own scenario harness is
-the path to "behaviourally conformant for v0.1."
+sequences. The seven scenarios planned to ship with the Cortex
+reference implementation (see
+[Implementations](../implementations.md)) are intended to
+collectively cover I-1 through I-10. Until those scenarios are
+public, the path to "behaviourally conformant for v0.1" is to
+construct equivalent coverage from this chapter's invariants
+directly.

@@ -174,7 +174,7 @@ the same way the rest of the protocol is. See
 A vector clock would carry a logical counter per author and let
 two ops be partially ordered. The HLC is strictly less
 expressive: it produces a total order, breaking concurrency ties
-arbitrarily by `node`. This is acceptable for Cortex Protocol
+arbitrarily by `node`. This is acceptable for Likewise
 because:
 
 - The protocol's merge semantics are last-write-wins by `OpId`
@@ -189,5 +189,5 @@ because:
 The cost is that the protocol is not a CRDT in the strict sense
 — two nodes with the same set of operations agree on order
 regardless of how they observed them, but they don't have richer
-concurrency information to inspect. For Cortex Protocol's
+concurrency information to inspect. For Likewise's
 domain — a single user's mesh — that cost is the right trade.

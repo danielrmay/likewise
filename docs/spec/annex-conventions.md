@@ -207,11 +207,11 @@ particular shape of *user-facing application*: narratives,
 recommendations, and a ranking-for-display surface. Those shapes
 are useful and the reference implementation provides them, but
 they are not *constitutive of the protocol*. An implementation
-without them is still a Cortex Protocol implementation; it is
+without them is still a Likewise implementation; it is
 just one that has chosen to surface the substrate differently.
 
 The org-as-peer scenario is the cleanest example. A retailer
-running a Cortex Protocol node holds a scoped delegation to a
+running a Likewise node holds a scoped delegation to a
 user's grocery-rhythm claim. The retailer's node does not
 surface anything to the user — it consumes a slice of state to
 inform its own systems. Episodes, suggested actions, and salience
