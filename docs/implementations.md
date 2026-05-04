@@ -74,7 +74,7 @@ the reference implementation is public.
 There are no public implementations of any kind at the time of
 writing. When implementations exist, this page will list them. To
 submit one, see
-[Contributing](https://github.com/danielmay/likewise/blob/main/CONTRIBUTING.md).
+[Contributing](https://github.com/danielrmay/likewise/blob/main/CONTRIBUTING.md).
 
 (Or — open an issue, paste a link to your implementation and a
 brief description of what it covers, and we will add it.)

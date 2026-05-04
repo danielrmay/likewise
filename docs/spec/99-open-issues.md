@@ -250,7 +250,7 @@ it; do not author claims with non-vocabulary predicates.
 
 Each open issue here is a candidate for revision. To propose a
 direction, open an issue on the specification repository (see
-[Contributing](https://github.com/danielmay/likewise/blob/main/CONTRIBUTING.md))
+[Contributing](https://github.com/danielrmay/likewise/blob/main/CONTRIBUTING.md))
 and reference the OI number above. Substantive changes are
 expected to land in v0.2 (additive minor) or v1.0
 (backwards-incompatible major) depending on scope.

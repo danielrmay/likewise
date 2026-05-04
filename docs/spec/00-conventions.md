@@ -130,7 +130,7 @@ ambiguities. Until then, file an issue.
 
 When citing this specification, use the form:
 
-> Likewise, version 0.1. <https://danielmay.github.io/likewise/>
+> Likewise, version 0.1. <https://getlikewise.ai/spec/>
 
 The protocol is licensed CC-BY-4.0 (see `LICENSE` at the repository
 root). Attribution is required.
