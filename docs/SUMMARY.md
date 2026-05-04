@@ -26,7 +26,8 @@
 
 # Part 2 — The inference pipeline
 
-- [Mesh Coordination & Inference](spec/09-mesh-coordination.md)
+- [Mesh Coordination](spec/09-mesh-coordination.md)
+- [Inference Audit](spec/13-inference-audit.md)
 
 # Annex — Application conventions
 

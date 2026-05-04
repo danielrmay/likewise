@@ -4,7 +4,7 @@ This chapter specifies the lifecycle state machines for the
 substrate record types whose transitions are non-trivial:
 claims, jobs, and node registrations. The job FSM was already
 specified in
-[Mesh Coordination & Inference](09-mesh-coordination.md#2-the-job-state-machine);
+[Mesh Coordination](09-mesh-coordination.md#2-the-job-state-machine);
 this chapter restates it for completeness.
 
 The Episode and Suggested-action FSMs used by the reference

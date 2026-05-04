@@ -46,22 +46,17 @@ are believed and whether the user has confirmed them. Claims have
 explicit confidence and explicit provenance: every claim links back
 through the operations that derived it to the evidence at the bottom.
 
-**Episode operations** record clusters of claims and evidence that
-form a meaningful unit — a trip, a project, a relationship arc, a
-day. Episodes are how the system surfaces narratives instead of
-isolated facts.
-
-**Suggested-action operations** record proposals the system makes to
-the user: "message Sarah," "review Friday's calendar," "stop tracking
-that goal." Suggested actions have their own lifecycle: proposed,
-shown, acted on, dismissed. They are the system's recommendations,
-made visible and refutable like everything else.
-
 **User-assertion operations** record what the user themselves has
 said: "yes, that's right," "no, refute that," "merge those two."
 User assertions take precedence over derived claims. They are the
 mechanism by which the user is the final authority on facts about
 themselves.
+
+**Artifact operations** record machine-produced byproducts of
+derivation: embeddings, transcripts, OCR text, and the
+inference-snapshot artefacts that record model calls. Artefacts
+ride the same op-log machinery as everything else, with a TTL and
+eviction lifecycle for storage management.
 
 **Job and lease operations** record work the mesh has scheduled,
 claimed, completed, or yielded — for example, "this server should
@@ -77,11 +72,21 @@ delegations, rooted at the user.
 does what* in the mesh: which node coordinates derivation, which
 kinds of jobs route to which node.
 
-The full taxonomy is in [Operations](spec/02-operations.md). For now
-the important point is: every state change is one of these
-operations, every operation is signed by its author, every operation
-is timestamped with a hybrid logical clock so causal order is total
-across the mesh.
+Two further op categories — **Episode operations**, which record
+narrative clusters of evidence and claims, and
+**Suggested-action operations**, which record recommendations the
+system surfaces to a user — are *application-layer conventions*
+used by the reference implementation, not part of the substrate
+proper. They are documented in
+[Annex: Application Conventions](spec/annex-conventions.md). A
+node that does not surface records to a user — for example, an
+organisation's node — has no need to emit them.
+
+The full substrate taxonomy is in
+[Operations](spec/02-operations.md). For now the important point
+is: every state change is one of these operations, every operation
+is signed by its author, every operation is timestamped with a
+hybrid logical clock so causal order is total across the mesh.
 
 ## What you read from
 
@@ -91,10 +96,8 @@ contact. Implementations don't. They maintain a small set of
 projections — materialized read views — that an op-application
 function keeps in sync with the log.
 
-The protocol distinguishes four projections by purpose:
+The protocol distinguishes three substrate projections by purpose:
 
-- A small, in-memory, ranking-oriented view used to decide what's
-  salient *now*.
 - A larger, in-memory, model-prompt-oriented view used to assemble
   context windows for inference calls.
 - A durable, on-disk, lookup-oriented view used by the user
@@ -104,6 +107,13 @@ The protocol distinguishes four projections by purpose:
 Each projection consumes the log; none of them are canonical. Any of
 them can be discarded and rebuilt. The protocol specifies what each
 one must be able to answer; how an implementation builds it is open.
+
+A fourth projection — a small, in-memory, ranking-oriented view
+used to decide what's *salient now* — is an application-layer
+convention used by the reference implementation, not part of the
+substrate. It is documented in
+[Annex: Application Conventions §A.3](spec/annex-conventions.md#a3-salience-projection).
+A node that does not surface records to a user has no need for it.
 
 ## How nodes converge
 
@@ -160,17 +170,42 @@ the moment it was sent.
 
 ## How inference is audited
 
-When an implementation calls a model — to summarise a window, to
-draft a suggested action, to extract entities from a photo caption
-— the call itself is an operation. The retrieved context, the
-prompt, the model identity, the timing, and the output are all
-recorded as an *inference snapshot* artefact on the log.
+When a node operating under audit calls a model — to summarise a
+window, to draft a recommendation, to extract entities from a
+photo caption — the call itself becomes an operation. The
+retrieved context, the prompt, the model identity, the timing,
+and the output are all recorded as a `cortex.inference.snapshot`
+artefact on the log.
 
-The snapshot is referenced from any claim or suggested action the
-call produced. Asking "why did the system suggest I message Sarah
-today" follows the link from the suggested action to the snapshot
-to the inputs. There is no operation in the system that produces
-user-visible recommendations without leaving this trail.
+Audit is in force in two cases:
+
+- **The node is one of the user's own.** Any node operating
+  under the user's root delegation — the user's phone, their
+  laptop, a server they run at home — emits snapshots by
+  default. This is the case the reference implementation
+  satisfies and is what makes the user's personal mesh
+  auditable end-to-end.
+- **The user has required it of a delegated party.** A user
+  delegating to an organisation's node MAY attach an
+  `audit_inference: true` caveat, requiring that delegated
+  node to emit snapshots for inference performed against the
+  delegated data. The snapshots become themselves operations on
+  the log the user receives back.
+
+A delegated node operating *without* an audit caveat is not
+required to record its inference. What it does internally with
+the data the user authorised is governed by the delegation's
+other caveats, not by the audit invariant. This is a deliberate
+scope choice: the protocol's role is to let the user *decide*
+whether audit applies, not to mandate it for every party that
+ever processes a piece of the user's graph.
+
+When audit is in force, the snapshot is referenced from any
+record the call produced. Asking "why did the system suggest I
+message Sarah today" follows the link from the suggested action
+to the snapshot to the inputs. There is no operation produced
+under audit that produces a user-visible result without leaving
+this trail.
 
 Snapshots are themselves bounded — they have a TTL, they can be
 evicted, they can be tombstoned with the rest of an evidence

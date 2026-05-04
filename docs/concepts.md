@@ -190,22 +190,33 @@ the system believe X" is following the DAG backwards from the
 claim to its supporting ops to the evidence at the leaves. There
 is no narrative to consult — the trail is the trail.
 
-## Episodes and suggested actions
+## Episodes and suggested actions (application-layer)
+
+The reference implementation also defines two op types that
+exist purely to surface the substrate to a user. They are
+*application-layer conventions*, not part of the substrate
+proper, and live in
+[Annex: Application Conventions](spec/annex-conventions.md). A
+node that does not surface records to a user — for example, an
+organisation peer — has no need to emit them.
 
 An **episode** is a cluster of related evidence and claims with
 temporal bounds: a trip, a project, a relationship, a day worth
-remembering. Episodes are how the surface presents narrative
-instead of list. They have their own lifecycle — unseen, reviewed,
-confirmed, rejected — managed by user-assertion ops the same way
-claims are.
+remembering. Episodes are how the reference implementation
+presents narrative instead of list.
 
-A **suggested action** is a recommendation the system makes to the
-user: send this message, review this calendar, reconsider this
-goal. Suggested actions are first-class ops with their own status
-machine (proposed, shown, acted, dismissed) and their own
-provenance link to the inference call that produced them. They
-exist to make recommendations refutable — a user's "stop suggesting
-this" is itself an op that the inference pipeline must respect.
+A **suggested action** is a recommendation the system makes to
+the user: send this message, review this calendar, reconsider
+this goal. Suggested actions have their own lifecycle (proposed,
+shown, acted, dismissed) and their own provenance link to the
+inference call that produced them. They exist to make
+recommendations refutable — a user's "stop suggesting this" is
+itself an op that the inference pipeline must respect.
+
+Both are documented because the reference implementation emits
+them and other implementations may want to interoperate with
+applications that consume them. They are not, however, what
+makes a node Cortex-Protocol-conformant; the substrate is.
 
 ## Projections
 
@@ -214,12 +225,9 @@ Sarah" would require a fold over millions of ops. Implementations
 maintain projections: in-memory or on-disk views that an
 op-application function keeps in sync with the log on every write.
 
-The protocol distinguishes four projections by **purpose**, and the
-distinction is load-bearing:
+The protocol distinguishes three substrate projections by
+**purpose**, and the distinction is load-bearing:
 
-- A **salience** projection is small, in-memory, and shaped for
-  ranking what is important *now*. It is not a UI store; it is a
-  scoring substrate.
 - An **inference** projection is shaped for assembling a model
   context window. It is not a UI store; it is prompt furniture.
 - A **detail** projection is durable, on-disk, and shaped for the
@@ -228,6 +236,11 @@ distinction is load-bearing:
 - A **debug-graph** projection exists for inspection tooling. It
   contains the full graph of entities and claims and is generally
   not maintained at production load.
+
+A fourth projection — a **salience** projection used to rank
+what is important *now* — is an application-layer convention,
+not part of the substrate. The reference implementation provides
+one; alternatives are free to substitute or omit.
 
 The reason these are separate is that collapsing them produces a
 single fat object that is too slow for ranking, too lossy for UI,
@@ -324,17 +337,30 @@ scheduling a job requires `Schedule` on `Job`; claiming requires
 
 ## Inference auditing
 
-When an implementation calls a model, the call itself is an op.
-Specifically, an `InferenceSnapshot` artefact is written to the log
-recording the retrieved context (the evidence and claims fed into
-the prompt), the model identity, telemetry (latency, token counts,
-backend), and the output. Any claim or suggested action the call
-produced links back to the snapshot.
+When a node operating under audit calls a model, the call itself
+becomes an op. Specifically, a `cortex.inference.snapshot`
+artefact is written to the log recording the retrieved context
+(the evidence and claims fed into the prompt), the model
+identity, telemetry (latency, token counts, backend), and the
+output. Any claim or suggested action the call produced links
+back to the snapshot.
+
+Audit is in force in two cases: when the node is operating under
+the user's root delegation (a node the user runs themselves),
+and when the node is operating under a delegation whose
+`audit_inference` caveat the user has set to `true`. A delegated
+node operating without an audit caveat is not required by the
+protocol to record its inference; what it does internally is
+governed by the delegation's other caveats. The user retains the
+choice; the protocol enforces it when chosen.
 
 Snapshots are first-class artefacts and follow the same lifecycle:
 they have TTLs, they can be evicted, they can be tombstoned with
 their underlying evidence. While they exist, they are the
 authoritative answer to "why did the system say that."
+
+The full mechanism is specified in
+[Inference Audit](spec/13-inference-audit.md).
 
 ## The six rules in plain English
 

@@ -319,7 +319,7 @@ inherit lifecycle and storage from this section.
 | `ttl_ms` | Optional time-to-live, after which the artefact is eligible for eviction. |
 
 The `cortex.inference.snapshot` artifact type is specified in
-detail in [Mesh Coordination & Inference](09-mesh-coordination.md#11-inference-snapshots).
+detail in [Inference Audit](13-inference-audit.md).
 
 ### 8.2 EvictArtifact
 

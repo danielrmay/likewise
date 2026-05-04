@@ -212,7 +212,7 @@ authorised chain MUST cause the op to be rejected.
 
 Requires the delegated node to emit
 `cortex.inference.snapshot` artefacts (see
-[Mesh Coordination & Inference §11](09-mesh-coordination.md#11-inference-snapshots))
+[Inference Audit](13-inference-audit.md))
 for every model call performed against data covered by this
 delegation.
 

@@ -23,11 +23,32 @@ this order:
 4. **[Comparison](comparison.md)** — honest contrast with Solid, AT
    Protocol, Nostr, Iroh, the local-first manifesto, and UCAN.
 
-If you are implementing a compatible node, the normative specification
-begins at **[Conventions](spec/00-conventions.md)** and runs through
-[Open Issues](spec/99-open-issues.md). The high-level chapters above
-are non-normative; the spec chapters are normative and use RFC 2119
-keywords.
+If you are implementing a compatible node, the normative
+specification is organised into three parts:
+
+- **Part 1: The substrate** — chapters
+  [00 Conventions](spec/00-conventions.md) through
+  [12 State Machines](spec/12-fsms.md) (skipping chapter 09).
+  Sufficient for any conformant node, including organisation
+  peers consuming a scoped slice of a user's graph. If you are
+  building a substrate-only peer, this is everything you need.
+- **Part 2: The inference pipeline** —
+  [Mesh Coordination](spec/09-mesh-coordination.md) and
+  [Inference Audit](spec/13-inference-audit.md). Adds the
+  vocabulary by which nodes cooperate on a user's work and the
+  convention by which audited inference calls become recoverable
+  artefacts on the log. Required for nodes participating in
+  distributed work; substrate-only peers MAY ignore.
+- **Annex: Application conventions** —
+  [Episodes, Suggested Actions, Salience](spec/annex-conventions.md).
+  Non-normative. The reference implementation's choices for
+  surfacing the substrate to a user; alternative implementations
+  are free to substitute.
+
+After the three parts:
+[Open Issues](spec/99-open-issues.md) catalogues known
+cross-implementation hazards. The high-level chapters above are
+non-normative; the spec chapters use RFC 2119 keywords.
 
 If you are looking for an existing implementation, see
 **[Implementations](implementations.md)**.
