@@ -121,12 +121,13 @@ html {
 }
 
 .chapter li.chapter-item {
-  line-height: 1.5;
+  font-size: 0.85rem;
+  line-height: 1.45;
   margin: 0;
 }
 
 .chapter li.chapter-item a {
-  padding: 0.35rem 0.5rem;
+  padding: 0.3rem 0.5rem;
   border-radius: 0.4rem;
   transition: background-color 120ms ease, color 120ms ease;
 }
@@ -149,14 +150,14 @@ html {
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  font-size: 0.7rem;
-  padding: 1.25rem 0.5rem 0.5rem;
+  font-size: 0.72rem;
+  padding: 1.4rem 0.5rem 0.45rem;
 }
 
 /* Content typography */
 .content {
-  font-size: 1rem;
-  line-height: 1.65;
+  font-size: 1.0625rem;
+  line-height: 1.7;
 }
 
 .content main {
