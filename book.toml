@@ -1,0 +1,11 @@
+[book]
+title = "Cortex Protocol"
+description = "A protocol for decentralized personal knowledge graphs."
+authors = ["Daniel May"]
+language = "en"
+src = "docs"
+
+[output.html]
+default-theme = "navy"
+preferred-dark-theme = "navy"
+no-section-label = false
