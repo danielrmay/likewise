@@ -9,3 +9,4 @@ src = "docs"
 default-theme = "navy"
 preferred-dark-theme = "navy"
 no-section-label = false
+additional-css = ["theme/likewise.css"]

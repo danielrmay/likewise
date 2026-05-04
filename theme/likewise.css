@@ -1,0 +1,346 @@
+/*
+ * Likewise theme for mdBook.
+ * Matches the styling of getlikewise.ai (dark-only, purple accent).
+ */
+
+:root {
+  --likewise-bg-1: #07091a;
+  --likewise-bg-2: #0f1230;
+  --likewise-fg: #f4f3ff;
+  --likewise-fg-muted: rgb(244 243 255 / 0.65);
+  --likewise-fg-subtle: rgb(244 243 255 / 0.45);
+  --likewise-accent: #a78bfa;
+  --likewise-accent-strong: #7c5cff;
+  --likewise-border: rgb(244 243 255 / 0.18);
+  --likewise-border-subtle: rgb(244 243 255 / 0.08);
+  --likewise-surface: rgb(244 243 255 / 0.04);
+  --likewise-surface-strong: rgb(244 243 255 / 0.06);
+
+  --content-max-width: 760px;
+}
+
+/* Override mdbook's navy theme to be Likewise. */
+.navy {
+  --bg: var(--likewise-bg-1);
+  --fg: var(--likewise-fg);
+
+  --sidebar-bg: transparent;
+  --sidebar-fg: rgb(244 243 255 / 0.78);
+  --sidebar-non-existant: var(--likewise-fg-subtle);
+  --sidebar-active: var(--likewise-accent);
+  --sidebar-spacer: var(--likewise-border-subtle);
+
+  --scrollbar: rgb(244 243 255 / 0.2);
+
+  --icons: rgb(244 243 255 / 0.55);
+  --icons-hover: var(--likewise-accent);
+
+  --links: var(--likewise-accent);
+
+  --inline-code-color: #d6c7ff;
+
+  --theme-popup-bg: var(--likewise-bg-2);
+  --theme-popup-border: var(--likewise-border);
+  --theme-hover: var(--likewise-surface);
+
+  --quote-bg: rgb(167 139 250 / 0.06);
+  --quote-border: var(--likewise-accent);
+
+  --warning-border: #ff9966;
+
+  --table-border-color: var(--likewise-border);
+  --table-header-bg: var(--likewise-surface-strong);
+  --table-alternate-bg: var(--likewise-surface);
+
+  --searchbar-border-color: var(--likewise-border);
+  --searchbar-bg: var(--likewise-surface);
+  --searchbar-fg: var(--likewise-fg);
+  --searchbar-shadow-color: rgb(0 0 0 / 0.5);
+  --searchresults-header-fg: var(--likewise-fg-muted);
+  --searchresults-border-color: var(--likewise-border);
+  --searchresults-li-bg: var(--likewise-surface);
+  --search-mark-bg: var(--likewise-accent-strong);
+
+  --color-scheme: dark;
+}
+
+/* Page background uses the same gradient as getlikewise.ai. */
+html.navy,
+html.navy body {
+  background:
+    radial-gradient(1200px 600px at 12% 10%, #1a164d 0%, transparent 60%),
+    radial-gradient(900px 500px at 88% 90%, #2a1a3f 0%, transparent 55%),
+    linear-gradient(180deg, var(--likewise-bg-1) 0%, var(--likewise-bg-2) 100%);
+  background-attachment: fixed;
+  color: var(--likewise-fg);
+}
+
+html {
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-feature-settings: "ss01", "cv11";
+  line-height: 1.5;
+}
+
+/* Top menu bar — transparent, subtle bottom rule. */
+#menu-bar,
+#menu-bar.bordered,
+.menu-bar {
+  background: transparent;
+  border-bottom: 1px solid var(--likewise-border-subtle);
+}
+
+.menu-title {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--likewise-fg);
+}
+
+/* Sparkle in front of the book title, matching the marketing brand mark. */
+.menu-title::before {
+  content: "✦ ";
+  color: var(--likewise-accent);
+  font-weight: 400;
+}
+
+/* Hide the theme switcher — single dark theme. */
+#theme-toggle,
+.left-buttons #theme-toggle {
+  display: none !important;
+}
+
+/* Sidebar */
+.sidebar {
+  background: rgb(7 9 26 / 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-right: 1px solid var(--likewise-border-subtle);
+}
+
+.sidebar .sidebar-scrollbox {
+  padding: 1rem 1.25rem;
+}
+
+.chapter li.chapter-item {
+  line-height: 1.5;
+  margin: 0;
+}
+
+.chapter li.chapter-item a {
+  padding: 0.35rem 0.5rem;
+  border-radius: 0.4rem;
+  transition: background-color 120ms ease, color 120ms ease;
+}
+
+.chapter li.chapter-item a:hover {
+  background: var(--likewise-surface);
+  color: var(--likewise-fg);
+  text-decoration: none;
+}
+
+.chapter li.chapter-item a.active {
+  background: rgb(167 139 250 / 0.12);
+  color: var(--likewise-accent);
+  font-weight: 600;
+}
+
+/* Section headings inside the sidebar (Part 1, Part 2, Annex, etc.) */
+.chapter li.part-title {
+  color: var(--likewise-fg-subtle);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  padding: 1.25rem 0.5rem 0.5rem;
+}
+
+/* Content typography */
+.content {
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.content main {
+  padding: 1rem 0 4rem;
+}
+
+.content h1,
+.content h2,
+.content h3,
+.content h4,
+.content h5 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--likewise-fg);
+}
+
+.content h1 {
+  font-size: clamp(2rem, 4vw, 2.6rem);
+  line-height: 1.1;
+  margin: 0 0 1.5rem;
+}
+
+.content h2 {
+  font-size: clamp(1.4rem, 2.6vw, 1.75rem);
+  line-height: 1.2;
+  margin: 2.75rem 0 1rem;
+}
+
+.content h3 {
+  font-size: clamp(1.15rem, 1.8vw, 1.3rem);
+  margin: 2rem 0 0.75rem;
+}
+
+.content h4 {
+  font-size: 1.05rem;
+  margin: 1.5rem 0 0.5rem;
+}
+
+/* Slight tightening on paragraphs */
+.content p {
+  margin: 0 0 1rem;
+}
+
+/* Links — accent purple, dotted underline like the marketing site's CTA */
+.content a:link,
+.content a:visited {
+  color: var(--likewise-accent);
+  text-decoration: none;
+  border-bottom: 1px dashed rgb(167 139 250 / 0.4);
+  padding-bottom: 1px;
+  transition: color 200ms ease, border-color 200ms ease;
+}
+
+.content a:hover {
+  color: var(--likewise-accent);
+  border-bottom-color: var(--likewise-accent);
+}
+
+/* Header anchor links — keep them subtle */
+.content a.header {
+  border-bottom: none;
+  color: inherit;
+}
+.content a.header:hover {
+  color: var(--likewise-accent);
+}
+
+/* Inline code */
+.content code {
+  background: var(--likewise-surface);
+  color: var(--inline-code-color);
+  border: 1px solid var(--likewise-border-subtle);
+  padding: 0.1em 0.4em;
+  border-radius: 0.35em;
+  font-size: 0.88em;
+}
+
+/* Code blocks */
+.content pre {
+  background: rgb(7 9 26 / 0.6);
+  border: 1px solid var(--likewise-border-subtle);
+  border-radius: 0.6rem;
+  padding: 1rem;
+}
+
+.content pre code {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  font-size: 0.9em;
+}
+
+/* Tables */
+.content table {
+  border-collapse: collapse;
+  border: 1px solid var(--likewise-border);
+  border-radius: 0.6rem;
+  overflow: hidden;
+  margin: 1.5rem 0;
+}
+
+.content table th,
+.content table td {
+  border: 1px solid var(--likewise-border-subtle);
+  padding: 0.6rem 0.85rem;
+}
+
+.content table th {
+  background: var(--likewise-surface-strong);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.content table tr:nth-child(even) td {
+  background: var(--likewise-surface);
+}
+
+/* Blockquotes — used for the "Part 2 of the spec" callout boxes */
+.content blockquote {
+  border-left: 3px solid var(--likewise-accent);
+  background: rgb(167 139 250 / 0.06);
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+  border-radius: 0 0.5rem 0.5rem 0;
+  color: var(--likewise-fg);
+}
+
+.content blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+/* Horizontal rules — subtle */
+.content hr {
+  border: 0;
+  border-top: 1px solid var(--likewise-border-subtle);
+  margin: 2.5rem 0;
+}
+
+/* Lists */
+.content ul,
+.content ol {
+  padding-left: 1.5rem;
+}
+
+.content li {
+  margin-bottom: 0.35rem;
+}
+
+/* Search bar */
+#searchbar {
+  background: var(--likewise-surface);
+  border: 1px solid var(--likewise-border);
+  border-radius: 0.5rem;
+}
+
+#searchbar:focus,
+#searchbar:focus-visible {
+  outline: 2px solid var(--likewise-accent);
+  outline-offset: 2px;
+  border-color: transparent;
+}
+
+/* "Print" / nav buttons in the menu bar */
+.icon-button {
+  color: var(--likewise-fg-muted);
+}
+
+.icon-button:hover {
+  color: var(--likewise-accent);
+  background: var(--likewise-surface);
+}
+
+/* Page navigation arrows (prev/next) */
+.nav-chapters {
+  color: var(--likewise-fg-subtle);
+  transition: color 150ms ease;
+}
+
+.nav-chapters:hover {
+  color: var(--likewise-accent);
+}
+
+/* Mobile responsive tweaks */
+@media (max-width: 760px) {
+  .content h1 { margin-bottom: 1.25rem; }
+  .menu-title::before { content: "✦ "; }
+}
