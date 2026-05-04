@@ -106,7 +106,7 @@ restrictive as a parent caveat if and only if every operation
 that satisfies the child's caveat would also satisfy the
 parent's.
 
-The v0.1 caveat vocabulary comprises five fields. Future minor
+The v0.1 caveat vocabulary comprises six fields. Future minor
 versions MAY add caveats; an unknown caveat field MUST be
 treated as an absolute restriction (a delegation carrying an
 unknown caveat is admitted, but no operation can satisfy the
@@ -207,6 +207,39 @@ A receiver MUST verify that the marker's claimed sanitise
 chain is admitted by some delegation the sender holds reaching
 back to the user. A marker that does not match an
 authorised chain MUST cause the op to be rejected.
+
+### 5.6 `audit_inference`
+
+Requires the delegated node to emit
+`cortex.inference.snapshot` artefacts (see
+[Mesh Coordination & Inference §11](09-mesh-coordination.md#11-inference-snapshots))
+for every model call performed against data covered by this
+delegation.
+
+| Form | Meaning |
+|------|---------|
+| absent or `false` | No requirement. The delegated node MAY emit snapshots for its own bookkeeping but is not obliged to. |
+| `true` | The delegated node MUST emit a `cortex.inference.snapshot` artefact for every inference call performed against ops admitted by this delegation. |
+
+Narrowing: a child caveat with `audit_inference: true` is
+admissible under any parent (the parent did not require audit;
+the child voluntarily promises it). A child caveat with
+`audit_inference: false` is admissible only if the parent also
+permits audit-free operation. In other words, audit
+requirements strengthen down the chain; they cannot be
+relaxed.
+
+This caveat is the mechanism by which the user requires
+auditable inference from a delegated party — for example, an
+organisation running a Cortex Protocol node under a scoped
+delegation. When a delegation carries `audit_inference: true`,
+the snapshots that the delegated node emits become themselves
+operations on the user's log (subject to the user's read
+capability on the artifact ops the delegated node produces),
+completing the audit loop across the delegation boundary.
+
+The corresponding invariant is specified in
+[Invariants §I-9](11-invariants.md#i-9-inference-is-recorded-when-audit-is-in-force).
 
 ## 6. Revocation
 

@@ -1,11 +1,15 @@
 # State Machines
 
 This chapter specifies the lifecycle state machines for the
-record types whose transitions are non-trivial: claims,
-episodes, suggested actions, jobs, and node registrations. The
-job FSM was already specified in
-[Mesh Coordination](09-mesh-coordination.md#2-the-job-state-machine);
+substrate record types whose transitions are non-trivial:
+claims, jobs, and node registrations. The job FSM was already
+specified in
+[Mesh Coordination & Inference](09-mesh-coordination.md#2-the-job-state-machine);
 this chapter restates it for completeness.
+
+The Episode and Suggested-action FSMs used by the reference
+implementation are application-layer conventions and live in
+[Annex: Application Conventions](annex-conventions.md).
 
 For each FSM:
 
@@ -76,69 +80,7 @@ constraints apply:
 - A `UserAssert(Reject)` op MAY override frozen state — the
   user retains the authority to change their mind.
 
-## 2. Episode FSM
-
-### 2.1 States
-
-| State | Meaning |
-|-------|---------|
-| `Active` | The episode is current; surfaceable. |
-| `Stale` | A supporting record was invalidated; episode no longer reflects reality. |
-| `Archived` | The user has set the episode aside. |
-
-### 2.2 Transitions
-
-| From | To | Cause |
-|------|----|----|
-| (creation) | `Active` | `CreateEpisode` |
-| `Active` | `Stale` | derivation cascade or `UpdateEpisode { status: Stale }` |
-| `Active` or `Stale` | `Archived` | `UpdateEpisode { status: Archived }` |
-| `Active` or `Stale` | (deleted) | `TombstoneEvidence` cascading to all supporting evidence |
-
-A `Confirm` user assertion targeting an episode MAY freeze it
-analogously to claim freezing (Section 1.4); v0.1 implementations
-are not required to support episode freezing but SHOULD record
-the user assertion for future use.
-
-A `Reject` user assertion targeting an episode transitions it
-to `Stale` and triggers the cascade.
-
-## 3. Suggested-action FSM
-
-### 3.1 States
-
-| State | Meaning |
-|-------|---------|
-| `Proposed` | The system has surfaced the suggestion; the user has not yet acted. |
-| `Approved` | The user accepted the suggestion. |
-| `Executing` | A handler is performing the action. |
-| `Completed` | The action finished successfully. |
-| `Failed` | A handler reported failure. |
-| `Rejected` | The user explicitly rejected the suggestion. |
-| `Dismissed` | The user dismissed the suggestion (without rejecting it; it MAY resurface). |
-| `Expired` | A time-window for relevance passed without user action. |
-
-### 3.2 Transitions
-
-| From | To | Cause |
-|------|----|----|
-| (creation) | `Proposed` | `CreateSuggestedAction` |
-| `Proposed` | `Approved` | `UpdateActionStatus` (user-authored) |
-| `Proposed` | `Rejected` | `UpdateActionStatus(Rejected)` (user-authored) |
-| `Proposed` | `Dismissed` | `UpdateActionStatus(Dismissed)` (user-authored) |
-| `Proposed` | `Expired` | `UpdateActionStatus(Expired)` (system-authored, when relevance window passes) |
-| `Approved` | `Executing` | `UpdateActionStatus(Executing)` |
-| `Executing` | `Completed` | `UpdateActionStatus(Completed)` with `execution_result` |
-| `Executing` | `Failed` | `UpdateActionStatus(Failed)` with `execution_result` |
-| `Dismissed` | `Proposed` | `UpdateActionStatus(Proposed)` (the system MAY resurface a dismissed action with new evidence) |
-
-A `Reject` user assertion on a suggested action MUST move it to
-`Rejected` and SHOULD prevent the system from re-proposing the
-same action shape; the implementation SHOULD record this in
-the lane-rule mechanism (per
-[Operations](02-operations.md#71-userassert)).
-
-## 4. Job FSM
+## 2. Job FSM
 
 Restated from [Mesh Coordination](09-mesh-coordination.md#2-the-job-state-machine)
 for completeness.
@@ -158,13 +100,13 @@ Transitions:
 
 `Completed` is terminal.
 
-## 5. Node-registration FSM
+## 3. Node-registration FSM
 
 A node's lifecycle in a mesh is governed by the UCAN delegation
 graph rather than by an explicit state field, but the
 observable states are useful to name.
 
-### 5.1 States
+### 3.1 States
 
 | State | Meaning |
 |-------|---------|
@@ -173,7 +115,7 @@ observable states are useful to name.
 | `Suspended` | A delegation in the node's chain is no longer in force (typically due to a parent's `nbf`/`exp` window) but is not revoked. |
 | `Revoked` | The node's authority has been retired by `RevokeUcan` of a parent in its chain. |
 
-### 5.2 Transitions
+### 3.2 Transitions
 
 | From | To | Cause |
 |------|----|----|
@@ -198,7 +140,7 @@ A node in `Revoked` MUST have its previously-applied ops
 re-evaluated per
 [Capabilities](08-capabilities.md#53-on-transitive-revocation).
 
-## 6. Status precedence under user assertions
+## 4. Status precedence under user assertions
 
 Across all FSMs in this chapter, **user assertions take
 precedence over machine-derived state.** Concretely:

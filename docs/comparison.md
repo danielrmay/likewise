@@ -319,18 +319,26 @@ turn out to be that one.
   a generic store. Lexicons (AT) and predicates (Solid/RDF) get
   close, but they are schema systems, not lifecycle models with
   derivation DAGs and tombstone-cascade semantics.
-- **Inference auditability as a first-class op type.** Every model
-  call lands as an `InferenceSnapshot` artefact recording retrieved
-  context, model identity, telemetry, and output. Suggested actions
-  and derived claims link back. None of the surveyed protocols
-  treat machine-derived state as a thing that needs provenance back
-  to evidence; this is the single most distinctive thing the
-  protocol commits to.
-- **Domain-extended UCAN caveats** — `source_types`, `predicates`,
-  `kind_prefix`, `time_range`, and the `sanitize` directives — that
-  pre-filter and field-redact at the sync boundary. UCAN itself is
-  a building block; the caveat vocabulary is Cortex Protocol's
-  contribution.
+- **Inference auditability as a separable layer.** The protocol
+  defines a `cortex.inference.snapshot` artefact type and a
+  conditional invariant that requires snapshots from any node
+  operating under the user's root delegation, or under a
+  delegation whose `audit_inference` caveat the user has set. Every
+  audited model call lands as a snapshot recording retrieved
+  context, model identity, telemetry, and output; derived records
+  link back. None of the surveyed protocols treat machine-derived
+  state as a thing that needs provenance back to evidence. The
+  audit pipeline is a *separable layer* (Part 2 of the
+  specification), so a substrate-only peer — for example, an
+  organisation node receiving a scoped slice of the user's graph —
+  is conformant without participating in audit unless the user
+  required it via caveat.
+- **Domain-extended UCAN caveats including
+  `audit_inference`** — the v0.1 caveat vocabulary
+  (`source_types`, `predicates`, `kind_prefix`, `time_range`,
+  `sanitize`, `audit_inference`) covers both data scoping and
+  behavioural requirements. UCAN itself is the building block;
+  the caveat vocabulary is Cortex Protocol's contribution.
 - **Work routing in the same op log** (`ScheduleJob`, `ClaimWork`,
   `RouteKind`) so heterogeneous nodes — phone without inference,
   server with GPU — cooperate via the same delegation graph that
@@ -339,6 +347,20 @@ turn out to be that one.
 - **An opinionated read-path projection split** (salience,
   inference, detail, debug-graph) tuned for on-device LLM prompting,
   UI reads, and ranking from a single log.
+- **A substrate for consensual commercial data sharing.** The
+  capabilities, caveats, and sanitisation rules that secure the
+  user's own mesh generalise directly to delegations to
+  *organisations* the user invites in. A retailer's node, a
+  clinic's node, an employer's scheduling assistant — each can run
+  a conformant peer with a scope-restricted view of the user's
+  graph, receiving only the claims the user authorised, with
+  sanitisation enforced at the wire boundary. None of the projects
+  above target this user-org-consent shape: they are either
+  personal-only (Iroh, local-first, Automerge) or
+  public-broadcast (AT, Nostr), with Solid the closest in
+  spirit but lacking the caveat + sanitisation vocabulary that
+  makes scoped commercial sharing tractable in practice. See
+  [Motivation: Consensual data partnership](motivation.md#consensual-data-partnership).
 
 ### What Cortex Protocol doesn't do that one of these does well
 

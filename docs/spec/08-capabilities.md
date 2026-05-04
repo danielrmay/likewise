@@ -91,7 +91,7 @@ non-root delegation MUST have any `RouteKind` or
 
 ## 4. Caveat applicability
 
-The five caveats specified in
+The six caveats specified in
 [UCAN and Caveats](07-ucan-and-caveats.md) apply to capabilities
 as follows:
 
@@ -102,6 +102,7 @@ as follows:
 | `kind_prefix` | Capabilities on `Job` | Restricts which job kinds the holder may schedule, claim, or complete. |
 | `time_range` | Any capability | Restricts the timestamp range of operations the capability admits. |
 | `sanitize` | Any capability with `Read` | Specifies sanitisation applied to operations crossing the delegation outbound. |
+| `audit_inference` | Capabilities on `Job` (`Claim` or `Complete`), `Claim` (`Write`), `Artifact` (`Write`), or `Ops` | When `true`, requires the delegated node to emit `cortex.inference.snapshot` artefacts for every model call performed against data covered by this delegation. |
 
 A caveat applied to a resource it does not narrow has no
 effect: a `kind_prefix` on a capability over `Evidence` does

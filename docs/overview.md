@@ -129,6 +129,16 @@ truncate body text — have their signatures cleared at sanitisation
 time, which makes the change visible to the recipient as a
 deliberate intent rather than a corruption.
 
+A node does not have to be one of the user's own devices. The same
+delegation machinery scopes what an *invited third party* — an
+organisation, a clinic, a service the user has chosen to share with
+— can see. A retailer running a Cortex Protocol node receives only
+the claims the user delegated to them, sanitised per the caveats
+the user attached. The same wire format that synchronises a phone
+and a laptop also synchronises a personal mesh and a partner the
+user has explicitly opted in. See
+[Motivation: Consensual data partnership](motivation.md#consensual-data-partnership).
+
 ## How permissions work
 
 Every node has a key. Every operation is signed by a node key. Every
@@ -177,15 +187,23 @@ the user yet.
 Overnight, the user's laptop — which has more capable hardware —
 claims the synthesise job for yesterday. It pulls the relevant slice
 of the log, assembles a model context, makes one inference call, and
-writes the resulting episode and suggested actions back as
-operations. The inference snapshot is also written.
+writes the result back as operations. Because the laptop is operating
+under the user's root delegation, audit is in force by default; the
+inference snapshot is also written. The reference implementation
+materialises the result as an episode and a suggested action — both
+*application-layer conventions*, not part of the substrate proper —
+so a card can be rendered later. A different implementation might
+materialise the same result a different way; the substrate-level
+claims and the snapshot are what the protocol guarantees.
 
 The phone receives the new operations on next sync. Its salience
-projection rebuilds. The next time the user opens the app, a card
-appears: "Coffee with Mike — last seen at the same shop two weeks
-ago, your usual rhythm is monthly." The user taps "show why." The
-app follows the suggested-action's link to its snapshot, which lists
-the evidence, the claims, the model used, and the literal prompt.
+projection (also an application-layer convention used by the
+reference implementation) rebuilds. The next time the user opens the
+app, a card appears: "Coffee with Mike — last seen at the same shop
+two weeks ago, your usual rhythm is monthly." The user taps "show
+why." The app follows the suggested-action's link to its snapshot,
+which lists the evidence, the claims, the model used, and the literal
+prompt.
 
 The next day the user refutes one of the claims — the system
 assumed Mike worked nearby, but he doesn't. That refutation is a

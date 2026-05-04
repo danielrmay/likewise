@@ -35,43 +35,24 @@ This invariant is the load-bearing reason that the protocol can
 guarantee the user owns their derived data: nothing the system
 believes about the user lives outside the log.
 
-## 2. The four projections by purpose
+## 2. The three substrate projections
 
-The protocol defines four projections **by the queries they
+The protocol defines three projections **by the queries they
 answer**, not by their storage strategy. An implementation MUST
-provide each of the four query surfaces; it MAY combine the
+provide each of the three query surfaces; it MAY combine the
 underlying storage as it sees fit, provided each surface
 remains queryable as specified.
 
-### 2.1 Salience projection
+A fourth projection, *salience*, is used by the reference
+implementation to surface records to a user. It is an
+application-layer convention rather than substrate, and is
+specified in
+[Annex: Application Conventions §A.3](annex-conventions.md#a3-salience-projection).
+A node that does not surface records to a user — for example,
+an organisation's node consuming a scoped slice — has no need
+to implement it.
 
-**Purpose.** Rank what is currently important to the user.
-
-**Required queries.**
-
-- *Top-N by salience.* Given a salience cap N and a time window,
-  return the top N entities/episodes/suggested-actions ranked
-  by a salience score the implementation defines.
-- *Salience for an id.* Given an entity, episode, or suggested
-  action, return its current salience score.
-
-**Constraints.**
-
-- The salience projection MUST be in-memory (or fast enough to
-  the user that it functionally is).
-- It MUST be small enough that an implementation can rebuild it
-  from the log within seconds at the scale of a single user's
-  data.
-- It MUST NOT be used as a UI store: queries over salience
-  return rankings, not display payloads. Display payloads come
-  from the detail projection (Section 2.3).
-
-The protocol does not specify the salience score's algorithm.
-Implementations are free to vary it; they are not free to fold
-the surface into the inference projection or the detail
-projection.
-
-### 2.2 Inference projection
+### 2.1 Inference projection
 
 **Purpose.** Assemble a model context window for an inference
 call.
@@ -101,7 +82,7 @@ pipeline. The projection's responsibility is to provide
 *correct context*; the pipeline's responsibility is to assemble
 it.
 
-### 2.3 Detail projection
+### 2.2 Detail projection
 
 **Purpose.** Answer per-id user-interface lookups.
 
@@ -134,7 +115,7 @@ it.
 The detail projection is the only projection a v0.1 conformant
 node MUST persist across restarts.
 
-### 2.4 Debug-graph projection
+### 2.3 Debug-graph projection
 
 **Purpose.** Full-graph inspection for tooling and verification.
 
@@ -161,16 +142,20 @@ capability for a system the user is asked to trust.
 
 An implementation MAY combine the underlying storage of
 multiple projections — for example, keeping a single SQLite
-file with separate tables for the detail and salience
+file with separate tables for the detail and inference
 projections — but it MUST NOT fold the **read interfaces** such
 that one projection's query semantics contaminate another.
 
 In particular:
 
-- A salience query MUST NOT return UI-shaped detail records.
-- An inference-context query MUST NOT return ranking scores.
-- A detail-by-id query MUST NOT silently exclude records the
-  salience projection has demoted.
+- An inference-context query MUST NOT return UI-shaped detail
+  records.
+- A detail-by-id query MUST NOT carry inference-window
+  framing tags as if they were claim content.
+- An implementation that adds an application-layer projection
+  (such as the salience projection in
+  [Annex §A.3](annex-conventions.md#a3-salience-projection))
+  MUST NOT fold its read interface into a substrate projection.
 
 The reason for the rule is observable: collapsing produces a
 single fat object that is too slow for ranking, too lossy for
@@ -186,7 +171,8 @@ operation* that:
 1. Drops or otherwise invalidates the current state of all
    projections.
 2. Replays the entire op log in HLC total order, applying each
-   op to all four projections.
+   op to all three substrate projections (and to any
+   application-layer projections the implementation maintains).
 3. Reaches a steady state in which subsequent op application
    continues normally.
 
@@ -195,18 +181,22 @@ and the verification mechanism for new implementations
 (rebuilding from a known log and comparing the result to the
 reference implementation's output is the strongest test of
 projection correctness). Rebuild SHOULD be deterministic up
-to algorithm-internal choices (an implementation's salience
-score may differ from another's, but the same implementation
-must produce the same projection from the same log every
-time).
+to algorithm-internal choices: the same implementation must
+produce the same projection from the same log every time, and
+two implementations that satisfy this chapter's contract must
+agree on every fact derivable from the log even if they
+internally choose different ranking or scoring strategies in
+their application-layer projections.
 
 ## 5. Per-projection authority
 
 When two projections produce conflicting answers about the
 same fact, the **detail projection wins for user-visible
 display**, and the **inference projection wins for model
-context**. Salience and debug projections MUST NOT supply
-authoritative answers about the user's data.
+context**. The debug-graph projection — and any
+application-layer projection an implementation chooses to
+maintain — MUST NOT supply authoritative answers about the
+user's data.
 
 If the detail and inference projections disagree about a
 user-visible field, the implementation has a bug. The spec
@@ -245,13 +235,15 @@ is preserved.
 
 A reference-implementation deployment uses:
 
-- An in-memory hash map for salience scores keyed by id.
 - An in-memory window-segmented structure for the inference
   projection.
 - A SQLite database with a per-id table for the detail
   projection.
 - A separate `petgraph::StableGraph` for the debug-graph
   projection (rebuilt on demand rather than maintained).
+- An in-memory hash map for the application-layer salience
+  projection's scores (see
+  [Annex §A.3](annex-conventions.md#a3-salience-projection)).
 
 Other deployments might combine them differently. The contract
 above is the only thing the protocol requires.

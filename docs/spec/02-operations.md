@@ -30,18 +30,29 @@ in a context where one was required.
 
 ## 2. Payload categories
 
-The v0.1 vocabulary partitions operations into seven categories:
+The v0.1 substrate vocabulary partitions operations into seven
+categories:
 
 - **Evidence operations** record raw inputs.
 - **Entity operations** create, alias, merge, and split entities.
 - **Claim operations** create and evolve claims.
 - **Job operations** schedule, claim, and complete units of work.
-- **Materialisation operations** create episodes, artefacts, and
-  suggested actions.
+- **Artifact operations** create and evict generic byproducts of
+  derivation, including the inference-snapshot artefacts used by
+  Part 2.
 - **User-assertion operations** carry the user's overrides on
   derived state.
 - **Mesh operations** govern delegation, revocation, coordination,
   and routing.
+
+Two further op types — `CreateEpisode`/`UpdateEpisode` and
+`CreateSuggestedAction`/`UpdateActionStatus` — are
+application-layer conventions used by the reference implementation
+to surface the substrate to a user. They are documented in
+[Annex: Application Conventions](annex-conventions.md), not here.
+A node that does not surface the graph to a user — for example,
+an organisation's node consuming a scoped slice — has no need to
+implement them.
 
 Subsequent sections describe each variant. Field types use
 informal names; their precise wire encodings are in
@@ -284,41 +295,16 @@ require that the authoring node corresponds to a "user-bearing"
 role established by mesh policy; the v0.1 specification does not
 mandate this.
 
-## 8. Materialisation operations
+## 8. Artifact operations
 
-### 8.1 CreateEpisode
+Artefacts are generic machine-produced byproducts of derivation:
+embeddings, transcripts, OCR text, and the inference snapshots
+that record model calls. The artefact mechanism is substrate;
+specific artefact types layered on top of it (notably
+`cortex.inference.snapshot`, used by [Part 2](09-mesh-coordination.md))
+inherit lifecycle and storage from this section.
 
-Episodes are temporally-bounded clusters of related evidence,
-entities, and claims.
-
-| Field | Purpose |
-|-------|---------|
-| `episode_id` | An `EpisodeId`. |
-| `title` | Short title. |
-| `summary` | Optional longer description. |
-| `temporal_start` | The episode's start time. |
-| `temporal_end` | Optional end time; absence indicates ongoing. |
-| `evidence_ids`, `claim_ids`, `entity_ids` | Supporting records. |
-| `confidence` | Episode-quality score. |
-
-Per-run inference provenance for an episode is carried by an
-`InferenceSnapshot` artefact emitted alongside the
-`CreateEpisode`. Implementations correlate episode and snapshot
-via `causal_deps`.
-
-### 8.2 UpdateEpisode
-
-| Field | Purpose |
-|-------|---------|
-| `episode_id` | Target episode. |
-| `title`, `summary`, `confidence` | Optional updates. |
-| `status` | Optional transition (`Active`, `Stale`, `Archived`). |
-| `claim_ids_add`, `evidence_ids_add` | Supporting records to add. |
-
-### 8.3 CreateArtifact
-
-Artefacts are machine-produced byproducts: embeddings,
-transcripts, OCR text, inference snapshots.
+### 8.1 CreateArtifact
 
 | Field | Purpose |
 |-------|---------|
@@ -332,12 +318,10 @@ transcripts, OCR text, inference snapshots.
 | `size_bytes` | Content size. |
 | `ttl_ms` | Optional time-to-live, after which the artefact is eligible for eviction. |
 
-`InferenceSnapshot` artefacts MUST record the retrieved
-context, model identity, prompt, and output. They are the
-audit record for [auditable inference](../concepts.md#inference-auditing);
-see [State Machines](12-fsms.md) for the eviction lifecycle.
+The `cortex.inference.snapshot` artifact type is specified in
+detail in [Mesh Coordination & Inference](09-mesh-coordination.md#11-inference-snapshots).
 
-### 8.4 EvictArtifact
+### 8.2 EvictArtifact
 
 Drops the content of an artefact (the metadata is retained on
 the log).
@@ -346,25 +330,17 @@ the log).
 |-------|---------|
 | `artifact_id` | Target artefact. |
 
-### 8.5 CreateSuggestedAction
+## 8a. Application-layer ops (informative pointer)
 
-| Field | Purpose |
-|-------|---------|
-| `action_id` | An `ActionId`. |
-| `title`, `description` | User-facing content. |
-| `action_type` | Short identifier (`"set_reminder"`, `"create_album"`, `"draft_email"`, ...). |
-| `source_episode` | The episode that motivated the action. |
-| `supporting_claims`, `supporting_evidence` | Provenance. |
-| `derivation_job` | The job that produced the action. Required; suggested actions MUST trace to inference. |
-| `confidence` | Action-quality score. |
-
-### 8.6 UpdateActionStatus
-
-| Field | Purpose |
-|-------|---------|
-| `action_id` | Target action. |
-| `new_status` | `Proposed`, `Approved`, `Executing`, `Completed`, `Rejected`, `Dismissed`, `Failed`, `Expired`. |
-| `execution_result` | Optional details. |
+The reference implementation also emits `CreateEpisode`,
+`UpdateEpisode`, `CreateSuggestedAction`, and
+`UpdateActionStatus` as part of its user-facing surface. These
+are documented in
+[Annex: Application Conventions](annex-conventions.md). They are
+not part of the substrate vocabulary; a substrate-only
+implementation that receives them on the wire MAY accept and
+store them on the log without maintaining any projection state
+for them.
 
 ## 9. Mesh operations
 

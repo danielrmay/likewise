@@ -1,14 +1,36 @@
-# Mesh Coordination
+# Mesh Coordination & Inference
+
+> **Part 2 of the specification.** This chapter is the
+> distributed-and-auditable-inference layer of Cortex Protocol.
+> It depends on the substrate (Part 1: chapters 00–08, 10–12)
+> for op log, sync, signatures, capabilities, and projections;
+> it adds the vocabulary by which multiple nodes cooperate on a
+> single user's work and the convention by which inference calls
+> become recoverable artefacts on the log.
+>
+> An implementation that wants to be a *substrate peer* — for
+> example, an organisation's node consuming a scoped slice of a
+> user's graph for its own internal purposes — does not need to
+> implement this chapter. It can sync, verify, authorise, and
+> read the log without participating in the work-routing or
+> inference-audit machinery. An implementation that wants to
+> *participate in distributed inference* on a user's behalf —
+> the reference implementation, a server the user runs at home,
+> a delegated organisation node the user has asked to share its
+> inference back — does need this chapter.
 
 This chapter specifies how multiple nodes cooperate on a single
 user's mesh: how work is scheduled and claimed, how the
 designated coordinator's role differs from a peer's, how the
-owner routes specific job kinds to specific nodes, and how
-conflicts between concurrent claims are resolved.
+owner routes specific job kinds to specific nodes, how conflicts
+between concurrent claims are resolved, and how every model
+call produced by an audited node becomes a recoverable artefact
+on the log.
 
 The relevant operations were enumerated in
 [Operations](02-operations.md); this chapter specifies their
-semantics, state-machine effects, and authority requirements.
+semantics, state-machine effects, authority requirements, and
+the inference-snapshot artefact format that audited nodes emit.
 
 ## 1. Roles in a mesh
 
@@ -236,17 +258,97 @@ prefix. An implementation MAY register handlers for kinds it
 recognises and ignore kinds it does not — claims for unrecognised
 kinds simply never arrive at the unrecognising node.
 
-## 11. Inference snapshots and job provenance
+## 11. Inference snapshots
 
-When a job's handler invokes a model, the resulting
-`InferenceSnapshot` artefact (per
-[Operations](02-operations.md#83-createartifact)) is emitted
-alongside the job's `CompleteJob` op. The snapshot's
-`source_job` field links back to the job, and the snapshot is
-referenced from any claims, episodes, or suggested actions the
-job produced.
+The `cortex.inference.snapshot` artefact type is the audit
+record for any model call performed by a Cortex Protocol node.
+It is the convention by which Part 2's "auditable" property is
+delivered: an implementation that emits snapshots — either by
+default (when operating under the user's root delegation) or
+because a delegation requires it (an `audit_inference` caveat
+attached to a delegated node's authority) — provides the
+recoverable trail that I-9 of the
+[Invariants](11-invariants.md#i-9-inference-is-recorded-when-audit-is-in-force)
+chapter calls for.
 
-This is what makes inference auditable at the mesh level. Every
-LLM call produced by any worker is logged on the same
-append-only log every node sees, with the same authority
-requirements as any other op.
+### 11.1 When a snapshot must be emitted
+
+A node MUST emit a `cortex.inference.snapshot` artefact for
+every model call it performs in either of the following cases:
+
+1. The node is operating under the user's root delegation (the
+   user's own devices, by default).
+2. The node is operating under a delegation whose `caveats`
+   include `audit_inference: true` (see
+   [UCAN and Caveats](07-ucan-and-caveats.md)).
+
+In all other cases, snapshot emission is *optional*: a
+delegated node operating without an audit caveat MAY emit
+snapshots for its own bookkeeping but is not required to.
+
+### 11.2 Snapshot content
+
+A `cortex.inference.snapshot` artefact is a `CreateArtifact` op
+(see [Operations §8.1](02-operations.md#81-createartifact))
+whose `artifact_type` is the string
+`"cortex.inference.snapshot"`. The artefact's content (the
+bytes referenced by `content_hash`, optionally inlined via
+`content_inline`) MUST be a postcard-encoded record with the
+following fields:
+
+| Field | Purpose |
+|-------|---------|
+| `model_id` | The identifier of the model used (e.g. `"gemma-4-E2B-Q4_K_M"`). |
+| `model_version` | The model-specific version or revision tag. |
+| `backend` | The inference backend (`"llama-cpp"`, `"litert-lm"`, ...). |
+| `retrieved_context` | The structured set of evidence ids, claim ids, and entity ids that were assembled into the prompt. |
+| `prompt` | The literal prompt sent to the model, including system message and user turns. |
+| `output` | The model's response, including any structured fields the handler parsed out. |
+| `telemetry` | Wall-clock duration, token counts (prompt + completion), latency components if available. |
+| `started_at`, `completed_at` | HLC values bracketing the call. |
+
+The artefact's envelope `source_job` field MUST be set to the
+`job_id` of the job whose handler made the call.
+
+### 11.3 Linking from outputs to snapshots
+
+Any record produced by a snapshot-emitting inference call MUST
+link back to the snapshot. Specifically:
+
+- A derived `CreateClaim` op produced by inference MUST include
+  the snapshot's `artifact_id` in its `provenance` field.
+- A `CreateArtifact` op for any non-snapshot artefact produced
+  by the same job (an embedding, a transcript) MUST set its
+  `source_job` to the job whose snapshot also references it.
+- For nodes that implement the application-layer conventions
+  in the [annex](annex-conventions.md), `CreateEpisode` and
+  `CreateSuggestedAction` ops produced by inference MUST link
+  to the snapshot via `causal_deps` (and via `derivation_job`
+  for suggested actions).
+
+This is the chain that makes the "how did it know?" question
+mechanically answerable. Walking from any audited output to its
+snapshot to the snapshot's `retrieved_context` is the literal
+audit path.
+
+### 11.4 Snapshot lifecycle
+
+Snapshot artefacts inherit the substrate artefact lifecycle
+(eviction, tombstone-cascade) from
+[Operations §8.1–§8.2](02-operations.md#81-createartifact).
+A node MAY set `ttl_ms` on snapshots it emits, and a snapshot
+MAY be evicted under storage pressure. Once evicted, the
+snapshot's content is gone but the `CreateArtifact` op remains
+on the log; the audit chain is broken from that point forward
+for the affected outputs.
+
+Implementations operating under the user's root delegation
+SHOULD retain snapshots for at least the lifetime of the
+records that link to them, treating eviction as a
+last-resort. Implementations operating under an
+`audit_inference` caveat SHOULD respect any `ttl_ms` the
+delegating user has specified in caveat caveats (see
+[UCAN and Caveats](07-ucan-and-caveats.md) — the `time_range`
+caveat narrows the delegation but does not directly control
+snapshot retention; user policy is communicated through
+mesh-rules or out-of-band agreement).

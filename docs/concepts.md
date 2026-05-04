@@ -276,6 +276,20 @@ filter and applied. An op without a signature that is *not* tagged
 as sanitised is rejected — the missing signature would otherwise be
 indistinguishable from corruption.
 
+The capability machinery is symmetric: a delegation chain that
+admits a personal device (the user's laptop, an inference server
+the user runs at home) is structurally identical to one that admits
+an *organisation* the user has chosen to invite in. A retailer
+deploying a Cortex Protocol node, a clinic running a scheduling
+assistant against a user-authorised slice of their calendar, an
+employer's scheduling helper that sees only the predicates the
+employee has consented to share — all of these are the same kind of
+peer to the protocol. They differ only in the scope of the
+delegation the user has signed. This is what makes
+[consensual commercial data partnership](motivation.md#consensual-data-partnership)
+a use case the protocol enables out of the box rather than a
+separate machinery.
+
 ## Mesh coordination
 
 Multiple nodes can do work for the same user. The protocol provides
@@ -339,12 +353,45 @@ chapter, restated without normative language so the intent is clear:
    chose to materialise it.
 5. **Every op is signed.** Identity is per-device, anchored at the
    user's root delegation. There are no anonymous writes.
-6. **Inference is recorded.** A model call that produced a
-   user-visible result is itself a referenceable op.
+6. **Inference is auditable.** On the user's own nodes, every model
+   call is recorded as a referenceable op by default. On nodes
+   the user has delegated to, audit is opt-in via a caveat the
+   user attaches to the delegation.
 
 A system that violates any of these breaks the user's ability to
 own what it says about them. The rest of the spec exists to make
 those rules precise enough to implement.
+
+## Three layers, one specification
+
+The specification is organised into three explicit layers that
+match the architecture above:
+
+- **Part 1: The substrate.** Evidence, claims, entities, sync,
+  signatures, capabilities, the substrate projections. This is
+  what every conformant node implements. It is sufficient on its
+  own to express and synchronise a user-owned knowledge graph
+  across an arbitrary set of authorised peers, including
+  organisational peers.
+- **Part 2: The inference pipeline.** Job scheduling and claiming,
+  routing kinds to specific nodes, and the inference-snapshot
+  artefact convention that gives the system its audit trail.
+  An implementation that wants to participate in distributed
+  audited inference implements Part 2 on top of Part 1; an
+  implementation that doesn't (a substrate-only peer) ignores
+  it entirely.
+- **Annex: Application conventions.** Episodes, suggested
+  actions, and the salience-ranking projection — the
+  reference implementation's choices for surfacing the
+  substrate to a user. These are not normative; alternative
+  implementations are free to substitute their own application
+  layer.
+
+This split is load-bearing for the org-as-peer scenario: a
+retailer's node implementing Part 1 (and optionally Part 2) is
+fully conformant without ever touching the application
+conventions. A user-facing node in the spirit of the reference
+implementation will typically implement all three layers.
 
 ## Where to go next
 

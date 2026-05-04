@@ -29,6 +29,44 @@ party in the loop without a copy of the result.
 This protocol exists because that arrangement is bad and because it is
 about to get much worse.
 
+## The default the internet was built around
+
+This is not new. It is the consumer internet's defining feature.
+
+For twenty-five years, almost every successful piece of consumer
+software has agreed on the same arrangement: the party providing
+the service collects the record of the user. The cookie was an
+implementation detail. The free account was an implementation
+detail. The "personalised" feed, the loyalty card, the recommended
+purchase — all implementation details on top of the same
+underlying contract. The party doing the work also kept the work's
+record, and the record was not the user's.
+
+The arrangement persisted because, for most of those twenty-five
+years, the record was structured enough to be useful to the
+collecting party but raw enough to be inert in anyone else's
+hands. Click-streams, locations, search histories — they powered
+ad targeting and recommendation rankings, but they were not, by
+themselves, a model of who you were. They were ingredients. The
+party with the most ingredients had the best recipes.
+
+That is what changed. The same logs that were inert raw material a
+decade ago are now training data and prompt context for systems
+that can describe you to yourself with uncomfortable accuracy. The
+economic value of being the party that holds the record has risen
+by an order of magnitude. So has the asymmetry between you and the
+party that holds it.
+
+Cortex Protocol does not propose that data collection should stop,
+and it does not deny that there is real value in the systems being
+built on top of these records. It proposes something more specific:
+that the question of *who holds the canonical record of the user* —
+the user themselves, or whoever is currently making money from
+them — is now load-bearing for whether any of this is something
+done *for* the user instead of *to* them. And it proposes that the
+historical default — the party providing the service is also the
+party that owns the record — is no longer acceptable.
+
 ## The next wave makes the asymmetry sharper
 
 Personal AI is on its way. Locally-runnable models that can read your
@@ -178,6 +216,108 @@ phone receives and can audit. The user can revoke the server's
 capability at any time, at which point its derivations stop being
 trusted and the affected claims invalidate.
 
+### "I want to share my grocery rhythm with a retailer, without sharing my purchases"
+
+Today: you either accept the loyalty-card terms in full (and the
+retailer collects a fine-grained record of your transactions, app
+sessions, and adjacent ad-platform signals) or you opt out (and
+the retailer falls back to coarser inference from third-party
+data, which is no better for either side).
+
+Under this protocol: you delegate the retailer's node a capability
+scoped to a single claim — your grocery-visit rhythm — with
+caveats that prevent any underlying evidence (receipts, photos,
+location pings, basket details) from crossing the boundary. The
+retailer gets a precise, accurate answer to a useful question, and
+no more. You can revoke the delegation in one operation. Both
+sides know exactly what was shared because the wire format
+describes it precisely.
+
+## Consensual data partnership
+
+The previous scenario points at the protocol's most interesting
+consequence — one its designers didn't initially set out to
+deliver. The same machinery that lets a user share data between
+their own devices also lets them share data, on their own terms,
+with anyone else.
+
+Today, when a retailer wants to know that you regularly buy
+apples, they have to *guess*. They collect transaction logs,
+loyalty-card swipes, app session data, and ad-platform signals;
+they segment the behaviour across millions of users until a
+confident probability emerges that you are an apple-buyer; and
+the result is, at best, a guess the retailer holds about you that
+you will never see and cannot correct. The cost of producing the
+guess is enormous. The accuracy is uneven. The relationship is
+adversarial — every additional signal the retailer captures is a
+small extraction.
+
+Now consider the same scenario differently. The user has
+ground-truth claims about themselves: that they go to a grocery
+store roughly four times a month, that the visits cluster on
+Saturdays, that the basket size has been growing. Those claims
+already exist on the user's personal mesh, because the user's own
+evidence — calendar, location, photos of receipts — derived them.
+
+Sharing those claims with a retailer is no longer an act of
+*surveillance acceptance*. It is an act of *delegation*. The user
+issues a UCAN scoped to the retailer's node with caveats:
+
+- only the predicates they care about (`grocery_visit_rhythm`),
+- none of the underlying evidence (no source-typed photos or
+  calendar entries cross the boundary),
+- sanitisation rules that strip descriptive content fields,
+- a time-range that auto-expires the delegation in twelve months.
+
+The retailer deploys a Cortex Protocol node — same wire protocol,
+same op log, same authority machinery — and that node
+synchronises only the slice of the user's log this delegation
+admits. The node materialises a tiny knowledge graph: possibly
+nothing more than the rhythm claim and its confidence. The
+underlying photos, locations, and basket details never leave the
+user's mesh. If the user revokes the delegation, the retailer's
+node loses its authorisation, and the slice of state it
+materialised becomes invalid by the same cascade rule that retires
+any other revoked authority.
+
+This is not a hypothesis about a future protocol. The
+capabilities, caveats, sanitisation rules, and revocation
+semantics are already specified for the single-user mesh case
+(see [Capabilities](spec/08-capabilities.md) and
+[UCAN and Caveats](spec/07-ucan-and-caveats.md)). The same
+machinery generalises directly: a "node" in this protocol does
+not have to be a personal device. It can be any party — a
+retailer, a clinic, an employer's scheduling assistant, a
+research institution, a public-interest data trust — that the
+user has chosen to invite in. The materialisation that party
+holds can be as small as one claim or as large as the user
+authorises.
+
+The economic shape this enables is different from the status quo.
+The retailer pays nothing for the bulk-collection infrastructure
+they no longer need. The user shares specific claims they have
+chosen to share, on terms they have chosen, and can stop at any
+time. Both sides know exactly what is being shared because the
+wire protocol describes it precisely. Compliance with the user's
+"no" is enforced mechanically, not by lawsuit.
+
+The protocol does not specify how the resulting market gets
+built. It does not specify pricing, payment rails, negotiation
+formats, or contract templates. What it specifies is the
+*substrate*: a wire format in which "I share these claims, with
+this masking, until I revoke" is something that can be expressed
+precisely and verified independently by both parties. The market
+on top of that substrate is for others to design.
+
+There is a version of the future where every commercial
+relationship that today depends on third-party tracking is
+reconstituted as a voluntary, scoped, revocable delegation
+between the user and the counterparty. There is also a version
+where it isn't, and the incumbents preserve their bulk-collection
+model because nothing in the law or the market forces a change.
+The protocol exists, in part, so that the first version becomes
+possible.
+
 ## The non-negotiable rules
 
 The protocol is built around six rules that exist to make the
@@ -192,7 +332,9 @@ formally in [Invariants](spec/11-invariants.md); the short forms are:
    seen the same operations agree on what is true.
 5. Every operation is signed by its author. Identity is per-device,
    bound by capability delegations rooted at the user.
-6. Inference is a recorded operation, not a side effect.
+6. Inference is auditable — by default on the user's own nodes, and
+   on demand when delegated to others, via a caveat the user
+   attaches.
 
 Anything an implementation does that violates one of those rules
 breaks the user's ability to own what the system says about them.

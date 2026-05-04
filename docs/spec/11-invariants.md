@@ -141,22 +141,54 @@ apply, idempotent retry) are at the implementation's
 discretion; the observable atomicity is what the spec
 requires.
 
-## I-9. Inference is recorded
+## I-9. Inference is recorded (when audit is in force)
 
-**Every model call that produces a user-visible result is
-itself a recoverable op.**
+**A node performing inference under audit MUST emit an
+`InferenceSnapshot` artefact for every model call.**
 
-Concretely: every `CreateSuggestedAction`, every derived
-`CreateClaim` that originated from inference, and every
-`CreateEpisode` that resulted from synthesis MUST be linked
-to an `InferenceSnapshot` artefact recording the model
-identity, the retrieved context, the prompt, and the output.
+Audit is *in force* in two cases:
 
-This is the invariant that makes the system auditable. A
-recommendation the user cannot trace back to a specific
-inference call is a violation. The "how did it know?" question
-has, by I-9, a literal answer that consists of evidence and
-claims.
+1. **The node is operating under the user's root delegation.**
+   The reference implementation, and any implementation a user
+   runs on their own devices, falls into this category. For
+   such nodes, audit is the default and is normative for v0.1
+   conformance — an inference call without a corresponding
+   snapshot is a violation regardless of what other invariants
+   the implementation satisfies. This is what makes the user's
+   own personal mesh auditable end-to-end.
+
+2. **The node is operating under a delegation whose caveats
+   require audit.** A user delegating to an organisation's
+   node MAY attach an `audit_inference` caveat (specified in
+   [UCAN and Caveats](07-ucan-and-caveats.md)) requiring the
+   delegated node to emit snapshots for inference performed
+   against the delegated data. In this case, the snapshots
+   are themselves visible on the log the user receives back
+   from the delegated node, completing the audit loop across
+   organisational boundaries.
+
+A delegated node operating *without* an audit caveat is not
+required by this invariant to record its internal inference.
+Whatever the delegated node does with the data it received —
+training, summarisation, classification, recommendation — is
+governed by the delegation's other caveats and by whatever
+out-of-band agreements the user and the delegated party have.
+This is a deliberate scope choice: the protocol's role is to
+let the user decide whether audit applies, not to mandate it
+for every party that ever processes a piece of the user's
+graph.
+
+When audit is in force, every derived claim, every materialised
+record (including episodes and suggested actions where they
+exist as application-layer conventions), and every other
+inference output MUST link to its producing snapshot via the
+record's provenance fields or via `causal_deps`. The "how did
+it know?" question has, when audit is in force, a literal
+answer consisting of evidence and claims.
+
+The snapshot artefact's required content (model identity,
+retrieved context, prompt, output, telemetry) is specified in
+[Mesh Coordination & Inference](09-mesh-coordination.md#11-inference-snapshots).
 
 ## I-10. Authority is verified per op
 
