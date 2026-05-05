@@ -77,10 +77,10 @@ carries:
 - A **signature** by the author's key (RFC 7515 detached JWS,
   Ed25519, over the canonical encoding of the op with the signature
   field cleared).
-- For sanitised ops: the signature is *cleared* on transit, signalling
-  that the op has been intentionally redacted by an authorised
+- For sanitized ops: the signature is *cleared* on transit, signaling
+  that the op has been intentionally redacted by an authorized
   caveat. Recipients distinguish "altered in transit" (corruption)
-  from "deliberately sanitised by an authorised filter."
+  from "deliberately sanitized by an authorized filter."
 
 Why typed ops instead of a generic CRDT? Because the protocol's
 content domain is narrow and well-understood. A typed vocabulary —
@@ -117,7 +117,7 @@ production.
 ## The causal frontier
 
 A frontier is the per-author maximum-timestamp summary of what a node
-has seen. When two nodes synchronise, they exchange frontiers and
+has seen. When two nodes synchronize, they exchange frontiers and
 ship each other the operations the other doesn't have. Because the
 HLC induces a total order per author, "what you don't have" is a
 clean set difference rather than a merkle-tree dance.
@@ -130,14 +130,14 @@ the next exchange.
 ## Entities
 
 An entity is a stable identity for a thing in the user's life: a
-person, a place, an organisation, a recurring commitment, a
+person, a place, an organization, a recurring commitment, a
 project, a concept. Entities are not pre-defined by the protocol;
 they are derived from evidence by the implementation's resolution
 pass. The protocol specifies how an implementation merges or splits
 entities and what provenance it must record when it does.
 
 Entity identity is per-mesh, ULID-based, and survives across nodes —
-once two nodes have synchronised the operation that created an
+once two nodes have synchronized the operation that created an
 entity, they refer to it by the same id. Entity *labels* (the
 human-readable name) are claims like any other and can change; the
 id is what holds the cluster of claims together.
@@ -183,7 +183,7 @@ the cascade walks the DAG forward and invalidates everything that
 transitively depended on the source. This is what makes the
 "refute" gesture in the surface mean something. The user is not
 just hiding a card; they are marking a node in the graph dead, and
-the system has to honour the consequences.
+the system has to honor the consequences.
 
 This is also what makes auditability mechanical. Asking "why does
 the system believe X" is following the DAG backwards from the
@@ -198,7 +198,7 @@ exist purely to surface the substrate to a user. They are
 proper, and live in
 [Annex: Application Conventions](annex-conventions.md). A
 node that does not surface records to a user — for example, an
-organisation peer — has no need to emit them.
+organization peer — has no need to emit them.
 
 An **episode** is a cluster of related evidence and claims with
 temporal bounds: a trip, a project, a relationship, a day worth
@@ -245,7 +245,7 @@ one; alternatives are free to substitute or omit.
 The reason these are separate is that collapsing them produces a
 single fat object that is too slow for ranking, too lossy for UI,
 and too memory-hungry for inference contexts. Implementations are
-free to optimise within each projection; they are not free to fold
+free to optimize within each projection; they are not free to fold
 them into one.
 
 The **detail projection rebuilds from the log** when missing or
@@ -259,7 +259,7 @@ A capability is a triple `(resource, action, caveats)`:
 
 - **Resource** — a class of operation or content (operations of a
   kind, evidence of a source type, claims with a predicate, jobs of
-  a kind, episodes, artefacts, suggested actions, mesh
+  a kind, episodes, artifacts, suggested actions, mesh
   coordination, registration).
 - **Action** — what may be done (read, write, schedule, claim,
   complete).
@@ -281,20 +281,20 @@ delegations beneath the revoked one and invalidates any
 already-applied operations whose authority depended on the
 revoked capability.
 
-Sanitisation is the most subtle caveat. When an op crosses a
-delegation that requires sanitisation, the relevant fields are
+Sanitization is the most subtle caveat. When an op crosses a
+delegation that requires sanitization, the relevant fields are
 redacted *and the signature is cleared*. The recipient sees an
-unsigned op tagged as sanitised, which is treated as a deliberate
+unsigned op tagged as sanitized, which is treated as a deliberate
 filter and applied. An op without a signature that is *not* tagged
-as sanitised is rejected — the missing signature would otherwise be
+as sanitized is rejected — the missing signature would otherwise be
 indistinguishable from corruption.
 
 The capability machinery is symmetric: a delegation chain that
 admits a personal device (the user's laptop, an inference server
 the user runs at home) is structurally identical to one that admits
-an *organisation* the user has chosen to invite in. A retailer
+an *organization* the user has chosen to invite in. A retailer
 deploying a Likewise node, a clinic running a scheduling
-assistant against a user-authorised slice of their calendar, an
+assistant against a user-authorized slice of their calendar, an
 employer's scheduling helper that sees only the predicates the
 employee has consented to share — all of these are the same kind of
 peer to the protocol. They differ only in the scope of the
@@ -309,7 +309,7 @@ Multiple nodes can do work for the same user. The protocol provides
 a vocabulary for who claims what:
 
 - **`ScheduleJob`** — declare that a unit of work needs to happen
-  (e.g., "synthesise an episode for last week").
+  (e.g., "synthesize an episode for last week").
 - **`ClaimWork`** — a node takes responsibility for a scheduled
   job, with a hybrid-logical-clock-relative lease.
 - **`CompleteJob`** — the work is done; the result is written as
@@ -339,7 +339,7 @@ scheduling a job requires `Schedule` on `Job`; claiming requires
 
 When a node operating under audit calls a model, the call itself
 becomes an op. Specifically, a `likewise.inference.snapshot`
-artefact is written to the log recording the retrieved context
+artifact is written to the log recording the retrieved context
 (the evidence and claims fed into the prompt), the model
 identity, telemetry (latency, token counts, backend), and the
 output. Any claim or suggested action the call produced links
@@ -354,7 +354,7 @@ protocol to record its inference; what it does internally is
 governed by the delegation's other caveats. The user retains the
 choice; the protocol enforces it when chosen.
 
-Snapshots are first-class artefacts and follow the same lifecycle:
+Snapshots are first-class artifacts and follow the same lifecycle:
 they have TTLs, they can be evicted, they can be tombstoned with
 their underlying evidence. While they exist, they are the
 authoritative answer to "why did the system say that."
@@ -373,10 +373,10 @@ chapter, restated without normative language so the intent is clear:
 2. **Every claim has provenance.** No fact about the user appears
    without a chain back to evidence the user provided.
 3. **Derivation is a DAG, and refutations cascade.** Marking
-   something wrong has consequences the system has to honour.
+   something wrong has consequences the system has to honor.
 4. **Sync converges operations, not projections.** Two nodes that
    have seen the same ops agree on truth, regardless of how each
-   chose to materialise it.
+   chose to materialize it.
 5. **Every op is signed.** Identity is per-device, anchored at the
    user's root delegation. There are no anonymous writes.
 6. **Inference is auditable.** On the user's own nodes, every model
@@ -390,18 +390,18 @@ those rules precise enough to implement.
 
 ## Three layers, one specification
 
-The specification is organised into three explicit layers that
+The specification is organized into three explicit layers that
 match the architecture above:
 
 - **Part 1: The substrate.** Evidence, claims, entities, sync,
   signatures, capabilities, the substrate projections. This is
   what every conformant node implements. It is sufficient on its
-  own to express and synchronise a user-owned knowledge graph
-  across an arbitrary set of authorised peers, including
+  own to express and synchronize a user-owned knowledge graph
+  across an arbitrary set of authorized peers, including
   organisational peers.
 - **Part 2: The inference pipeline.** Job scheduling and claiming,
   routing kinds to specific nodes, and the inference-snapshot
-  artefact convention that gives the system its audit trail.
+  artifact convention that gives the system its audit trail.
   An implementation that wants to participate in distributed
   audited inference implements Part 2 on top of Part 1; an
   implementation that doesn't (a substrate-only peer) ignores

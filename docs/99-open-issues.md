@@ -55,7 +55,7 @@ break clients that hold persisted cursors from an earlier
 version.
 
 **Direction.** Future versions are expected to specify a
-versioned cursor envelope or to standardise the
+versioned cursor envelope or to standardize the
 `CausalFrontier` shape explicitly so changes are detectable.
 
 **Workaround in v0.1.** Implementations MUST treat cursors as
@@ -63,26 +63,26 @@ write-once-then-echo: a client sends back exactly what the
 server returned in `X-Likewise-Next-Frontier`. Implementations
 SHOULD discard cached cursors on protocol-version upgrades.
 
-## OI-3. Sanitised ops carry no signature, by design
+## OI-3. Sanitized ops carry no signature, by design
 
-**A sanitised op has its `signature` cleared to `None` and is
-distinguished from corruption by a sanitisation marker** (see
-[Wire Format](03-wire-format.md#6-sanitised-operations)).
+**A sanitized op has its `signature` cleared to `None` and is
+distinguished from corruption by a sanitization marker** (see
+[Wire Format](03-wire-format.md#6-sanitized-operations)).
 
 **Risk.** A receiver that does not implement marker checking
-will either reject all sanitised ops as corrupted (denying
+will either reject all sanitized ops as corrupted (denying
 service to legitimate filtered traffic) or accept all unsigned
-ops as sanitised (admitting forged traffic). The marker check
+ops as sanitized (admitting forged traffic). The marker check
 is the only thing distinguishing the two cases.
 
 **Status.** This is a design decision, not a defect. The
-specification's contract is that sanitisation is intentional
+specification's contract is that sanitization is intentional
 and the marker is verifiable against the sender's delegation
 chain.
 
 **Direction.** A future revision MAY introduce a hash-chain
-mechanism that lets a receiver verify a sanitised op's
-provenance to its pre-sanitisation form, addressing the
+mechanism that lets a receiver verify a sanitized op's
+provenance to its pre-sanitization form, addressing the
 "delegated trust" concern at the cost of additional bytes on
 the wire. v0.1 does not include this.
 
@@ -198,7 +198,7 @@ metered).
 ## OI-9. No confidential sync
 
 **A peer can probe a node for the existence of operations it is
-not authorised to receive** by sending crafted `since` cursors
+not authorized to receive** by sending crafted `since` cursors
 and observing the response shape. The capability filter
 prevents the operations themselves from being returned, but
 it does not prevent a peer from learning *that* the
@@ -206,25 +206,25 @@ unreachable operations exist.
 
 **Risk.** An attacker with read access to part of the log can
 infer the existence and approximate timing of operations they
-are not authorised to see.
+are not authorized to see.
 
 **Direction.** A future revision is expected to adopt a
-confidential-sync mechanism (likely modelled on Willow
+confidential-sync mechanism (likely modeled on Willow
 Protocol's private-set-intersection-style approach), where
-peers cannot probe for unauthorised operations at all. This
+peers cannot probe for unauthorized operations at all. This
 is a significant protocol redesign and is unlikely to land
 before a major version bump.
 
 **Workaround in v0.1.** Implementations SHOULD NOT distinguish
-"unauthorised op" from "no op" in their response shape (return
+"unauthorized op" from "no op" in their response shape (return
 the filtered op set without any "filtered N" indicator).
 Implementations MUST NOT return per-op "you are not
-authorised" errors, which would themselves leak the existence
+authorized" errors, which would themselves leak the existence
 of the filtered ops.
 
-## OI-10. Predicate vocabulary is not yet standardised externally
+## OI-10. Predicate vocabulary is not yet standardized externally
 
-**The set of claim predicates is centralised in this
+**The set of claim predicates is centralized in this
 specification** but is not yet structured for external
 extension. An application wishing to add a new predicate (for
 a new domain — health data, financial data, professional

@@ -33,7 +33,7 @@ A conforming implementation MUST distinguish three layers:
    ingested.
 2. **Operations** — typed, signed, totally-ordered records of state
    change. The operation log is the canonical store of truth.
-3. **Projections** — materialised read views derived from the
+3. **Projections** — materialized read views derived from the
    operation log. Projections are disposable and rebuildable.
 
 Higher layers in this list depend only on lower layers. Operations
@@ -63,7 +63,7 @@ signing. The mapping is established when a node first authors a
 `DelegateUcan` op announcing its presence and is fixed for the
 lifetime of the node.
 
-A `NodeId` is assigned by the implementation at node initialisation
+A `NodeId` is assigned by the implementation at node initialization
 and MUST be unique within a mesh. The protocol does not specify
 the encoding of NodeId beyond requiring that it be a stable byte
 string suitable for use as a map key and a JWS `kid` value.
@@ -126,7 +126,7 @@ Each piece of evidence has:
 
 Evidence is immutable. Once an evidence-ingest operation lands on
 the log, the content referenced by that op's `ContentHash` MUST
-NOT change. To remove evidence, the user (or an authorised node)
+NOT change. To remove evidence, the user (or an authorized node)
 emits a `TombstoneEvidence` op, which triggers a derivation
 cascade.
 
@@ -162,7 +162,7 @@ following fields:
   [Signatures](06-signatures.md) and [Wire Format](03-wire-format.md).
 
 An operation with a missing signature is valid only if it has
-been intentionally sanitised by an authorised filter (see
+been intentionally sanitized by an authorized filter (see
 [UCAN and Caveats](07-ucan-and-caveats.md)). All other
 unsigned ops MUST be rejected.
 
@@ -190,7 +190,7 @@ state, not on the deduplication mechanism.
 
 ## 5. Projections
 
-A projection is a materialised view computed from the operation
+A projection is a materialized view computed from the operation
 log. Projections are derived state — they MUST be fully
 reconstructable from the op log alone.
 
@@ -212,7 +212,7 @@ projections; they MUST NOT collapse the read interfaces such that
 the query semantics of one projection contaminate another. The
 load-bearing distinction is between *what each projection answers*,
 not between *where its bytes live*. See [Projections](10-projections.md)
-for the contract each projection must honour.
+for the contract each projection must honor.
 
 ## 6. The provenance graph
 
@@ -240,16 +240,16 @@ cyclic case deterministically.
 
 ## 7. Authoring authority
 
-An operation is *authorised* if and only if its author held a
+An operation is *authorized* if and only if its author held a
 capability admitting both the operation's `Action` (the kind of
 write it performs) and its `Resource` (the data class it touches),
 with caveats satisfied, at the operation's `timestamp`.
 
-Authorisation is verified by walking the chain of UCAN
+Authorization is verified by walking the chain of UCAN
 delegations from the op's author to the mesh root. The mechanism
 is specified in [UCAN and Caveats](07-ucan-and-caveats.md) and
 [Capabilities](08-capabilities.md). A receiving node MUST reject
-operations it cannot authorise.
+operations it cannot authorize.
 
 ## 8. Informative: a worked example
 

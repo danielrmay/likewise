@@ -33,7 +33,7 @@ that runs on macOS and iOS as a small mesh of nodes
 communicating over HTTP. The user runs a node on each of their
 devices. It was the implementation against which this
 specification was written, so where the specification is silent
-or ambiguous, its intended behaviour is the strongest signal
+or ambiguous, its intended behavior is the strongest signal
 about what was meant — practically, this matters less than it
 would for a published specification, because the implementation
 is not yet available for an implementer to compare against.
@@ -52,11 +52,11 @@ reference suite for behavioural conformance:
 3. **`enrollment`** — the UCAN delegation handshake that admits a
    new node to a mesh.
 4. **`scoped-enrollment`** — the same handshake under caveat
-   restrictions, including sanitisation rules and revocation.
+   restrictions, including sanitization rules and revocation.
 5. **`claim-lifecycle`** — claim FSM transitions, derivation DAG
    cascade on user assertion, and frozen-fact immunity.
 6. **`tool-use-agent-loop`** — non-inference job handlers chained
-   with `depends_on`, inference-snapshot artefacts, and suggested-
+   with `depends_on`, inference-snapshot artifacts, and suggested-
    action approval, on a single node.
 7. **`mesh-agent-loop`** — the same loop distributed across three
    specialist nodes (phone, inference, tools) cooperating via
@@ -66,7 +66,7 @@ A second implementation that passes equivalents of these seven
 scenarios — wired into its own engine and transport, against its
 own storage — is what "behaviourally conformant for v0.1" is
 intended to mean. The scenarios are not the spec; the spec is the
-spec. The scenarios are how we plan to operationalise it once
+spec. The scenarios are how we plan to operationalize it once
 the reference implementation is public.
 
 ## Compatible implementations
@@ -85,7 +85,7 @@ The specification distinguishes four levels of conformance:
 
 **Level 1 — wire-format conformance.** The implementation can read
 and write operations that an existing v0.1 implementation will
-accept and apply correctly. It honours the postcard encoding, the
+accept and apply correctly. It honors the postcard encoding, the
 canonical signing rules, and the HTTP sync endpoint shape.
 
 **Level 2 — semantic conformance.** In addition to Level 1, the
@@ -95,8 +95,8 @@ optimisations) to the reference implementation, given the same op
 log as input.
 
 **Level 3 — capability conformance.** In addition to Level 2, the
-implementation honours UCAN delegations and caveats correctly —
-including sanitisation, transitive revocation, and the
+implementation honors UCAN delegations and caveats correctly —
+including sanitization, transitive revocation, and the
 attenuation-only re-delegation rule.
 
 **Level 4 — full behavioural conformance.** In addition to Level 3,
@@ -105,7 +105,7 @@ scenarios listed above.
 
 An implementation may claim a level publicly. We strongly
 recommend explicit mention of the conformance level along with the
-test artefacts that demonstrate it, so users can assess
+test artifacts that demonstrate it, so users can assess
 trustworthiness without reading the source.
 
 ## Compatibility expectations across versions
@@ -131,7 +131,7 @@ implementation that may save another implementer time:
 - The HLC tick discipline is the single most common source of
   divergence bugs. Treat it as load-bearing from day one. See
   [Clocks](05-clocks.md).
-- The signature canonicalisation rule (clear the signature field
+- The signature canonicalization rule (clear the signature field
   on the op, encode, then sign and put the signature back) is
   easy to get subtly wrong. The detached-JWS output is what
   crosses the wire; the in-storage representation contains the
@@ -141,7 +141,7 @@ implementation that may save another implementer time:
   too lossy for UI, and too memory-hungry for inference contexts.
   Implementers porting from a single-store substrate should
   resist the urge to fold them.
-- Sanitisation clears signatures intentionally; an implementation
+- Sanitization clears signatures intentionally; an implementation
   that treats signature absence as corruption will reject
   legitimately filtered ops. Distinguish the two cases up front.
 - Job and lease ops use the HLC for lease expiry, not a wall clock.
@@ -163,4 +163,4 @@ released under its final name, this page will be updated.
 
 What is committed: the protocol is Likewise, the standard is
 this document, and the implementation — whatever its final name
-— is one realisation of it.
+— is one realization of it.

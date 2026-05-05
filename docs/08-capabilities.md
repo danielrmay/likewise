@@ -3,12 +3,12 @@
 This chapter specifies the capability vocabulary used in UCAN
 delegations: the set of legal `Resource` values, the set of
 legal `Action` values, the legal combinations, and the
-authorise-and-filter pipeline that uses them.
+authorize-and-filter pipeline that uses them.
 
 ## 1. Resources
 
 A `Resource` names a class of protocol-defined entity that a
-capability authorises an action on. The v0.1 resource vocabulary:
+capability authorizes an action on. The v0.1 resource vocabulary:
 
 | Resource | Covers |
 |----------|--------|
@@ -18,7 +18,7 @@ capability authorises an action on. The v0.1 resource vocabulary:
 | `Claim` | Claim operations (`CreateClaim`, `UpdateClaimStatus`, `UpdateClaimConfidence`, `SupersedeClaim`). |
 | `Job` | Job operations (`ScheduleJob`, `ClaimWork`, `CompleteJob`, `YieldWork`, `ExpireWork`). |
 | `Episode` | Episode operations (`CreateEpisode`, `UpdateEpisode`). |
-| `Artifact` | Artefact operations (`CreateArtifact`, `EvictArtifact`). |
+| `Artifact` | Artifact operations (`CreateArtifact`, `EvictArtifact`). |
 | `Action` | Suggested-action operations (`CreateSuggestedAction`, `UpdateActionStatus`). |
 | `Mesh` | Mesh-coordination operations (`DesignateCoordinator`, `RouteKind`). |
 | `UserAssertion` | User-assertion operations (`UserAssert`). |
@@ -61,10 +61,10 @@ may claim them.
 ## 3. Resource × Action matrix
 
 Not every `(Resource, Action)` combination is meaningful. The
-table below summarises which combinations the v0.1 specification
+table below summarizes which combinations the v0.1 specification
 defines. Cells marked `—` indicate combinations that have no
 defined effect (a delegation may include them but they will
-authorise nothing useful; an implementation MAY warn but MUST
+authorize nothing useful; an implementation MAY warn but MUST
 NOT reject).
 
 | Resource → / Action ↓ | Read | Write | Schedule | Claim | Complete |
@@ -101,16 +101,16 @@ as follows:
 | `predicates` | Capabilities on `Claim` and on `Ops` | Restricts which claim predicates the holder may read or write. |
 | `kind_prefix` | Capabilities on `Job` | Restricts which job kinds the holder may schedule, claim, or complete. |
 | `time_range` | Any capability | Restricts the timestamp range of operations the capability admits. |
-| `sanitize` | Any capability with `Read` | Specifies sanitisation applied to operations crossing the delegation outbound. |
-| `audit_inference` | Capabilities on `Job` (`Claim` or `Complete`), `Claim` (`Write`), `Artifact` (`Write`), or `Ops` | When `true`, requires the delegated node to emit `likewise.inference.snapshot` artefacts for every model call performed against data covered by this delegation. |
+| `sanitize` | Any capability with `Read` | Specifies sanitization applied to operations crossing the delegation outbound. |
+| `audit_inference` | Capabilities on `Job` (`Claim` or `Complete`), `Claim` (`Write`), `Artifact` (`Write`), or `Ops` | When `true`, requires the delegated node to emit `likewise.inference.snapshot` artifacts for every model call performed against data covered by this delegation. |
 
 A caveat applied to a resource it does not narrow has no
 effect: a `kind_prefix` on a capability over `Evidence` does
 not restrict anything, because `Evidence` ops do not have a
 `kind` field. Such caveats MAY be present (they do not invalidate
-the delegation) but they do not authorise additional behaviour.
+the delegation) but they do not authorize additional behavior.
 
-## 5. The authorise-and-filter pipeline
+## 5. The authorize-and-filter pipeline
 
 ```mermaid
 flowchart TD
@@ -118,11 +118,11 @@ flowchart TD
     Sig -->|no| Reject["reject"]
     Sig -->|yes| Chain{"chain<br/>resolved?"}
     Chain -->|broken| Reject
-    Chain -->|intact| Auth{"resource × action<br/>authorised?"}
+    Chain -->|intact| Auth{"resource × action<br/>authorized?"}
     Auth -->|no| Reject
     Auth -->|yes| Cav{"caveats<br/>satisfied?"}
     Cav -->|no| Reject
-    Cav -->|yes| San["sanitise<br/>strip / redact"]
+    Cav -->|yes| San["sanitize<br/>strip / redact"]
     San --> Apply["apply to projections"]
 ```
 
@@ -137,7 +137,7 @@ For each incoming op:
 1. **Reject malformed.** If the op fails wire-format validation
    (per [Wire Format](03-wire-format.md)), reject it.
 
-2. **Verify signature** (or skip for sanitised ops; see step 6).
+2. **Verify signature** (or skip for sanitized ops; see step 6).
    If the op carries a `signature`, verify it per
    [Signatures](06-signatures.md). If verification fails,
    reject it.
@@ -153,7 +153,7 @@ For each incoming op:
    uses the op's `timestamp.wall_ms` for `nbf` / `exp`
    comparisons, not the receiver's local wall clock.
 
-5. **Authorise.** The op's `(Resource, Action)` MUST appear in
+5. **Authorize.** The op's `(Resource, Action)` MUST appear in
    the effective capability set derived from the chain
    (the intersection of caveats along the chain). The op's
    payload MUST satisfy every caveat: source-type checks for
@@ -161,12 +161,12 @@ For each incoming op:
    checks for job ops, time-range checks against the op's
    timestamp.
 
-6. **Verify sanitisation marker** (for unsigned ops only). The
-   marker MUST identify a sanitise rule chain admitted by some
+6. **Verify sanitization marker** (for unsigned ops only). The
+   marker MUST identify a sanitize rule chain admitted by some
    delegation the authoring node holds reaching to the user.
    If verification fails, reject the op.
 
-7. **Apply.** The op is authorised and authentic; the
+7. **Apply.** The op is authorized and authentic; the
    implementation may now apply it to projections.
 
 A rejected op is dropped from the apply pipeline. Implementations
@@ -177,24 +177,24 @@ or partially apply them.
 
 When a node responds to a `GET /ops` request, it MUST filter the
 candidate ops by the requester's effective capability set
-*before* serialising them onto the wire:
+*before* serializing them onto the wire:
 
-1. **Authorise.** For each candidate op, evaluate whether the
-   requester is authorised to read it (the equivalent of the
+1. **Authorize.** For each candidate op, evaluate whether the
+   requester is authorized to read it (the equivalent of the
    inbound check, against the requester's chain). If not,
    exclude the op from the response.
 
-2. **Sanitise.** For each remaining op, if the requester's
+2. **Sanitize.** For each remaining op, if the requester's
    delegation chain carries `sanitize` rules, apply the rule
    chain to a *clone* of the op:
    - Apply each rule's redactions in order.
    - Clear the cloned op's `signature` field.
-   - Attach the sanitisation marker recording the rule chain.
-   - Use the cloned, sanitised op as the response value.
+   - Attach the sanitization marker recording the rule chain.
+   - Use the cloned, sanitized op as the response value.
 
-The sanitisation step happens server-side; the requester
-receives only the sanitised op and cannot recover the redacted
-fields. This is the only authorised way for an unsigned op to
+The sanitization step happens server-side; the requester
+receives only the sanitized op and cannot recover the redacted
+fields. This is the only authorized way for an unsigned op to
 appear on the wire.
 
 ### 5.3 On transitive revocation
@@ -204,9 +204,9 @@ whose authority chain depended on the revoked delegation MUST
 be re-evaluated:
 
 1. Walk the projection's index of applied ops by chain.
-2. For each affected op, re-run the authorise pipeline as if
+2. For each affected op, re-run the authorize pipeline as if
    the op had just been received.
-3. Ops that no longer authorise MUST be removed from the
+3. Ops that no longer authorize MUST be removed from the
    projections (the underlying op log entry is preserved).
 
 This is the operation that gives revocation real teeth: an op
@@ -219,7 +219,7 @@ The user's root delegation is `(Ops, *)` with no caveats —
 maximal authority. Subsequent delegations narrow this. A node
 in practice typically holds:
 
-- `(Ops, Read)` with sanitisation caveats — to receive most
+- `(Ops, Read)` with sanitization caveats — to receive most
   ops with privacy filtering.
 - `(Evidence, Write)` with `source_types` caveat — to ingest
   evidence from a specific connector.
@@ -236,7 +236,7 @@ across that node's delegations.
 
 ## 7. Reserved combinations
 
-The protocol reserves the following capability behaviours for
+The protocol reserves the following capability behaviors for
 future minor versions; v0.1 implementations MUST NOT issue or
 accept delegations using them:
 

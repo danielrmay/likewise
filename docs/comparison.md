@@ -30,7 +30,7 @@ WebSocket / WebHook.
 
 **Where it overlaps with Likewise.** Both treat "your data,
 your server" as the foundational stance. Both decentralize identity.
-Both have capability-flavoured access control. Both expect external
+Both have capability-flavored access control. Both expect external
 applications to operate on a graph the user owns.
 
 **Where it diverges.** Solid is CRUD-on-RDF-resources; Likewise
@@ -41,7 +41,7 @@ auditing, and no work routing. Pods assume an always-online HTTP
 origin; Likewise expects a small mesh of user-owned devices
 with intermittent connectivity. Solid leans on the open-world
 semantics of RDF; Likewise's predicate vocabulary is
-centralised and lint-enforced for the same reasons it has typed ops
+centralized and lint-enforced for the same reasons it has typed ops
 in the first place.
 
 **Sources:** [Solid Project](https://solidproject.org/),
@@ -75,10 +75,10 @@ pattern.
 designed for global indexing — relays slurp everyone's firehose so
 anyone can build a search engine over the network. Likewise
 is *private-by-default mesh*, gated by UCAN delegations with
-sanitisation caveats, where every op crossing the wire passes
+sanitization caveats, where every op crossing the wire passes
 through a capability filter. AT has no UCAN-style delegation, no
-work scheduling or routing, no inference-snapshot artefacts, no
-multi-projection materialisation, no evidence→claim→episode
+work scheduling or routing, no inference-snapshot artifacts, no
+multi-projection materialization, no evidence→claim→episode
 derivation DAG, and no derived-data invalidation. AT records are
 user-authored social objects; Likewise ops include
 machine-derived hypotheses with provenance back to evidence and a
@@ -120,7 +120,7 @@ seen serious adoption (NIP-26 was largely abandoned). There is no
 derived state, no projections, no evidence-or-claim model, no work
 routing. Nostr is intentionally public broadcast; encrypted DMs
 exist but are a thin add-on. Nostr's tag system is freeform and
-emergent; Likewise's predicate vocabulary is centralised and
+emergent; Likewise's predicate vocabulary is centralized and
 small by design, because predictable derivation requires a closed
 vocabulary.
 
@@ -214,21 +214,21 @@ current direction of the working group; v0.10 was the last
 JWT-shaped revision.
 
 **How Likewise uses UCAN.** Every `DelegateUcan` op carries
-a v0.10 token; an implementation's UCAN view materialises the
+a v0.10 token; an implementation's UCAN view materializes the
 delegation graph and enforces strict attenuation per hop. Likewise
 **extends UCAN's policy/caveat slot** with a domain-specific
 caveat set: `source_types`, `predicates`, `kind_prefix`,
 `time_range`, and a `sanitize` directive (StripGeo,
 RedactParticipants, TruncateContent, StripCustomMetadata). These
 plug into a capability policy engine that runs authorization plus
-transitive-cascade plus field-level sanitisation on every outbound
+transitive-cascade plus field-level sanitization on every outbound
 op stream. Likewise also extends the Resource and Action
 enums with `Job` and `Schedule` so work routing rides the same
 delegation graph.
 
 **Migration cost.** Likewise is currently on UCAN v0.10. The
 v0.10 → v1.0 migration is non-trivial (envelope format and
-canonicalisation differ) and is tracked as
+canonicalization differ) and is tracked as
 [an open issue](99-open-issues.md).
 
 **Sources:** [UCAN Specification](https://github.com/ucan-wg/spec),
@@ -244,7 +244,7 @@ summaries until peers converge. Works over any byte transport.
 **Where it overlaps with Likewise.** Both are
 append-history-based and target offline-first multi-device.
 Likewise's "rebuild projections from op log" is structurally
-similar to Automerge's "materialise document state from op
+similar to Automerge's "materialize document state from op
 history."
 
 **Where it diverges.** Automerge is content-agnostic — it merges
@@ -265,8 +265,8 @@ Likewise is not trying to play that game.
 ## Ossa
 
 Ossa (James Parker, August 2025) is a draft peer-to-peer protocol
-for replacing centralised cloud apps with locally-stored,
-encrypted, CRDT-synchronised data. Stores are polymorphic state
+for replacing centralized cloud apps with locally-stored,
+encrypted, CRDT-synchronized data. Stores are polymorphic state
 containers identified by content hash and discoverable via a
 distributed hash table; updates form a DAG of digitally signed,
 encrypted CRDT operations; access-control changes go through a
@@ -290,7 +290,7 @@ CRDTs. Likewise's whole premise, by contrast, is the typed
 knowledge-graph vocabulary baked into the op log, with
 deterministic projections rather than generic CRDT merge, and
 last-write-wins-by-OpId rather than per-field CRDT semantics.
-Authorisation diverges similarly: Ossa uses Byzantine
+Authorization diverges similarly: Ossa uses Byzantine
 fault-tolerant consensus for access-control changes; Likewise
 uses UCAN delegation with attenuated caveats and per-op
 signatures. Most importantly, Ossa has no analogue for the
@@ -301,14 +301,14 @@ Ossa is closest to the Iroh / Automerge / Willow constellation
 with a typed knowledge-graph model and an auditable-inference
 layer.
 
-**Source:** [Ossa: Towards the Next Generation Web](https://jamesparker.me/blog/post/2025/08/04/ossa-towards-the-next-generation-web).
+**Source:** [Ossa: Toward the Next Generation Web](https://jamesparker.me/blog/post/2025/08/04/ossa-toward-the-next-generation-web).
 
 ## Willow Protocol
 
 Willow (2023+) is an authenticated-sync protocol designed for
 partial replication of large keyed datasets with capability-based
 access control and **confidential sync** — peers only learn about
-data they are authorised to see, including not learning *what they
+data they are authorized to see, including not learning *what they
 are missing*.
 
 Data lives in namespaces, subspaces, paths, and entries. An entry
@@ -336,7 +336,7 @@ underneath what Likewise does. Conversely, Willow's
 confidential sync is **stronger than what Likewise does
 today** — Likewise relies on the sender honestly applying
 its capability filter server-side, where Willow's design prevents
-peers from probing for unauthorised data at all. This is a real
+peers from probing for unauthorized data at all. This is a real
 gap, and one we expect to close some day; it is tracked as an
 [open issue](99-open-issues.md). Willow's destructive
 editing via prefix-pruning is also more aggressive than
@@ -361,7 +361,7 @@ turn out to be that one.
   close, but they are schema systems, not lifecycle models with
   derivation DAGs and tombstone-cascade semantics.
 - **Inference auditability as a separable layer.** The protocol
-  defines a `likewise.inference.snapshot` artefact type and a
+  defines a `likewise.inference.snapshot` artifact type and a
   conditional invariant that requires snapshots from any node
   operating under the user's root delegation, or under a
   delegation whose `audit_inference` caveat the user has set. Every
@@ -371,7 +371,7 @@ turn out to be that one.
   state as a thing that needs provenance back to evidence. The
   audit pipeline is a *separable layer* (Part 2 of the
   specification), so a substrate-only peer — for example, an
-  organisation node receiving a scoped slice of the user's graph —
+  organization node receiving a scoped slice of the user's graph —
   is conformant without participating in audit unless the user
   required it via caveat.
 - **Domain-extended UCAN caveats including
@@ -389,24 +389,24 @@ turn out to be that one.
   inference, detail, debug-graph) tuned for on-device LLM prompting,
   UI reads, and ranking from a single log.
 - **A substrate for consensual commercial data sharing.** The
-  capabilities, caveats, and sanitisation rules that secure the
-  user's own mesh generalise directly to delegations to
+  capabilities, caveats, and sanitization rules that secure the
+  user's own mesh generalize directly to delegations to
   *organisations* the user invites in. A retailer's node, a
   clinic's node, an employer's scheduling assistant — each can run
   a conformant peer with a scope-restricted view of the user's
-  graph, receiving only the claims the user authorised, with
-  sanitisation enforced at the wire boundary. None of the projects
+  graph, receiving only the claims the user authorized, with
+  sanitization enforced at the wire boundary. None of the projects
   above target this user-org-consent shape: they are either
   personal-only (Iroh, local-first, Automerge) or
   public-broadcast (AT, Nostr), with Solid the closest in
-  spirit but lacking the caveat + sanitisation vocabulary that
+  spirit but lacking the caveat + sanitization vocabulary that
   makes scoped commercial sharing tractable in practice. See
   [Motivation: Consensual data partnership](motivation.md#consensual-data-partnership).
 
 ### What Likewise doesn't do that one of these does well
 
 - **Confidential sync.** Willow's design prevents peers from
-  probing for data they are not authorised to see. Likewise
+  probing for data they are not authorized to see. Likewise
   relies on the sender honestly applying its capability filter
   server-side. Closing this gap is an
   [open issue](99-open-issues.md).

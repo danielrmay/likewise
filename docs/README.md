@@ -24,12 +24,12 @@ this order:
    Protocol, Nostr, Iroh, the local-first manifesto, and UCAN.
 
 If you are implementing a compatible node, the normative
-specification is organised into three parts:
+specification is organized into three parts:
 
 - **Part 1: The substrate** — chapters
   [00 Conventions](00-conventions.md) through
   [12 State Machines](12-fsms.md) (skipping chapter 09).
-  Sufficient for any conformant node, including organisation
+  Sufficient for any conformant node, including organization
   peers consuming a scoped slice of a user's graph. If you are
   building a substrate-only peer, this is everything you need.
 - **Part 2: The inference pipeline** —
@@ -37,7 +37,7 @@ specification is organised into three parts:
   [Inference Audit](13-inference-audit.md). Adds the
   vocabulary by which nodes cooperate on a user's work and the
   convention by which audited inference calls become recoverable
-  artefacts on the log. Required for nodes participating in
+  artifacts on the log. Required for nodes participating in
   distributed work; substrate-only peers MAY ignore.
 - **Annex: Application conventions** —
   [Episodes, Suggested Actions, Salience](annex-conventions.md).

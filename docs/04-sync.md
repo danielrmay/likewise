@@ -2,8 +2,8 @@
 
 This chapter specifies how nodes exchange operations. The protocol
 defines exactly one endpoint, two HTTP methods, and one cursor.
-The simplicity is intentional: synchronisation is the most
-load-bearing operation in a decentralised system, and richer
+The simplicity is intentional: synchronization is the most
+load-bearing operation in a decentralized system, and richer
 protocols are harder to implement compatibly.
 
 ```mermaid
@@ -102,7 +102,7 @@ Headers:
   server chose to filter.
 - `X-Likewise-Mesh-Rules-Hash` — the server's current mesh-rules
   hash. The requester MUST compare to its own; on mismatch the
-  pause-on-drift behaviour in Section 6 applies.
+  pause-on-drift behavior in Section 6 applies.
 
 ### 3.3 Idempotence and safety
 
@@ -143,11 +143,11 @@ Where:
   recipient's log.
 - `duplicated` is the number that the recipient already had on its
   log (deduplicated by `OpId`).
-- `rejected` is the number that failed authorisation, signature
+- `rejected` is the number that failed authorization, signature
   verification, or schema validation.
 
 The recipient MUST verify each incoming operation per
-[Signatures](06-signatures.md) and authorise it per
+[Signatures](06-signatures.md) and authorize it per
 [UCAN and Caveats](07-ucan-and-caveats.md). Operations that fail
 either check MUST be excluded from `appended` and counted toward
 `rejected`. Implementations SHOULD log rejections with enough
@@ -166,17 +166,17 @@ second time.
 A server MUST filter outbound operations by the requester's
 capability set before responding. The filter:
 
-1. Authorises each candidate operation against the requester's
-   delegation chain. Operations the requester is not authorised to
+1. Authorizes each candidate operation against the requester's
+   delegation chain. Operations the requester is not authorized to
    read are excluded.
 2. Applies any `sanitize` caveats that govern the requester's
-   delegation. Sanitised operations have signatures cleared
-   per [Wire Format](03-wire-format.md#6-sanitised-operations).
+   delegation. Sanitized operations have signatures cleared
+   per [Wire Format](03-wire-format.md#6-sanitized-operations).
 
 The full filter pipeline is specified in
 [UCAN and Caveats](07-ucan-and-caveats.md). The contract here is
 that the wire never carries operations the requester is not
-authorised to see.
+authorized to see.
 
 ## 6. The mesh-rules-hash handshake
 
@@ -193,7 +193,7 @@ and response. On mismatch:
   re-attempt the same exchange before resolving the drift.
 
 The rationale is that two nodes operating under different
-mesh-rules documents may both believe a given op is authorised
+mesh-rules documents may both believe a given op is authorized
 but disagree about what its caveats mean. Continuing to sync in
 that condition silently corrupts the shared interpretation of
 the log.
@@ -213,7 +213,7 @@ MUST batch their submissions accordingly.
 
 A v0.1 server SHOULD enforce a per-peer rate limit. The
 specification does not mandate a particular rate; servers MAY
-return `429 Too Many Requests` and clients MUST honour `Retry-After`.
+return `429 Too Many Requests` and clients MUST honor `Retry-After`.
 
 ## 8. Order of application on the receiver
 
@@ -254,7 +254,7 @@ polling.
 
 > Informative section. Does not impose requirements.
 
-A reader familiar with replicated-log systems will recognise the
+A reader familiar with replicated-log systems will recognize the
 shape: a frontier-based pull plus an idempotent push is a
 standard pattern. v0.1 deliberately resists adding more —
 batched merkle-trees, differential range queries, sparse-index
@@ -265,5 +265,5 @@ The cost is that catching up a long-disconnected node from
 genesis is a sequence of paginated pulls rather than a bulk
 transfer. For the meshes this protocol targets — small, mostly
 warm, mostly online — that cost is negligible. Future revisions
-MAY add bulk-transfer modes for first-synchronisation and very-
+MAY add bulk-transfer modes for first-synchronization and very-
 large-mesh scenarios; v0.1 does not.

@@ -15,7 +15,7 @@ detached-JWS envelope are specified in [Signatures](06-signatures.md).
 ## 1. Encoding format
 
 The canonical encoding is **postcard**, a compact deterministic
-binary serialisation defined at
+binary serialization defined at
 <https://postcard.jamesmunns.com/>. Implementations MUST use
 postcard's deterministic ordering and varint conventions.
 
@@ -132,18 +132,18 @@ the single most error-prone aspect of v0.1 implementation.
 Implementers SHOULD test it explicitly in cross-language
 interoperability fixtures.
 
-## 6. Sanitised operations
+## 6. Sanitized operations
 
-When an operation is sanitised (a caveat strips fields before
+When an operation is sanitized (a caveat strips fields before
 crossing a delegation; see [UCAN and Caveats](07-ucan-and-caveats.md)),
 the sender MUST clear the `signature` field. The recipient MUST
-NOT attempt to verify a signature on a sanitised op.
+NOT attempt to verify a signature on a sanitized op.
 
-Sanitisation happens at the sender. The recipient distinguishes
-sanitised ops from corrupted ops by the presence of a
-caveat-derived sanitisation marker on the op envelope (described
+Sanitization happens at the sender. The recipient distinguishes
+sanitized ops from corrupted ops by the presence of a
+caveat-derived sanitization marker on the op envelope (described
 in [UCAN and Caveats](07-ucan-and-caveats.md)). An op that
-arrives without a signature **and** without the sanitisation
+arrives without a signature **and** without the sanitization
 marker MUST be rejected.
 
 ## 7. Operation collections on the wire
@@ -194,7 +194,7 @@ and the v1.0 migration plan.
 
 The mesh-rules document is a small structured value carrying the
 non-negotiable parameters of a mesh (protocol version, agreed
-caveat vocabulary, agreed sanitisation rules). It is encoded
+caveat vocabulary, agreed sanitization rules). It is encoded
 canonically per Section 1, and its hash is the BLAKE3 of those
 bytes.
 
@@ -213,7 +213,7 @@ have normative meaning:
   send next.
 - `X-Likewise-Mesh-Rules-Hash: <hex>` — set by both sides on every
   request and response; mismatch triggers the handshake-pause
-  behaviour specified in [Sync](04-sync.md).
+  behavior specified in [Sync](04-sync.md).
 
 Implementations MAY define additional headers for diagnostics,
 provided they do not begin with `X-Likewise-` (which is reserved

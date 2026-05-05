@@ -8,7 +8,7 @@ calendar entries and the contact list, and the platform owned the
 account that hosted them. If you wanted your data back, you exported a
 zip file. The trade was uncomfortable but legible.
 
-That trade is no longer where the action is. The artefact platforms
+That trade is no longer where the action is. The artifact platforms
 care most about producing now is not the photo, it's the *claim about
 you* the photo helped to derive. That you go to the same coffee shop
 on Tuesdays. That this is your child. That you're probably training
@@ -16,7 +16,7 @@ for a marathon. That you and Sarah are close. None of those facts are
 in the original photo. They are inferred — sometimes by hand-written
 classifiers, increasingly by language models — and they are the part
 of the data pipeline with leverage. They are what makes a feed
-personalised, an ad targeted, a recommendation feel uncanny.
+personalized, an ad targeted, a recommendation feel uncanny.
 
 Those derived claims are not, in any practical sense, yours. You
 cannot read them. You cannot correct them. You cannot port them to
@@ -52,7 +52,7 @@ For twenty-five years, almost every successful piece of consumer
 software has agreed on the same arrangement: the party providing
 the service collects the record of the user. The cookie was an
 implementation detail. The free account was an implementation
-detail. The "personalised" feed, the loyalty card, the recommended
+detail. The "personalized" feed, the loyalty card, the recommended
 purchase — all implementation details on top of the same
 underlying contract. The party doing the work also kept the work's
 record, and the record was not the user's.
@@ -159,7 +159,7 @@ locked in, only this time the lock has a friendlier name.
 
 A protocol is different. A protocol is the rule that lets a phone
 running implementation A and a laptop running implementation B
-synchronise the same user's data without either of them being a
+synchronize the same user's data without either of them being a
 trust anchor. It lets a researcher build a node that ingests a new
 kind of evidence (medical records, fitness data) and federate into an
 existing graph. It lets the user, ten years from now, run their graph
@@ -187,7 +187,7 @@ rules.
 Today: the vendor surfaces a recommendation; the reasoning is opaque,
 and at best you get a generic "based on your activity."
 
-Under this protocol: every inference call is itself an artefact on
+Under this protocol: every inference call is itself an artifact on
 the log. The retrieved context, the model identity, and the prompt
 are recoverable. "Why did it suggest I message Sarah today" has an
 answer that consists of specific evidence and specific claims, with
@@ -203,7 +203,7 @@ Under this protocol: capabilities are first-class. You delegate a
 read capability scoped to a class of evidence (calendar entries with
 a particular tag, say) and a class of derived claim, and you can
 revoke that delegation at any time. The receiving node can only
-synchronise the slice of the log it has been authorised for. There
+synchronize the slice of the log it has been authorized for. There
 is no privileged "admin" account; there is only a graph of
 delegations rooted at the user.
 
@@ -259,7 +259,7 @@ with anyone else.
 Today, when a retailer wants to know that you regularly buy
 apples, they have to *guess*. They collect transaction logs,
 loyalty-card swipes, app session data, and ad-platform signals;
-they segment the behaviour across millions of users until a
+they segment the behavior across millions of users until a
 confident probability emerges that you are an apple-buyer; and
 the result is, at best, a guess the retailer holds about you that
 you will never see and cannot correct. The cost of producing the
@@ -281,32 +281,32 @@ issues a UCAN scoped to the retailer's node with caveats:
 - only the predicates they care about (`grocery_visit_rhythm`),
 - none of the underlying evidence (no source-typed photos or
   calendar entries cross the boundary),
-- sanitisation rules that strip descriptive content fields,
+- sanitization rules that strip descriptive content fields,
 - a time-range that auto-expires the delegation in twelve months.
 
 The retailer deploys a Likewise node — same wire protocol,
 same op log, same authority machinery — and that node
-synchronises only the slice of the user's log this delegation
-admits. The node materialises a tiny knowledge graph: possibly
+synchronizes only the slice of the user's log this delegation
+admits. The node materializes a tiny knowledge graph: possibly
 nothing more than the rhythm claim and its confidence. The
 underlying photos, locations, and basket details never leave the
 user's mesh. If the user revokes the delegation, the retailer's
-node loses its authorisation, and the slice of state it
-materialised becomes invalid by the same cascade rule that retires
+node loses its authorization, and the slice of state it
+materialized becomes invalid by the same cascade rule that retires
 any other revoked authority.
 
 This is not a hypothesis about a future protocol. The
-capabilities, caveats, sanitisation rules, and revocation
+capabilities, caveats, sanitization rules, and revocation
 semantics are already specified for the single-user mesh case
 (see [Capabilities](08-capabilities.md) and
 [UCAN and Caveats](07-ucan-and-caveats.md)). The same
-machinery generalises directly: a "node" in this protocol does
+machinery generalizes directly: a "node" in this protocol does
 not have to be a personal device. It can be any party — a
 retailer, a clinic, an employer's scheduling assistant, a
 research institution, a public-interest data trust — that the
-user has chosen to invite in. The materialisation that party
+user has chosen to invite in. The materialization that party
 holds can be as small as one claim or as large as the user
-authorises.
+authorizes.
 
 The economic shape this enables is different from the status quo.
 The retailer pays nothing for the bulk-collection infrastructure

@@ -2,10 +2,10 @@
 
 > **Part 2 of the specification, second chapter.** This chapter
 > depends on the substrate (Part 1) for op log, capabilities,
-> and the generic artefact mechanism, and on the previous
+> and the generic artifact mechanism, and on the previous
 > chapter ([Mesh Coordination & Inference](09-mesh-coordination.md))
 > for job and lease semantics. It specifies the convention by
-> which inference calls become recoverable artefacts on the log.
+> which inference calls become recoverable artifacts on the log.
 
 The Likewise substrate (Part 1) lets a user own the
 canonical record of facts derived about them. The mesh
@@ -17,19 +17,19 @@ of the protocol's derived records — becomes recoverable and
 auditable.
 
 Audit is what closes the "how did it know?" loop. A
-recommendation, a derived claim, a synthesised episode — each
+recommendation, a derived claim, a synthesized episode — each
 can be traced back, mechanically, to the model call that
 produced it, the prompt and context fed to that call, and the
 model's literal output. The mechanism is the
-`likewise.inference.snapshot` artefact: a typed artefact emitted
+`likewise.inference.snapshot` artifact: a typed artifact emitted
 alongside any audited inference call, riding the substrate's
-generic artefact machinery.
+generic artifact machinery.
 
 The chapter is short because the mechanism is small. Audit
 requires three things:
 
 1. a rule about *when* a node must emit snapshots,
-2. a *content format* for the snapshot artefact, and
+2. a *content format* for the snapshot artifact, and
 3. a *linking convention* that ties produced records back to the
    snapshot.
 
@@ -37,7 +37,7 @@ Each is specified in turn below.
 
 ## 1. When a snapshot must be emitted
 
-A node MUST emit a `likewise.inference.snapshot` artefact for every
+A node MUST emit a `likewise.inference.snapshot` artifact for every
 model call it performs in either of the following cases:
 
 1. **The node is operating under the user's root delegation.**
@@ -51,7 +51,7 @@ model call it performs in either of the following cases:
 
 2. **The node is operating under a delegation whose `caveats`
    include `audit_inference: true`.** A user delegating to an
-   organisation's node MAY attach this caveat (specified in
+   organization's node MAY attach this caveat (specified in
    [UCAN and Caveats §5.6](07-ucan-and-caveats.md#56-audit_inference))
    to require the delegated node to emit snapshots for inference
    performed against the delegated data. The snapshots become
@@ -73,12 +73,12 @@ universally would be unenforceable across organisational
 boundaries; making it caveat-controlled gives the user the lever
 they need without overreaching.
 
-## 2. The `likewise.inference.snapshot` artefact
+## 2. The `likewise.inference.snapshot` artifact
 
-A `likewise.inference.snapshot` artefact is a `CreateArtifact` op
+A `likewise.inference.snapshot` artifact is a `CreateArtifact` op
 (see [Operations §8.1](02-operations.md#81-createartifact)) whose
 `artifact_type` is the literal string
-`"likewise.inference.snapshot"`. The artefact's content (the
+`"likewise.inference.snapshot"`. The artifact's content (the
 bytes referenced by `content_hash`, optionally inlined via
 `content_inline`) MUST be a postcard-encoded record with the
 following fields, in this order:
@@ -94,11 +94,11 @@ following fields, in this order:
 | `telemetry` | Wall-clock duration, token counts (prompt + completion), latency components if available. |
 | `started_at`, `completed_at` | HLC values bracketing the call. |
 
-The artefact's envelope `source_job` field MUST be set to the
+The artifact's envelope `source_job` field MUST be set to the
 `job_id` of the job whose handler made the call. The
 `inputs_used` field MUST list every evidence id in
-`retrieved_context` (the substrate's generic-artefact contract
-already requires this for any artefact produced from evidence).
+`retrieved_context` (the substrate's generic-artifact contract
+already requires this for any artifact produced from evidence).
 
 Additional implementation-specific fields MAY be present in the
 encoded record. Future minor versions of this specification MAY
@@ -125,7 +125,7 @@ link back to the snapshot. Specifically:
 
 - A derived `CreateClaim` op produced by inference MUST include
   the snapshot's `artifact_id` in its `provenance` field.
-- A `CreateArtifact` op for any non-snapshot artefact produced by
+- A `CreateArtifact` op for any non-snapshot artifact produced by
   the same job (an embedding, a transcript) MUST set its
   `source_job` to the same job whose snapshot also references it,
   and SHOULD additionally include the snapshot's `artifact_id`
@@ -151,7 +151,7 @@ identifies as a class for which audit linking is required.
 
 ## 4. Snapshot lifecycle
 
-Snapshot artefacts inherit the substrate's generic artefact
+Snapshot artifacts inherit the substrate's generic artifact
 lifecycle (eviction, tombstone-cascade) from
 [Operations §8.1–§8.2](02-operations.md#81-createartifact). A
 node MAY set `ttl_ms` on snapshots it emits; once the TTL

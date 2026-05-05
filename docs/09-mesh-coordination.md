@@ -8,18 +8,18 @@
 >
 > The companion chapter [Inference Audit](13-inference-audit.md)
 > covers the second concern of Part 2: how inference calls
-> performed by audited nodes become recoverable artefacts on the
+> performed by audited nodes become recoverable artifacts on the
 > log.
 >
 > An implementation that wants to be a *substrate peer* — for
-> example, an organisation's node consuming a scoped slice of a
+> example, an organization's node consuming a scoped slice of a
 > user's graph for its own internal purposes — does not need to
-> implement this chapter. It can sync, verify, authorise, and
+> implement this chapter. It can sync, verify, authorize, and
 > read the log without participating in the work-routing
 > machinery. An implementation that wants to *participate in
 > distributed work* on a user's behalf — the reference
 > implementation, a server the user runs at home, a delegated
-> organisation node the user has asked to handle inference jobs
+> organization node the user has asked to handle inference jobs
 > — does need this chapter.
 
 This chapter specifies how multiple nodes cooperate on a single
@@ -31,7 +31,7 @@ conflicts between concurrent claims are resolved.
 The relevant operations were enumerated in
 [Operations](02-operations.md); this chapter specifies their
 semantics, state-machine effects, and authority requirements.
-The inference-snapshot artefact format that audited nodes emit
+The inference-snapshot artifact format that audited nodes emit
 when they execute work is specified in
 [Inference Audit](13-inference-audit.md).
 
@@ -41,7 +41,7 @@ A mesh has the following roles. A single node MAY hold more than
 one role.
 
 - **Owner.** The node that holds the user's root UCAN delegation.
-  The owner is the only node authorised to author
+  The owner is the only node authorized to author
   `DesignateCoordinator` and `RouteKind` ops (per
   [Capabilities](08-capabilities.md)). In a typical deployment
   the user's phone is the owner.
@@ -175,7 +175,7 @@ A useful pattern enabled by `RouteKind`: a phone with no GPU
 schedules synthesis jobs and routes them to a server with a
 GPU. The phone never claims those jobs because the route
 restricts claiming to the server. The same delegation graph
-that authorises the server to do the work also authorises it to
+that authorizes the server to do the work also authorizes it to
 read the prompt context.
 
 ## 6. DesignateCoordinator
@@ -276,21 +276,21 @@ implementation:
 A job kind is application-defined (the kind tells a handler what
 to do); the protocol's interest is solely in routing claims by
 prefix. An implementation MAY register handlers for kinds it
-recognises and ignore kinds it does not — claims for unrecognised
-kinds simply never arrive at the unrecognising node.
+recognizes and ignore kinds it does not — claims for unrecognized
+kinds simply never arrive at the unrecognizing node.
 
 ## 11. Inference produced by jobs
 
 When a job's handler invokes a model, the resulting inference
 call is governed by [Inference Audit](13-inference-audit.md)
 — specifically, whether the executing node is operating under
-audit-in-force conditions and, if so, what artefact and link
+audit-in-force conditions and, if so, what artifact and link
 records the call must leave behind.
 
 The relevant interactions with this chapter are:
 
 - The `source_job` field of a `likewise.inference.snapshot`
-  artefact links the snapshot back to the job whose
+  artifact links the snapshot back to the job whose
   `CompleteJob` op closed it. Implementations correlate the
   two via the substrate's `causal_deps` mechanism.
 - The job's `output_artifacts` field on `CompleteJob` SHOULD
@@ -302,6 +302,6 @@ The relevant interactions with this chapter are:
   application-defined and not normative for v0.1.
 
 See [Inference Audit](13-inference-audit.md) for the snapshot
-artefact's full content format, the linking rules from
+artifact's full content format, the linking rules from
 inference outputs back to snapshots, and the snapshot
 lifecycle.

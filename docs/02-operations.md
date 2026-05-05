@@ -11,7 +11,7 @@ and their semantics.
 Every operation, regardless of payload variant, MUST carry the
 fields described below. Implementations MAY use any in-memory
 representation; the wire-format chapter specifies the canonical
-serialisation that signatures are computed over.
+serialization that signatures are computed over.
 
 | Field | Required | Purpose |
 |-------|----------|---------|
@@ -21,7 +21,7 @@ serialisation that signatures are computed over.
 | `node_id` | yes | The originating node's `NodeId`. |
 | `causal_deps` | yes | A possibly-empty set of `OpId` predecessors the author wishes to mark as explicit causal dependencies. May be empty when the author is willing to rely solely on the HLC ordering. |
 | `payload` | yes | One of the typed variants enumerated below. |
-| `signature` | conditional | Detached JWS over the canonical encoding of the op with the signature field cleared. Required for all ops except those that have been intentionally sanitised by an authorised filter; see [UCAN and Caveats](07-ucan-and-caveats.md). |
+| `signature` | conditional | Detached JWS over the canonical encoding of the op with the signature field cleared. Required for all ops except those that have been intentionally sanitized by an authorized filter; see [UCAN and Caveats](07-ucan-and-caveats.md). |
 
 A receiving node MUST reject any operation whose envelope is
 malformed, whose `id` collides with an op already in the log under
@@ -58,7 +58,7 @@ flowchart TD
 - **Claim operations** create and evolve claims.
 - **Job operations** schedule, claim, and complete units of work.
 - **Artifact operations** create and evict generic byproducts of
-  derivation, including the inference-snapshot artefacts used by
+  derivation, including the inference-snapshot artifacts used by
   Part 2.
 - **User-assertion operations** carry the user's overrides on
   derived state.
@@ -71,7 +71,7 @@ application-layer conventions used by the reference implementation
 to surface the substrate to a user. They are documented in
 [Annex: Application Conventions](annex-conventions.md), not here.
 A node that does not surface the graph to a user — for example,
-an organisation's node consuming a scoped slice — has no need to
+an organization's node consuming a scoped slice — has no need to
 implement them.
 
 Subsequent sections describe each variant. Field types use
@@ -121,7 +121,7 @@ Introduces a new entity into the mesh.
 | Field | Purpose |
 |-------|---------|
 | `entity_id` | An `EntityId`. |
-| `entity_type` | `Person`, `Place`, `Organisation`, `Device`, `Account`, `Document`, `Concept`, `Commitment`, `Event`. Future minor versions MAY add types. |
+| `entity_type` | `Person`, `Place`, `Organization`, `Device`, `Account`, `Document`, `Concept`, `Commitment`, `Event`. Future minor versions MAY add types. |
 | `initial_label` | Human-readable name. |
 | `source_claims` | The claims that motivated the creation, if any. |
 
@@ -179,7 +179,7 @@ Rejected, Superseded, Stale) whose transitions are specified in
 | `claim_id` | A `ClaimId`. |
 | `claim_type` | `Attribute`, `Relationship`, `Membership`, `Temporal`, `Spatial`, `Behavioral`, `Derived`. |
 | `subject` | The `EntityId` the claim is about. |
-| `predicate` | A predicate from the centralised vocabulary. The vocabulary is part of the specification; future minor versions MAY add predicates. |
+| `predicate` | A predicate from the centralized vocabulary. The vocabulary is part of the specification; future minor versions MAY add predicates. |
 | `object` | One of: an `EntityId`, text, a number, a boolean, a timestamp, or a structured object. |
 | `initial_status` | Typically `Hint` or `Claim`. |
 | `confidence` | A confidence vector with multiple components. |
@@ -253,7 +253,7 @@ Records that a job finished and its outputs are on the log.
 |-------|---------|
 | `job_id` | The job. |
 | `output_claims` | Claims produced. |
-| `output_artifacts` | Artefacts produced. |
+| `output_artifacts` | Artifacts produced. |
 | `telemetry` | Duration, token counts, model latency. |
 
 ### 6.4 YieldWork
@@ -317,10 +317,10 @@ mandate this.
 
 ## 8. Artifact operations
 
-Artefacts are generic machine-produced byproducts of derivation:
+Artifacts are generic machine-produced byproducts of derivation:
 embeddings, transcripts, OCR text, and the inference snapshots
-that record model calls. The artefact mechanism is substrate;
-specific artefact types layered on top of it (notably
+that record model calls. The artifact mechanism is substrate;
+specific artifact types layered on top of it (notably
 `likewise.inference.snapshot`, used by [Part 2](09-mesh-coordination.md))
 inherit lifecycle and storage from this section.
 
@@ -332,23 +332,23 @@ inherit lifecycle and storage from this section.
 | `artifact_type` | Short identifier (`"image_embedding"`, `"ocr_text"`, `"transcript"`, `"likewise.inference.snapshot"`, ...). |
 | `source_job` | Optional link to the producing job. |
 | `inputs_used` | Evidence inputs. |
-| `content_hash` | BLAKE3 of the artefact content. |
-| `content_inline` | Optional inline bytes for small artefacts. |
-| `model_id`, `model_version` | Optional. Required for inference-snapshot artefacts. |
+| `content_hash` | BLAKE3 of the artifact content. |
+| `content_inline` | Optional inline bytes for small artifacts. |
+| `model_id`, `model_version` | Optional. Required for inference-snapshot artifacts. |
 | `size_bytes` | Content size. |
-| `ttl_ms` | Optional time-to-live, after which the artefact is eligible for eviction. |
+| `ttl_ms` | Optional time-to-live, after which the artifact is eligible for eviction. |
 
 The `likewise.inference.snapshot` artifact type is specified in
 detail in [Inference Audit](13-inference-audit.md).
 
 ### 8.2 EvictArtifact
 
-Drops the content of an artefact (the metadata is retained on
+Drops the content of an artifact (the metadata is retained on
 the log).
 
 | Field | Purpose |
 |-------|---------|
-| `artifact_id` | Target artefact. |
+| `artifact_id` | Target artifact. |
 
 ## 8a. Application-layer ops (informative pointer)
 
@@ -403,7 +403,7 @@ A `RevokeUcan` op MUST be authored by the issuer of the
 delegation it revokes (or by a node with write authority over
 that DID's delegations under a still-valid parent). Receiving
 nodes MUST prune the subgraph of delegations beneath the
-revoked one and MUST re-evaluate the authorisation of any ops
+revoked one and MUST re-evaluate the authorization of any ops
 whose authority depended on it.
 
 ### 9.4 RouteKind

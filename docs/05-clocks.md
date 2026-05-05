@@ -118,7 +118,7 @@ seeing `remote` is later in the total order than `remote`.
 
 The recv discipline MUST be applied for every remote operation,
 including operations that the receiver chooses to discard for
-authorisation reasons. (Failing to advance the clock for
+authorization reasons. (Failing to advance the clock for
 filtered-out ops produces an observable hole in causal ordering
 that breaks the frontier invariant.)
 
@@ -135,7 +135,7 @@ will not.
 The protocol does not specify a skew bound. Implementations
 SHOULD:
 
-- Synchronise their wall clocks against an external time source
+- Synchronize their wall clocks against an external time source
   when one is available (NTP, a peer's clock).
 - Treat as suspicious any received op whose `wall_ms` is more
   than one hour ahead of `wall_now`.

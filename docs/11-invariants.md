@@ -26,7 +26,7 @@ Concretely:
   bridge) MUST mediate every mutation through the op-log layer.
 - Any apparent state — a notification badge, a cached
   thumbnail — that lives outside the log is a presentation
-  artefact, not a fact.
+  artifact, not a fact.
 
 ## I-2. Projection disposability
 
@@ -77,7 +77,7 @@ outgoing edges in finite steps.
 ## I-5. Sync converges operations, not projections
 
 **Two nodes that have applied the same set of operations agree on
-canonical state.** Differences in projection materialisation are
+canonical state.** Differences in projection materialization are
 permitted — implementations may differ in salience algorithms or
 indexing strategies — but the underlying truth they project from
 MUST be the same.
@@ -109,14 +109,14 @@ The frontier-based sync cursor depends on this invariant.
 ## I-7. Authentic authorship
 
 **Every authored operation is signed by its author, or is a
-deliberately sanitised op admitted by an authority chain.**
+deliberately sanitized op admitted by an authority chain.**
 
 There are exactly two ways for an op to appear unsigned on the
 wire:
 
-1. The op has been sanitised under a `sanitize` caveat per
+1. The op has been sanitized under a `sanitize` caveat per
    [UCAN and Caveats](07-ucan-and-caveats.md). Such an op
-   carries a sanitisation marker.
+   carries a sanitization marker.
 2. The op is the bootstrap `DelegateUcan` that establishes a
    new node's binding, where authentication is provided by
    the embedded UCAN's own signature rather than by the op
@@ -144,7 +144,7 @@ requires.
 ## I-9. Inference is recorded (when audit is in force)
 
 **A node performing inference under audit MUST emit an
-`InferenceSnapshot` artefact for every model call.**
+`InferenceSnapshot` artifact for every model call.**
 
 Audit is *in force* in two cases:
 
@@ -158,7 +158,7 @@ Audit is *in force* in two cases:
    own personal mesh auditable end-to-end.
 
 2. **The node is operating under a delegation whose caveats
-   require audit.** A user delegating to an organisation's
+   require audit.** A user delegating to an organization's
    node MAY attach an `audit_inference` caveat (specified in
    [UCAN and Caveats](07-ucan-and-caveats.md)) requiring the
    delegated node to emit snapshots for inference performed
@@ -170,7 +170,7 @@ Audit is *in force* in two cases:
 A delegated node operating *without* an audit caveat is not
 required by this invariant to record its internal inference.
 Whatever the delegated node does with the data it received —
-training, summarisation, classification, recommendation — is
+training, summarization, classification, recommendation — is
 governed by the delegation's other caveats and by whatever
 out-of-band agreements the user and the delegated party have.
 This is a deliberate scope choice: the protocol's role is to
@@ -178,7 +178,7 @@ let the user decide whether audit applies, not to mandate it
 for every party that ever processes a piece of the user's
 graph.
 
-When audit is in force, every derived claim, every materialised
+When audit is in force, every derived claim, every materialized
 record (including episodes and suggested actions where they
 exist as application-layer conventions), and every other
 inference output MUST link to its producing snapshot via the
@@ -186,9 +186,9 @@ record's provenance fields or via `causal_deps`. The "how did
 it know?" question has, when audit is in force, a literal
 answer consisting of evidence and claims.
 
-The snapshot artefact's required content (model identity,
+The snapshot artifact's required content (model identity,
 retrieved context, prompt, output, telemetry) is specified in
-[Inference Audit §2](13-inference-audit.md#2-the-likewiseinferencesnapshot-artefact).
+[Inference Audit §2](13-inference-audit.md#2-the-likewiseinferencesnapshot-artifact).
 
 ## I-10. Authority is verified per op
 
@@ -203,7 +203,7 @@ not yet active, or revoked MUST NOT enter projections.
 
 When a delegation is revoked retroactively (per
 [Capabilities](08-capabilities.md#53-on-transitive-revocation)),
-ops that no longer authorise MUST be removed from projections,
+ops that no longer authorize MUST be removed from projections,
 even though their op-log entries are preserved.
 
 ## A note on enforcement

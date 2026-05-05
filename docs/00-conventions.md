@@ -53,14 +53,14 @@ Likewise follows a semantic-versioning shape:
   rules, the operation payload encoding, or the meaning of a
   capability caveat is a major-version change.
 - **Minor version** changes are backwards-compatible additions: new
-  operation variants, new caveats, new sanitisation rules, new
+  operation variants, new caveats, new sanitization rules, new
   reserved fields with safe defaults. An implementation that does
   not understand a minor-version addition MUST treat it as
   unknown-but-tolerated where the spec allows, and reject the op
   otherwise. The specification chapter that introduces an addition
   states which.
 - **Patch version** changes are editorial only — they do not change
-  observable behaviour.
+  observable behavior.
 
 Two implementations on the same major version SHOULD interoperate
 without negotiation. Two implementations on different major
@@ -77,7 +77,7 @@ specification.
 - **Node** — a process running an implementation of this protocol.
   A node has a long-lived **NodeId** and a corresponding signing
   key. A node is the unit of authorship for operations.
-- **User** — the human (or organisation) at whose authority all
+- **User** — the human (or organization) at whose authority all
   delegations in a mesh are rooted. Identified by a DID.
 - **Mesh** — the set of nodes belonging to one user. Mesh
   membership is governed by capability delegations rooted at the
@@ -86,7 +86,7 @@ specification.
   change. Defined in [Operations](02-operations.md).
 - **Op log** (or just **log**) — a node's append-only sequence of
   operations.
-- **Projection** — a materialised read view derived from the op
+- **Projection** — a materialized read view derived from the op
   log. Defined in [Projections](10-projections.md).
 - **Evidence** — an immutable raw input the user has chosen to
   ingest, referenced by content hash. Defined in
@@ -95,7 +95,7 @@ specification.
   evidence and other claims. Defined in
   [Data Model](01-data-model.md).
 - **Capability** — a triple `(Resource, Action, Caveats)`
-  authorising a node to perform a class of operation. Defined in
+  authorizing a node to perform a class of operation. Defined in
   [Capabilities](08-capabilities.md).
 - **HLC** — hybrid logical clock. The timestamp scheme defined in
   [Clocks](05-clocks.md).
@@ -122,7 +122,7 @@ order:
 The protocol was developed alongside an in-progress reference
 implementation (working codename Cortex — provisional; see
 [Implementations](implementations.md)). The implementation is
-not yet publicly available; once it is, its observed behaviour
+not yet publicly available; once it is, its observed behavior
 will become the practical fall-back authority for v0.1
 ambiguities. Until then, file an issue.
 

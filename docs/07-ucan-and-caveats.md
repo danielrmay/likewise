@@ -52,14 +52,14 @@ The set of legal `resource` and `action` values, and the legal
 `caveats` schema, are specified in
 [Capabilities](08-capabilities.md). This chapter covers how
 delegations are linked, attenuated, and revoked; the next
-chapter covers what they can authorise.
+chapter covers what they can authorize.
 
 ## 3. The delegation graph
 
 A capability flows through the mesh as a chain of UCAN
 delegations rooted at the user. The user issues their root
 delegation to one or more nodes (typically the phone),
-authorising those nodes to author further delegations.
+authorizing those nodes to author further delegations.
 
 When a delegation `D_b` cites a parent `D_a` in its `prf`
 array, the receiving node MUST:
@@ -108,7 +108,7 @@ the broadened delegation was signed correctly.
 ## 5. Caveats
 
 Every caveat is **optional**, meaning "no restriction along this
-axis." A delegation with no caveats authorises the full scope
+axis." A delegation with no caveats authorizes the full scope
 of the `(resource, action)` pair (subject to any restrictions
 inherited from its parent).
 
@@ -177,52 +177,52 @@ Narrowing: child's range MUST be contained within parent's.
 ### 5.5 `sanitize`
 
 Specifies field-level redactions that MUST be applied to
-operations crossing this delegation. Sanitisation is unique
+operations crossing this delegation. Sanitization is unique
 among caveats in that it does not *block* an op; it modifies it
 in flight.
 
-The v0.1 sanitisation rules are:
+The v0.1 sanitization rules are:
 
 | Rule | Effect |
 |------|--------|
-| `StripGeo` | Remove latitude, longitude, altitude, and any other geographic coordinates from evidence metadata, claim objects, and artefact bodies. |
-| `RedactParticipants` | Replace participant identifiers with anonymised placeholders consistent within the operation but not linkable to the original entities. |
+| `StripGeo` | Remove latitude, longitude, altitude, and any other geographic coordinates from evidence metadata, claim objects, and artifact bodies. |
+| `RedactParticipants` | Replace participant identifiers with anonymized placeholders consistent within the operation but not linkable to the original entities. |
 | `TruncateContent(N)` | Truncate any content body to at most N bytes. |
 | `StripCustomMetadata` | Remove any custom-metadata fields not specified by the protocol. |
 
-A delegation MAY specify multiple sanitise rules; they are
+A delegation MAY specify multiple sanitize rules; they are
 applied in the order listed.
 
 Narrowing: a child delegation's `sanitize` rule list MUST be a
-superset of its parent's (sanitisation strengthens at each hop).
+superset of its parent's (sanitization strengthens at each hop).
 
-#### 5.5.1 The sanitisation marker
+#### 5.5.1 The sanitization marker
 
-When an op is sanitised on the wire, the sanitiser MUST clear
+When an op is sanitized on the wire, the sanitizer MUST clear
 the op's `signature` field (per
-[Signatures](06-signatures.md)) AND attach a sanitisation
+[Signatures](06-signatures.md)) AND attach a sanitization
 marker. The marker is a payload-internal field whose presence
 both:
 
 - tells the receiver the op was deliberately filtered, not
   corrupted, and
-- records the chain of sanitise rules applied (so the receiver
+- records the chain of sanitize rules applied (so the receiver
   can audit that the rules match a delegation the sender held).
 
 The exact wire shape of the marker is specified in
-[Wire Format](03-wire-format.md#6-sanitised-operations); the
+[Wire Format](03-wire-format.md#6-sanitized-operations); the
 contract here is that the marker is a structurally-required
 part of any unsigned, deliberately-modified op.
 
-A receiver MUST verify that the marker's claimed sanitise
+A receiver MUST verify that the marker's claimed sanitize
 chain is admitted by some delegation the sender holds reaching
 back to the user. A marker that does not match an
-authorised chain MUST cause the op to be rejected.
+authorized chain MUST cause the op to be rejected.
 
 ### 5.6 `audit_inference`
 
 Requires the delegated node to emit
-`likewise.inference.snapshot` artefacts (see
+`likewise.inference.snapshot` artifacts (see
 [Inference Audit](13-inference-audit.md))
 for every model call performed against data covered by this
 delegation.
@@ -230,7 +230,7 @@ delegation.
 | Form | Meaning |
 |------|---------|
 | absent or `false` | No requirement. The delegated node MAY emit snapshots for its own bookkeeping but is not obliged to. |
-| `true` | The delegated node MUST emit a `likewise.inference.snapshot` artefact for every inference call performed against ops admitted by this delegation. |
+| `true` | The delegated node MUST emit a `likewise.inference.snapshot` artifact for every inference call performed against ops admitted by this delegation. |
 
 Narrowing: a child caveat with `audit_inference: true` is
 admissible under any parent (the parent did not require audit;
@@ -242,7 +242,7 @@ relaxed.
 
 This caveat is the mechanism by which the user requires
 auditable inference from a delegated party — for example, an
-organisation running a Likewise node under a scoped
+organization running a Likewise node under a scoped
 delegation. When a delegation carries `audit_inference: true`,
 the snapshots that the delegated node emits become themselves
 operations on the user's log (subject to the user's read
@@ -263,7 +263,7 @@ MUST:
    UCAN view.
 2. Recursively mark any delegations whose `prf` cites the
    revoked one as revoked (transitive cascade).
-3. Re-evaluate the authorisation of every operation whose
+3. Re-evaluate the authorization of every operation whose
    authority chain depended on a now-revoked delegation. Such
    operations are NOT removed from the log, but they MUST NOT
    be applied to projections.
@@ -275,21 +275,21 @@ defer the rebuild to the next idle window when latency permits.
 A revoked delegation cannot be un-revoked. To restore the
 authority, the issuer issues a new delegation.
 
-## 7. The authorise-and-filter pipeline
+## 7. The authorize-and-filter pipeline
 
 When a node receives operations (whether from its own scheduler
 authoring them locally or from a remote peer), it MUST run the
 following pipeline before applying them to projections:
 
 1. **Verify signatures** per [Signatures](06-signatures.md).
-2. **Authorise** each op against the authoring node's effective
+2. **Authorize** each op against the authoring node's effective
    capability set — the union of capabilities derived from
    delegations rooted at the user, restricted by all caveats
-   in the chain. An op is authorised iff its `Action` and
+   in the chain. An op is authorized iff its `Action` and
    `Resource` are admitted and its caveats are satisfied.
 3. **Apply transitive cascades**: re-evaluate ops whose
    authority depended on now-revoked delegations.
-4. **Sanitise** outbound ops crossing delegations with
+4. **Sanitize** outbound ops crossing delegations with
    `sanitize` caveats.
 
 Steps 1-3 run on receive; step 4 runs on send. The pipeline is
@@ -309,8 +309,8 @@ delegation:
 Subsequent delegations cite the root (or a descendant of it) as
 their proof. The user holds the keypair backing their DID; an
 implementation MUST provide the user with a mechanism to
-authorise root re-issuance and to revoke the existing root.
+authorize root re-issuance and to revoke the existing root.
 
 The protocol does not specify the user-interface for this
-authorisation; that is implementation-defined. The protocol
+authorization; that is implementation-defined. The protocol
 specifies only the wire format of the resulting UCANs.

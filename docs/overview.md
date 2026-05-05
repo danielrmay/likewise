@@ -54,13 +54,13 @@ themselves.
 
 **Artifact operations** record machine-produced byproducts of
 derivation: embeddings, transcripts, OCR text, and the
-inference-snapshot artefacts that record model calls. Artefacts
+inference-snapshot artifacts that record model calls. Artifacts
 ride the same op-log machinery as everything else, with a TTL and
 eviction lifecycle for storage management.
 
 **Job and lease operations** record work the mesh has scheduled,
 claimed, completed, or yielded — for example, "this server should
-synthesise an episode for last week." This is how a phone offloads
+synthesize an episode for last week." This is how a phone offloads
 inference to a laptop without anyone having to be in charge of the
 whole mesh.
 
@@ -80,7 +80,7 @@ used by the reference implementation, not part of the substrate
 proper. They are documented in
 [Annex: Application Conventions](annex-conventions.md). A
 node that does not surface records to a user — for example, an
-organisation's node — has no need to emit them.
+organization's node — has no need to emit them.
 
 The full substrate taxonomy is in
 [Operations](02-operations.md). For now the important point
@@ -134,18 +134,18 @@ catching up after a week apart or staying current minute-by-minute.
 Capabilities filter what crosses the wire. A node holding only a
 read-only delegation for calendar evidence will not be served claims
 about photos. The filter runs on the source side. Operations that
-must be sanitised before crossing — strip GPS, redact participants,
-truncate body text — have their signatures cleared at sanitisation
+must be sanitized before crossing — strip GPS, redact participants,
+truncate body text — have their signatures cleared at sanitization
 time, which makes the change visible to the recipient as a
 deliberate intent rather than a corruption.
 
 A node does not have to be one of the user's own devices. The same
 delegation machinery scopes what an *invited third party* — an
-organisation, a clinic, a service the user has chosen to share with
+organization, a clinic, a service the user has chosen to share with
 — can see. A retailer running a Likewise node receives only
-the claims the user delegated to them, sanitised per the caveats
-the user attached. The same wire format that synchronises a phone
-and a laptop also synchronises a personal mesh and a partner the
+the claims the user delegated to them, sanitized per the caveats
+the user attached. The same wire format that synchronizes a phone
+and a laptop also synchronizes a personal mesh and a partner the
 user has explicitly opted in. See
 [Motivation: Consensual data partnership](motivation.md#consensual-data-partnership).
 
@@ -160,22 +160,22 @@ class, evidence of a certain class, jobs of a certain kind), an
 *action* (read, write, schedule, claim, complete), and a set of
 *caveats* that narrow it (only evidence of these source types, only
 claims with these predicates, only jobs in this time range, only
-operations that have been sanitised in these specific ways).
+operations that have been sanitized in these specific ways).
 
 Delegations form a graph rooted at the user. Revoking a delegation
 prunes the subgraph beneath it. The protocol specifies how a node
 must interpret an incoming op against its capability set, so any
-two implementations agree on whether a given op was authorised at
+two implementations agree on whether a given op was authorized at
 the moment it was sent.
 
 ## How inference is audited
 
-When a node operating under audit calls a model — to summarise a
+When a node operating under audit calls a model — to summarize a
 window, to draft a recommendation, to extract entities from a
 photo caption — the call itself becomes an operation. The
 retrieved context, the prompt, the model identity, the timing,
 and the output are all recorded as a `likewise.inference.snapshot`
-artefact on the log.
+artifact on the log.
 
 Audit is in force in two cases:
 
@@ -186,7 +186,7 @@ Audit is in force in two cases:
   satisfies and is what makes the user's personal mesh
   auditable end-to-end.
 - **The user has required it of a delegated party.** A user
-  delegating to an organisation's node MAY attach an
+  delegating to an organization's node MAY attach an
   `audit_inference: true` caveat, requiring that delegated
   node to emit snapshots for inference performed against the
   delegated data. The snapshots become themselves operations on
@@ -194,7 +194,7 @@ Audit is in force in two cases:
 
 A delegated node operating *without* an audit caveat is not
 required to record its inference. What it does internally with
-the data the user authorised is governed by the delegation's
+the data the user authorized is governed by the delegation's
 other caveats, not by the audit invariant. This is a deliberate
 scope choice: the protocol's role is to let the user *decide*
 whether audit applies, not to mandate it for every party that
@@ -220,15 +220,15 @@ candidate claims as hint-status operations. Nothing has been shown to
 the user yet.
 
 Overnight, the user's laptop — which has more capable hardware —
-claims the synthesise job for yesterday. It pulls the relevant slice
+claims the synthesize job for yesterday. It pulls the relevant slice
 of the log, assembles a model context, makes one inference call, and
 writes the result back as operations. Because the laptop is operating
 under the user's root delegation, audit is in force by default; the
 inference snapshot is also written. The reference implementation
-materialises the result as an episode and a suggested action — both
+materializes the result as an episode and a suggested action — both
 *application-layer conventions*, not part of the substrate proper —
 so a card can be rendered later. A different implementation might
-materialise the same result a different way; the substrate-level
+materialize the same result a different way; the substrate-level
 claims and the snapshot are what the protocol guarantees.
 
 The phone receives the new operations on next sync. Its salience

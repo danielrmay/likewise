@@ -1,14 +1,14 @@
 # Projections
 
-A projection is a materialised read view derived from the
+A projection is a materialized read view derived from the
 operation log. This chapter specifies the projection contract:
 what each projection MUST be able to answer, what relationships
 between projections are load-bearing, and what implementations
-are free to optimise.
+are free to optimize.
 
 The chapter fills the gap that v0.1 implementations had handled
 implicitly: an explicit statement of which projection-related
-behaviours an implementation MUST provide and which it MAY
+behaviors an implementation MUST provide and which it MAY
 choose internally.
 
 ## 1. The disposability invariant
@@ -57,7 +57,7 @@ application-layer convention rather than substrate, and is
 specified in
 [Annex: Application Conventions §A.3](annex-conventions.md#a3-salience-projection).
 A node that does not surface records to a user — for example,
-an organisation's node consuming a scoped slice — has no need
+an organization's node consuming a scoped slice — has no need
 to implement it.
 
 ### 2.1 Inference projection
@@ -69,7 +69,7 @@ call.
 
 - *Window context.* Given a time window, return the evidence,
   claims, entities, and episodes a model should receive as
-  context for synthesising over that window.
+  context for synthesizing over that window.
 - *Per-entity context.* Given an entity, return the relevant
   claim stack and supporting evidence for an inference call
   centred on that entity.
@@ -112,7 +112,7 @@ it.
   Every conformant node carries it, regardless of whether the
   node is rendering a UI.
 - It MUST rebuild from the log when missing or corrupted.
-- It MUST honour user assertions: a `Reject` user-assertion
+- It MUST honor user assertions: a `Reject` user-assertion
   MUST cause subsequent reads of the affected claim to return
   the rejected status, regardless of underlying derivation
   state.
@@ -216,7 +216,7 @@ the log.
 ## 6. The frontier and projection state
 
 A node's causal frontier (per [Sync](04-sync.md)) is itself a
-projection — it summarises the maximum HLC seen per author,
+projection — it summarizes the maximum HLC seen per author,
 which is computable from the op log alone. Implementations MUST
 maintain the frontier consistently with the log: after applying
 op `O` to projections, the frontier MUST reflect `O`'s
@@ -228,15 +228,15 @@ recompute it correctly on the first sync exchange.
 
 ## 7. Capability filtering and projection
 
-Operations rejected by the authorise-and-filter pipeline (per
+Operations rejected by the authorize-and-filter pipeline (per
 [Capabilities](08-capabilities.md)) MUST NOT enter projections.
-The integrity of "everything in projections is authorised" is
+The integrity of "everything in projections is authorized" is
 load-bearing for any reasoning about projections under
 capability evolution: when a delegation is revoked, the
 re-evaluation step (per
 [Capabilities](08-capabilities.md#53-on-transitive-revocation))
 MUST remove from projections any record whose authority chain
-no longer authorises it, even though the underlying log entry
+no longer authorizes it, even though the underlying log entry
 is preserved.
 
 ## 8. Informative: storage strategies

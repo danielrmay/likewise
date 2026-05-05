@@ -16,7 +16,7 @@ is doing without conflating those choices with the protocol's
 load-bearing parts.
 
 If you are implementing an interoperable node — for example, an
-organisation's node that synchronises a scoped slice of a user's
+organization's node that synchronizes a scoped slice of a user's
 graph — you can ignore this annex entirely. The substrate and the
 inference pipeline are sufficient to participate in a Likewise
 mesh. Applications that depend on the conventions in
@@ -44,7 +44,7 @@ nothing in the data model or sync protocol requires them.
 | `confidence` | Episode-quality score. |
 
 Per-run inference provenance for an episode is carried by an
-`InferenceSnapshot` artefact emitted alongside the
+`InferenceSnapshot` artifact emitted alongside the
 `CreateEpisode` op (when audit is in force per Part 2).
 Implementations correlate episode and snapshot via `causal_deps`.
 
@@ -147,7 +147,7 @@ the reference implementation to decide which entities, episodes,
 and suggested actions to show the user *now*.
 
 It is not a substrate primitive: a node that is not surfacing
-records to a user — for example, an organisation's node consuming
+records to a user — for example, an organization's node consuming
 a scoped slice of the graph — has no use for it. Implementations
 that do surface records to users will need *some* such projection;
 this section describes the shape the reference implementation
@@ -196,7 +196,7 @@ free to choose their own.
 ## A.4 Why these are conventions, not substrate
 
 The protocol's substrate is sufficient to express the user's
-knowledge graph and synchronise it across nodes. The inference
+knowledge graph and synchronize it across nodes. The inference
 pipeline (Part 2) is sufficient to perform distributed model
 calls with auditable provenance. Together those two layers are
 what makes it possible for the user to *own what the system says

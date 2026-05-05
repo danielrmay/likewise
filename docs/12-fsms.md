@@ -81,7 +81,7 @@ rejected claim:
 - Dependent suggested actions transition to `Rejected`
   (Section 3).
 - Dependent inference snapshots are tagged stale; their
-  artefacts MAY be evicted on the next eviction pass.
+  artifacts MAY be evicted on the next eviction pass.
 
 The cascade is part of the same logical op apply (per I-8 in
 [Invariants](11-invariants.md)).

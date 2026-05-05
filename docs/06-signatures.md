@@ -48,7 +48,7 @@ BASE64URL(header) "." "." BASE64URL(signature)
 
 Where:
 
-- `header` is the JSON Object Serialisation of:
+- `header` is the JSON Object Serialization of:
   ```
   {"alg":"EdDSA","kid":"node-<node_id>"}
   ```
@@ -86,7 +86,7 @@ constructed from the received op (with its `signature` field
 cleared) using the public key bound to the op's `node_id`.
 
 A receiver MUST reject any operation whose verification fails,
-unless the op is a sanitised op admitted by Section 6.
+unless the op is a sanitized op admitted by Section 6.
 
 ## 5. Implementation note: round-tripping the signature field
 
@@ -103,33 +103,33 @@ memory.
 A reference test vector for cross-implementation interop is
 expected to ship with v0.1.1, alongside the public release of
 the reference implementation. Until both exist, implementers
-cannot fully validate signature canonicalisation against an
+cannot fully validate signature canonicalization against an
 authoritative source; the procedure in this section and the
 field-ordering rules in [Wire Format](03-wire-format.md) are
 what to follow in the meantime. See
 [Implementations](implementations.md) for status.
 
-## 6. Sanitised operations
+## 6. Sanitized operations
 
 When an outbound op crosses a delegation that requires
-sanitisation (per the `sanitize` caveat described in
-[UCAN and Caveats](07-ucan-and-caveats.md)), the sanitiser
+sanitization (per the `sanitize` caveat described in
+[UCAN and Caveats](07-ucan-and-caveats.md)), the sanitizer
 modifies the op's payload by stripping or redacting the affected
 fields. Because the resulting op no longer matches the bytes
 the original signature was computed over, the signature would
-no longer verify. Therefore the sanitiser MUST clear the
-`signature` field on the sanitised op (encode it as absent)
-and record the sanitisation in a marker field (specified in
+no longer verify. Therefore the sanitizer MUST clear the
+`signature` field on the sanitized op (encode it as absent)
+and record the sanitization in a marker field (specified in
 [UCAN and Caveats](07-ucan-and-caveats.md)).
 
 The receiver MUST NOT attempt signature verification on a
-sanitised op. It MUST verify that the sanitisation marker is
-consistent with a delegation that authorised the sender to apply
+sanitized op. It MUST verify that the sanitization marker is
+consistent with a delegation that authorized the sender to apply
 it; this is the receive-side procedure specified in
 [UCAN and Caveats](07-ucan-and-caveats.md).
 
 An op that arrives without a signature **and without** a
-sanitisation marker MUST be rejected. The two conditions are
+sanitization marker MUST be rejected. The two conditions are
 the only legitimate paths to an unsigned op on the wire (and
 even the bootstrap path described in Section 7 produces a
 signed op).
@@ -150,7 +150,7 @@ authored op be a `DelegateUcan` carrying a UCAN that:
 
 The receiver:
 
-1. Recognises that the authoring `NodeId` is unknown.
+1. Recognizes that the authoring `NodeId` is unknown.
 2. Decodes the embedded UCAN.
 3. Verifies the UCAN's signature against the issuer's DID.
 4. If valid, extracts the embedded public key and binds it to
@@ -172,7 +172,7 @@ follows:
 BASE64URL(header) "." BASE64URL(payload) "." BASE64URL(signature)
 ```
 
-(The standard JWS Compact Serialisation, this time *not*
+(The standard JWS Compact Serialization, this time *not*
 detached.)
 
 Header:
@@ -205,8 +205,8 @@ v0.1 implementations issue one-shot tokens.
 ## 9. Verifying authority
 
 A signature establishes that the authoring `NodeId` produced the
-op. It does not establish that the `NodeId` was *authorised* to
-produce it. Authorisation is a separate check performed against
+op. It does not establish that the `NodeId` was *authorized* to
+produce it. Authorization is a separate check performed against
 the UCAN delegation graph — see
 [UCAN and Caveats](07-ucan-and-caveats.md) and
 [Capabilities](08-capabilities.md). Both checks are required;
