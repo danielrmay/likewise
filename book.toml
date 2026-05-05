@@ -9,19 +9,12 @@ src = "docs"
 default-theme = "navy"
 preferred-dark-theme = "navy"
 no-section-label = false
-# Order matters: admonish first so likewise.css can override its colours.
-additional-css = ["theme/mdbook-admonish.css", "theme/likewise.css"]
+additional-css = ["theme/likewise.css"]
 additional-js = ["mermaid.min.js", "mermaid-init.js"]
 site-url = "/spec/"
 git-repository-url = "https://github.com/danielrmay/likewise"
 git-repository-icon = "fa-github"
 edit-url-template = "https://github.com/danielrmay/likewise/edit/main/{path}"
-
-[preprocessor]
-
-[preprocessor.admonish]
-command = "mdbook-admonish"
-assets_version = "3.1.0" # do not edit: managed by `mdbook-admonish install`
 
 [preprocessor.mermaid]
 command = "mdbook-mermaid"
