@@ -249,7 +249,7 @@ A reference-implementation deployment uses:
   projection.
 - A SQLite database with a per-id table for the detail
   projection.
-- A separate `petgraph::StableGraph` for the debug-graph
+- A separate adjacency-list graph structure for the debug-graph
   projection (rebuilt on demand rather than maintained).
 - An in-memory hash map for the application-layer salience
   projection's scores (see

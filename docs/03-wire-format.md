@@ -34,8 +34,8 @@ produce byte-identical postcard output. Implementations MUST:
 
 - Encode struct fields in the order this specification declares
   them (subsequent chapters declare order alongside payloads).
-- Encode option-typed fields as `0x00` for `None` and `0x01`
-  followed by the value bytes for `Some`.
+- Encode optional fields as `0x00` when the value is absent and
+  `0x01` followed by the value bytes when present.
 - Encode collections as `varint(len)` followed by the elements
   in their authored order.
 - Encode booleans as a single byte: `0x00` false, `0x01` true.
@@ -101,9 +101,9 @@ declares.
 | `schema_version` | varint | Currently `1`. |
 | `timestamp` | `Timestamp` | as above. |
 | `node_id` | `NodeId` | varint. |
-| `causal_deps` | `Vec<OpId>` | `varint(len)` + 16 × len bytes. |
+| `causal_deps` | sequence of `OpId` | `varint(len)` + 16 × len bytes. |
 | `payload` | tagged union | varint discriminant + variant body; see [Operations](02-operations.md). |
-| `signature` | `Option<Vec<u8>>` | option byte + length-prefixed bytes when `Some`. |
+| `signature` | optional bytes | option byte + length-prefixed bytes when present. |
 
 The variant discriminants for the payload union are assigned by
 this specification and MUST be stable across implementations of
@@ -112,16 +112,17 @@ the same major version.
 ## 5. Canonical signing form
 
 The signature is computed over the operation's canonical
-encoding **with the `signature` field cleared to `None`**.
+encoding **with the `signature` field cleared (encoded as
+absent)**.
 
 Procedure:
 
-1. Set `signature = None` on the operation.
+1. Clear the `signature` field on the operation.
 2. Encode the operation per Section 4.
 3. Compute the Ed25519 signature over the resulting bytes using
    the authoring node's private key.
-4. Set `signature = Some(<signature bytes wrapped in a detached
-   JWS envelope>)` per [Signatures](06-signatures.md).
+4. Set the `signature` field to the signature bytes wrapped in a
+   detached JWS envelope per [Signatures](06-signatures.md).
 
 The reverse-verification procedure for receivers is specified in
 [Signatures](06-signatures.md).
@@ -148,9 +149,9 @@ marker MUST be rejected.
 ## 7. Operation collections on the wire
 
 The sync endpoint exchanges sequences of operations. The
-on-the-wire encoding of `Vec<Operation>` is the postcard encoding
-of the sequence: `varint(len)` followed by each operation in
-order.
+on-the-wire encoding of an operation sequence is the postcard
+encoding of the sequence: `varint(len)` followed by each
+operation in order.
 
 The order in the sequence is significant only as a hint:
 recipients MUST apply received ops by their HLC total order, not
@@ -181,7 +182,7 @@ received from a server, except for the empty frontier (encoded as
 ## 9. UCAN token wire format
 
 A UCAN delegation referenced by `DelegateUcan` is carried as
-opaque bytes (`Vec<u8>`) — specifically, the detached-JWS form of
+an opaque byte sequence — specifically, the detached-JWS form of
 a UCAN v0.10 token over a JSON payload. The UCAN content hash
 (`ucan_cid`) is the BLAKE3 of these bytes.
 

@@ -393,7 +393,7 @@ Owner-only. Routes a class of jobs to a specific node.
 | Field | Purpose |
 |-------|---------|
 | `kind` | The work-kind string. |
-| `route` | An `Option<NodeId>`. Setting to `None` clears the directive. |
+| `route` | An optional `NodeId`. Omitting the value clears the directive. |
 
 While a route is set, only the named node MAY successfully
 emit a `ClaimWork` op for that kind. Other nodes' claim ops

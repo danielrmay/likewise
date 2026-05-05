@@ -164,8 +164,8 @@ node. While a route is set:
 
 `RouteKind` ops follow last-write-wins semantics by HLC total
 order: the most recent `RouteKind` for a given `kind` is in
-force. Setting `route` to `None` clears the directive; the kind
-returns to the default "any eligible worker may claim."
+force. Omitting the `route` value clears the directive; the
+kind returns to the default "any eligible worker may claim."
 
 `RouteKind` is owner-only; per
 [Capabilities](08-capabilities.md), an op carrying a

@@ -60,7 +60,7 @@ Where:
 - `signature` is the 64-byte Ed25519 signature over the
   canonical signing form defined in Section 4.
 
-The `Vec<u8>` carried in the operation's `signature` field is
+The bytes carried in the operation's `signature` field are
 the UTF-8 byte sequence of the above string. Implementations
 MUST NOT include line breaks or trailing whitespace.
 
@@ -70,20 +70,20 @@ To sign or verify an operation:
 
 1. Construct the operation per the
    [operation envelope](02-operations.md#1-the-operation-envelope).
-2. Set `signature = None`.
+2. Clear the `signature` field (encode it as absent).
 3. Encode the operation per [Wire Format](03-wire-format.md#4-operation-envelope-encoding).
    Call the result `op_bytes`.
 4. Sign or verify `op_bytes` using the Ed25519 key bound to the
    operation's `node_id`.
 
 When signing, the resulting 64-byte signature is wrapped per
-Section 3 and stored as `Some(...)` in the `signature` field
-before transmission.
+Section 3 and stored in the `signature` field before
+transmission.
 
 When verifying, the receiver unwraps the detached JWS, recovers
 the 64-byte raw signature, and verifies it against `op_bytes`
-constructed from the received op (with its `signature` cleared
-to `None`) using the public key bound to the op's `node_id`.
+constructed from the received op (with its `signature` field
+cleared) using the public key bound to the op's `node_id`.
 
 A receiver MUST reject any operation whose verification fails,
 unless the op is a sanitised op admitted by Section 6.
@@ -91,9 +91,9 @@ unless the op is a sanitised op admitted by Section 6.
 ## 5. Implementation note: round-tripping the signature field
 
 The most common implementation error in this area is mishandling
-the round-trip: implementations sign an op with the field set
-to `None`, transmit it with the field set to `Some(jws)`, and
-then attempt to verify by re-signing the received op as-is —
+the round-trip: implementations sign an op with the `signature`
+field absent, transmit it with the field populated by the JWS,
+and then attempt to verify by re-signing the received op as-is —
 yielding a signature over different bytes. Implementations MUST
 explicitly clear the `signature` field before computing the
 canonical encoding for verification, and MUST treat that step
@@ -118,8 +118,8 @@ modifies the op's payload by stripping or redacting the affected
 fields. Because the resulting op no longer matches the bytes
 the original signature was computed over, the signature would
 no longer verify. Therefore the sanitiser MUST clear the
-`signature` field on the sanitised op (set it to `None`) and
-record the sanitisation in a marker field (specified in
+`signature` field on the sanitised op (encode it as absent)
+and record the sanitisation in a marker field (specified in
 [UCAN and Caveats](07-ucan-and-caveats.md)).
 
 The receiver MUST NOT attempt signature verification on a

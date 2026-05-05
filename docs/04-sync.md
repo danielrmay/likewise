@@ -87,7 +87,7 @@ Content-Type: application/octet-stream
 X-Likewise-Next-Frontier: <base64url>
 X-Likewise-Mesh-Rules-Hash: <hex>
 
-<postcard-encoded Vec<Operation>>
+<postcard-encoded operation sequence>
 ```
 
 Body: the postcard encoding of the sequence of operations the
@@ -122,7 +122,7 @@ Content-Type: application/octet-stream
 X-Likewise-Mesh-Rules-Hash: <hex>
 Authorization: Bearer <node-bearer-token>
 
-<postcard-encoded Vec<Operation>>
+<postcard-encoded operation sequence>
 ```
 
 Body: a postcard-encoded sequence of operations.

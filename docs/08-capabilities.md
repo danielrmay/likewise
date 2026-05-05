@@ -188,7 +188,7 @@ candidate ops by the requester's effective capability set
    delegation chain carries `sanitize` rules, apply the rule
    chain to a *clone* of the op:
    - Apply each rule's redactions in order.
-   - Set the cloned op's `signature` to `None`.
+   - Clear the cloned op's `signature` field.
    - Attach the sanitisation marker recording the rule chain.
    - Use the cloned, sanitised op as the response value.
 

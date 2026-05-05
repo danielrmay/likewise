@@ -198,8 +198,8 @@ superset of its parent's (sanitisation strengthens at each hop).
 
 #### 5.5.1 The sanitisation marker
 
-When an op is sanitised on the wire, the sanitiser MUST set the
-op's `signature` field to `None` (per
+When an op is sanitised on the wire, the sanitiser MUST clear
+the op's `signature` field (per
 [Signatures](06-signatures.md)) AND attach a sanitisation
 marker. The marker is a payload-internal field whose presence
 both:
