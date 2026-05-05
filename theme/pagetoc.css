@@ -1,0 +1,62 @@
+/* Tuned for the Likewise dark theme.
+ * Floating TOC anchored to the viewport's right edge with a 32px gap,
+ * matching the purple-on-navy palette. */
+
+@media only screen and (max-width: 1439px) {
+    .sidetoc {
+        display: none;
+    }
+}
+
+@media only screen and (min-width: 1440px) {
+    .sidetoc {
+        /* No-op container; the .pagetoc inside is fixed-positioned. */
+        display: block;
+    }
+
+    .pagetoc {
+        position: fixed;
+        top: calc(var(--menu-bar-height) + 2rem);
+        right: 32px;
+        width: 180px;
+        max-height: calc(100vh - var(--menu-bar-height) - 4em);
+        overflow-y: auto;
+        padding-right: 0.5rem;
+        font-size: 1.3rem;
+        line-height: 1.45;
+    }
+
+    .pagetoc a,
+    .pagetoc a:link,
+    .pagetoc a:visited {
+        display: block;
+        color: var(--likewise-fg-muted) !important;
+        border-left: 2px solid transparent;
+        padding: 4px 0 4px 10px;
+        text-decoration: none;
+        border-radius: 0 4px 4px 0;
+        transition: color 120ms ease, background-color 120ms ease, border-left-color 120ms ease;
+    }
+
+    .pagetoc a:hover {
+        color: var(--likewise-fg) !important;
+        background: var(--likewise-surface);
+        border-left-color: rgb(167 139 250 / 0.5);
+    }
+
+    .pagetoc a.active {
+        color: var(--likewise-accent) !important;
+        background: rgb(167 139 250 / 0.08);
+        border-left-color: var(--likewise-accent);
+        font-weight: 600;
+    }
+
+    /* Only show top-level (H2) sections. H1 is the chapter title
+     * (redundant) and H3+ produce clutter on long chapters. */
+    .pagetoc a.pagetoc-H2 { padding-left: 12px; }
+    .pagetoc a.pagetoc-H1,
+    .pagetoc a.pagetoc-H3,
+    .pagetoc a.pagetoc-H4,
+    .pagetoc a.pagetoc-H5,
+    .pagetoc a.pagetoc-H6 { display: none !important; }
+}

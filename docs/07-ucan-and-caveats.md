@@ -75,6 +75,17 @@ array, the receiving node MUST:
 
 A delegation that fails any of these checks MUST be rejected.
 
+```mermaid
+flowchart LR
+    Root["User<br/>(root DID)<br/>* (no caveats)"]
+    Phone["Phone<br/>* on local data"]
+    Cloud["Cloud node<br/>calendar + photos"]
+    Analytics["Analytics peer<br/>calendar only<br/>+ time_range"]
+    Root -->|DelegateUcan| Phone
+    Phone -->|attenuates| Cloud
+    Cloud -->|further attenuates| Analytics
+```
+
 ## 4. Strict attenuation
 
 A child delegation's capability set MUST be a subset of its

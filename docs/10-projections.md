@@ -35,6 +35,14 @@ This invariant is the load-bearing reason that the protocol can
 guarantee the user owns their derived data: nothing the system
 believes about the user lives outside the log.
 
+```mermaid
+flowchart LR
+    Log[("Op log<br/>append-only<br/>signed")] --> Inf["Inference<br/>in-memory<br/>prompt context"]
+    Log --> Detail[("Detail<br/>on-disk<br/>per-id reads")]
+    Log --> Debug["Debug-graph<br/>in-memory, optional<br/>inspection"]
+    Log -.-> Sal["Salience<br/>annex, app-layer"]
+```
+
 ## 2. The three substrate projections
 
 The protocol defines three projections **by the queries they

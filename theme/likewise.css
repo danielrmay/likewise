@@ -151,7 +151,14 @@ html {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   font-size: 1.15rem;
-  padding: 1.6rem 0.6rem 0.5rem;
+  padding: 1.1rem 0.6rem 0.1rem;
+}
+
+/* mdbook 0.5.x injects an "on this page" tree under the active chapter
+ * showing every h2/h3/h4 heading. Suppress it — the floating right-side
+ * pagetoc covers the same job with less clutter. */
+.sidebar .on-this-page {
+  display: none;
 }
 
 /* Content typography
@@ -331,14 +338,38 @@ html {
   background: var(--likewise-surface);
 }
 
-/* Page navigation arrows (prev/next) */
-.nav-chapters {
-  color: var(--likewise-fg-subtle);
-  transition: color 150ms ease;
+/* Page navigation arrows (prev/next).
+ * mdbook's default makes these full-viewport-height columns, which
+ * overlaps the right-side pagetoc. Pin them to the bottom corners as
+ * compact circular buttons so they sit out of the reading flow. */
+.nav-wide-wrapper .nav-chapters {
+  position: fixed;
+  top: auto;
+  bottom: 24px;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  max-width: 44px;
+  font-size: 1.6em;
+  border-radius: 50%;
+  background: var(--likewise-surface-strong);
+  border: 1px solid var(--likewise-border-subtle);
+  color: var(--likewise-fg-muted);
+  transition: color 150ms ease, background-color 150ms ease, border-color 150ms ease;
 }
 
-.nav-chapters:hover {
+.nav-wide-wrapper .nav-chapters.previous {
+  right: 80px;
+}
+
+.nav-wide-wrapper .nav-chapters.next {
+  right: 24px;
+}
+
+.nav-wide-wrapper .nav-chapters:hover {
   color: var(--likewise-accent);
+  background: var(--likewise-surface-strong);
+  border-color: rgb(167 139 250 / 0.4);
 }
 
 /* Mobile responsive tweaks */

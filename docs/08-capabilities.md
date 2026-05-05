@@ -112,6 +112,20 @@ the delegation) but they do not authorise additional behaviour.
 
 ## 5. The authorise-and-filter pipeline
 
+```mermaid
+flowchart TD
+    In["inbound op"] --> Sig{"signature<br/>valid?"}
+    Sig -->|no| Reject["reject"]
+    Sig -->|yes| Chain{"chain<br/>resolved?"}
+    Chain -->|broken| Reject
+    Chain -->|intact| Auth{"resource × action<br/>authorised?"}
+    Auth -->|no| Reject
+    Auth -->|yes| Cav{"caveats<br/>satisfied?"}
+    Cav -->|no| Reject
+    Cav -->|yes| San["sanitise<br/>strip / redact"]
+    San --> Apply["apply to projections"]
+```
+
 This section specifies the procedure a node runs when ingesting
 an operation, whether locally authored or received over the
 wire. It MUST be applied in the order specified.

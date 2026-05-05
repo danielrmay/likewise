@@ -89,6 +89,24 @@ Transitions:
 re-claimed; subsequent `ClaimWork` ops naming a completed job
 MUST be rejected.
 
+```mermaid
+sequenceDiagram
+    autonumber
+    participant O as Owner
+    participant C as Coordinator
+    participant W1 as Worker A
+    participant W2 as Worker B
+    O->>C: ScheduleJob (state = Pending)
+    W1->>C: ClaimWork (lease T0..T0+dur)
+    Note over W1: A holds lease
+    W2->>C: ClaimWork (rejected, already leased)
+    Note over W1,C: HLC advances past lease, no CompleteJob
+    W2->>C: ExpireWork (releases lease)
+    Note over C: state = Pending
+    W2->>C: ClaimWork (lease T1..T1+dur)
+    W2->>C: CompleteJob (terminal)
+```
+
 ## 3. Lease expiry
 
 A `ClaimWork` op carries `lease_duration_ms` and is authored at
