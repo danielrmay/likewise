@@ -10,15 +10,15 @@ types that link them. It does not define wire encodings (see
 
 ```mermaid
 flowchart TD
-    subgraph L3 ["Projections (disposable, rebuildable)"]
+    subgraph L3 [Projections]
         Inf["Inference"]
         Detail["Detail"]
         Debug["Debug-graph"]
     end
-    subgraph L2 ["Operations (canonical, signed, ordered)"]
-        Ops["Op log"]
+    subgraph L2 [Operations]
+        Ops[("Op log")]
     end
-    subgraph L1 ["Evidence (immutable, content-addressed)"]
+    subgraph L1 [Evidence]
         Bytes["raw inputs<br/>photos, events, contacts"]
     end
     Bytes -- "referenced by hash" --> Ops
