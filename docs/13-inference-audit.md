@@ -108,6 +108,18 @@ discarding it.
 
 ## 3. Linking from outputs to snapshots
 
+```mermaid
+flowchart LR
+    SJ["ScheduleJob<br/>(audit-required kind)"]
+    H["handler<br/>executes model call"]
+    SS["CreateArtifact<br/>likewise.inference.snapshot<br/>(retrieved context + output)"]
+    OUT["output op<br/>claim / suggested action"]
+    SJ --> H
+    H --> SS
+    H --> OUT
+    OUT -.->|"provenance.snapshot_id"| SS
+```
+
 Any record produced by a snapshot-emitting inference call MUST
 link back to the snapshot. Specifically:
 

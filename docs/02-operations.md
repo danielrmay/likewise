@@ -33,6 +33,26 @@ in a context where one was required.
 The v0.1 substrate vocabulary partitions operations into seven
 categories:
 
+```mermaid
+flowchart TD
+    Op(["Operation"])
+    Op --> Ev["Evidence"]
+    Op --> Ent["Entity"]
+    Op --> Cl["Claim"]
+    Op --> Job["Job"]
+    Op --> UA["UserAssertion"]
+    Op --> Art["Artifact"]
+    Op --> Mesh["Mesh"]
+    Op -.-> App["Application-layer<br/>(annex)"]
+    Ev --- ev1["IngestEvidence<br/>TombstoneEvidence"]
+    Ent --- en1["CreateEntity<br/>AddEntityAlias<br/>MergeEntities<br/>SplitEntity"]
+    Cl --- cl1["CreateClaim<br/>UpdateClaimStatus<br/>UpdateClaimConfidence<br/>SupersedeClaim"]
+    Job --- jb1["ScheduleJob<br/>ClaimWork<br/>CompleteJob<br/>YieldWork<br/>ExpireWork"]
+    UA --- ua1["UserAssert"]
+    Art --- ar1["CreateArtifact<br/>EvictArtifact"]
+    Mesh --- ms1["DesignateCoordinator<br/>DelegateUcan<br/>RevokeUcan<br/>RouteKind"]
+```
+
 - **Evidence operations** record raw inputs.
 - **Entity operations** create, alias, merge, and split entities.
 - **Claim operations** create and evolve claims.

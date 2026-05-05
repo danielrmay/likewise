@@ -8,6 +8,25 @@ types that link them. It does not define wire encodings (see
 
 ## 1. Layers
 
+```mermaid
+flowchart TD
+    subgraph L3 ["Projections (disposable, rebuildable)"]
+        Inf["Inference"]
+        Detail["Detail"]
+        Debug["Debug-graph"]
+    end
+    subgraph L2 ["Operations (canonical, signed, ordered)"]
+        Ops[(Op log)]
+    end
+    subgraph L1 ["Evidence (immutable, content-addressed)"]
+        Bytes(["raw inputs<br/>(photos, events, contacts)"])
+    end
+    Bytes -- "referenced by hash" --> Ops
+    Ops -- "applied to" --> Inf
+    Ops -- "applied to" --> Detail
+    Ops -- "applied to" --> Debug
+```
+
 A conforming implementation MUST distinguish three layers:
 
 1. **Evidence** — immutable, content-addressed inputs the user has
