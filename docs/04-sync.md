@@ -11,14 +11,14 @@ sequenceDiagram
     autonumber
     participant A as Peer A (requester)
     participant B as Peer B (responder)
-    A->>B: GET /ops?since=[frontier] + bearer + mesh-hash
+    A->>B: GET /ops + frontier + bearer + mesh-hash
     alt mesh-rules hashes agree
-        B->>B: filter ops by requester's caveats
-        B-->>A: 200 OK + postcard ops + next-frontier
+        B->>B: filter ops by caveats
+        B-->>A: 200 OK + ops + next-frontier
         A->>A: HLC-sort, dedup, apply, tick HLC
     else hashes disagree
         B-->>A: 409 Conflict
-        A->>A: pause sync; surface drift to operator
+        A->>A: pause sync, surface drift
     end
     Note over A,B: A may also POST /ops to push authored ops to B
 ```
