@@ -10,3 +10,6 @@ default-theme = "navy"
 preferred-dark-theme = "navy"
 no-section-label = false
 additional-css = ["theme/likewise.css"]
+site-url = "/spec/"
+git-repository-url = "https://github.com/danielrmay/likewise"
+git-repository-icon = "fa-github"
