@@ -262,6 +262,47 @@ Likewise is not trying to play that game.
 
 **Source:** [Automerge](https://automerge.org/).
 
+## Ossa
+
+Ossa (James Parker, August 2025) is a draft peer-to-peer protocol
+for replacing centralised cloud apps with locally-stored,
+encrypted, CRDT-synchronised data. Stores are polymorphic state
+containers identified by content hash and discoverable via a
+distributed hash table; updates form a DAG of digitally signed,
+encrypted CRDT operations; access-control changes go through a
+Byzantine fault-tolerant consensus protocol. End-to-end
+encryption is the default; offline editing is supported with
+automatic sync on reconnection.
+
+**Where it overlaps with Likewise.** Both projects share the
+local-first stance — Kleppmann is foundational reading for both
+— and both are append-history-based with per-user keys as the
+identity primitive and content-addressed payloads. Where
+Likewise's reference implementation wants a small mesh of
+user-owned devices, Ossa wants the same thing. Both projects
+could plausibly be implemented over the same underlying
+transport.
+
+**Where it diverges.** Ossa is a *generic data-sync substrate* —
+it has zero opinion on what the data is, only on how replicas
+converge. Stores are polymorphic; data types are required to be
+CRDTs. Likewise's whole premise, by contrast, is the typed
+knowledge-graph vocabulary baked into the op log, with
+deterministic projections rather than generic CRDT merge, and
+last-write-wins-by-OpId rather than per-field CRDT semantics.
+Authorisation diverges similarly: Ossa uses Byzantine
+fault-tolerant consensus for access-control changes; Likewise
+uses UCAN delegation with attenuated caveats and per-op
+signatures. Most importantly, Ossa has no analogue for the
+inference layer (Part 2), the audit invariant, or the
+claim-derivation DAG. The two projects sit at different layers:
+Ossa is closest to the Iroh / Automerge / Willow constellation
+(substrate); Likewise sits on top of any substrate of that shape
+with a typed knowledge-graph model and an auditable-inference
+layer.
+
+**Source:** [Ossa: Towards the Next Generation Web](https://jamesparker.me/blog/post/2025/08/04/ossa-towards-the-next-generation-web).
+
 ## Willow Protocol
 
 Willow (2023+) is an authenticated-sync protocol designed for
