@@ -26,6 +26,21 @@ the model that derived them was trained, in part, on people like you.
 You are the substrate on which the intelligence is built and the only
 party in the loop without a copy of the result.
 
+```mermaid
+flowchart LR
+    User(("User"))
+    Ev["Evidence<br/>photos, calendar,<br/>messages, location"]
+    Platform["Platform"]
+    Claims["Derived claims<br/>close to Sarah<br/>coffee shop on Tuesdays<br/>training for a marathon"]
+    Surface["Surfaces, ads,<br/>recommendations"]
+    User -->|provides| Ev
+    Ev -->|ingested by| Platform
+    Platform -->|infers| Claims
+    Claims -.->|never returned| User
+    Claims --> Surface
+    Surface --> User
+```
+
 This protocol exists because that arrangement is bad and because it is
 about to get much worse.
 
