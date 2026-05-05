@@ -16,10 +16,10 @@ flowchart TD
         Debug["Debug-graph"]
     end
     subgraph L2 ["Operations (canonical, signed, ordered)"]
-        Ops[(Op log)]
+        Ops["Op log"]
     end
     subgraph L1 ["Evidence (immutable, content-addressed)"]
-        Bytes(["raw inputs<br/>(photos, events, contacts)"])
+        Bytes["raw inputs<br/>photos, events, contacts"]
     end
     Bytes -- "referenced by hash" --> Ops
     Ops -- "applied to" --> Inf
