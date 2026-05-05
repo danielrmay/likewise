@@ -107,7 +107,7 @@ cannot fully validate signature canonicalisation against an
 authoritative source; the procedure in this section and the
 field-ordering rules in [Wire Format](03-wire-format.md) are
 what to follow in the meantime. See
-[Implementations](../implementations.md) for status.
+[Implementations](implementations.md) for status.
 
 ## 6. Sanitised operations
 

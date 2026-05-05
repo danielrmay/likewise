@@ -229,7 +229,7 @@ delegation graph.
 **Migration cost.** Likewise is currently on UCAN v0.10. The
 v0.10 → v1.0 migration is non-trivial (envelope format and
 canonicalisation differ) and is tracked as
-[an open issue](spec/99-open-issues.md).
+[an open issue](99-open-issues.md).
 
 **Sources:** [UCAN Specification](https://github.com/ucan-wg/spec),
 [ucan.xyz](https://ucan.xyz/).
@@ -297,7 +297,7 @@ today** — Likewise relies on the sender honestly applying
 its capability filter server-side, where Willow's design prevents
 peers from probing for unauthorised data at all. This is a real
 gap, and one we expect to close some day; it is tracked as an
-[open issue](spec/99-open-issues.md). Willow's destructive
+[open issue](99-open-issues.md). Willow's destructive
 editing via prefix-pruning is also more aggressive than
 Likewise's tombstone-cascade (which preserves the log and only
 invalidates derivations).
@@ -368,7 +368,7 @@ turn out to be that one.
   probing for data they are not authorised to see. Likewise
   relies on the sender honestly applying its capability filter
   server-side. Closing this gap is an
-  [open issue](spec/99-open-issues.md).
+  [open issue](99-open-issues.md).
 - **Generic structural merging.** For collaborative text or list
   editing across users, Automerge is better. Likewise's
   last-write-wins-by-OpId is deliberately coarse, because the

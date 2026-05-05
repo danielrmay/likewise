@@ -11,26 +11,26 @@
 
 # Part 1 — The substrate
 
-- [Conventions](spec/00-conventions.md)
-- [Data Model](spec/01-data-model.md)
-- [Operations](spec/02-operations.md)
-- [Wire Format](spec/03-wire-format.md)
-- [Sync](spec/04-sync.md)
-- [Clocks](spec/05-clocks.md)
-- [Signatures](spec/06-signatures.md)
-- [UCAN and Caveats](spec/07-ucan-and-caveats.md)
-- [Capabilities](spec/08-capabilities.md)
-- [Projections](spec/10-projections.md)
-- [Invariants](spec/11-invariants.md)
-- [State Machines](spec/12-fsms.md)
+- [Conventions](00-conventions.md)
+- [Data Model](01-data-model.md)
+- [Operations](02-operations.md)
+- [Wire Format](03-wire-format.md)
+- [Sync](04-sync.md)
+- [Clocks](05-clocks.md)
+- [Signatures](06-signatures.md)
+- [UCAN and Caveats](07-ucan-and-caveats.md)
+- [Capabilities](08-capabilities.md)
+- [Projections](10-projections.md)
+- [Invariants](11-invariants.md)
+- [State Machines](12-fsms.md)
 
 # Part 2 — The inference pipeline
 
-- [Mesh Coordination](spec/09-mesh-coordination.md)
-- [Inference Audit](spec/13-inference-audit.md)
+- [Mesh Coordination](09-mesh-coordination.md)
+- [Inference Audit](13-inference-audit.md)
 
 # Appendices
 
-- [Application conventions](spec/annex-conventions.md)
-- [Open issues](spec/99-open-issues.md)
+- [Application conventions](annex-conventions.md)
+- [Open issues](99-open-issues.md)
 - [Implementations](implementations.md)

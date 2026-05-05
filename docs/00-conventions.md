@@ -121,7 +121,7 @@ order:
 
 The protocol was developed alongside an in-progress reference
 implementation (working codename Cortex — provisional; see
-[Implementations](../implementations.md)). The implementation is
+[Implementations](implementations.md)). The implementation is
 not yet publicly available; once it is, its observed behaviour
 will become the practical fall-back authority for v0.1
 ambiguities. Until then, file an issue.

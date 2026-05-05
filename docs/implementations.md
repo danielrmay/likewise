@@ -111,7 +111,7 @@ trustworthiness without reading the source.
 ## Compatibility expectations across versions
 
 The specification is versioned (see
-[Conventions](spec/00-conventions.md) for the current version).
+[Conventions](00-conventions.md) for the current version).
 Two implementations on the same major version SHOULD interoperate
 without negotiation. Two implementations on different major
 versions MAY refuse to interoperate; the `X-Likewise-Mesh-Rules-Hash`
@@ -121,7 +121,7 @@ each other.
 
 A future revision will clarify the negotiation protocol for
 mesh-rules drift; this is tracked as an
-[open issue](spec/99-open-issues.md).
+[open issue](99-open-issues.md).
 
 ## Implementation notes for new ports
 
@@ -130,7 +130,7 @@ implementation that may save another implementer time:
 
 - The HLC tick discipline is the single most common source of
   divergence bugs. Treat it as load-bearing from day one. See
-  [Clocks](spec/05-clocks.md).
+  [Clocks](05-clocks.md).
 - The signature canonicalisation rule (clear the signature field
   on the op, encode, then sign and put the signature back) is
   easy to get subtly wrong. The detached-JWS output is what

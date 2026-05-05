@@ -1,7 +1,7 @@
 # Concepts
 
 This chapter is the mental model in depth. It is non-normative — the
-[specification chapters](spec/00-conventions.md) are where the
+[specification chapters](00-conventions.md) are where the
 must-haves live — but a reader who finishes this chapter should be
 able to predict how a Likewise node would behave in most
 situations, and should be able to read the spec without surprise.
@@ -196,7 +196,7 @@ The reference implementation also defines two op types that
 exist purely to surface the substrate to a user. They are
 *application-layer conventions*, not part of the substrate
 proper, and live in
-[Annex: Application Conventions](spec/annex-conventions.md). A
+[Annex: Application Conventions](annex-conventions.md). A
 node that does not surface records to a user — for example, an
 organisation peer — has no need to emit them.
 
@@ -360,11 +360,11 @@ their underlying evidence. While they exist, they are the
 authoritative answer to "why did the system say that."
 
 The full mechanism is specified in
-[Inference Audit](spec/13-inference-audit.md).
+[Inference Audit](13-inference-audit.md).
 
 ## The six rules in plain English
 
-These are the non-negotiable rules from the [Invariants](spec/11-invariants.md)
+These are the non-negotiable rules from the [Invariants](11-invariants.md)
 chapter, restated without normative language so the intent is clear:
 
 1. **Only operations change the truth.** Caches and projections do
@@ -423,5 +423,5 @@ implementation will typically implement all three layers.
 
 - [Comparison](comparison.md) — how this protocol relates to other
   decentralized-data work.
-- [Conventions](spec/00-conventions.md) — the start of the
+- [Conventions](00-conventions.md) — the start of the
   normative specification.

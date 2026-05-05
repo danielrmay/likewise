@@ -283,8 +283,8 @@ any other revoked authority.
 This is not a hypothesis about a future protocol. The
 capabilities, caveats, sanitisation rules, and revocation
 semantics are already specified for the single-user mesh case
-(see [Capabilities](spec/08-capabilities.md) and
-[UCAN and Caveats](spec/07-ucan-and-caveats.md)). The same
+(see [Capabilities](08-capabilities.md) and
+[UCAN and Caveats](07-ucan-and-caveats.md)). The same
 machinery generalises directly: a "node" in this protocol does
 not have to be a personal device. It can be any party — a
 retailer, a clinic, an employer's scheduling assistant, a
@@ -322,7 +322,7 @@ possible.
 
 The protocol is built around six rules that exist to make the
 properties above survive contact with reality. They are stated
-formally in [Invariants](spec/11-invariants.md); the short forms are:
+formally in [Invariants](11-invariants.md); the short forms are:
 
 1. Only operations mutate canonical truth. Everything else is a
    projection that can be rebuilt from the log.
@@ -358,7 +358,7 @@ alternative to exist.
 It is not trying to be a finished system. The reference
 implementation works end-to-end and is the source of truth for what
 the wire format actually is today, but the spec has known open
-questions, listed honestly in [Open Issues](spec/99-open-issues.md).
+questions, listed honestly in [Open Issues](99-open-issues.md).
 The point of publishing now is to make those questions public
 before the de-facto answers are decided by whoever ships first.
 

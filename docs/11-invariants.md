@@ -8,8 +8,8 @@ regardless of which other sections it satisfies.
 
 This chapter is the canonical, formal version of the rules
 introduced informally in
-[Concepts](../concepts.md#the-six-rules-in-plain-english) and
-[Motivation](../motivation.md#the-non-negotiable-rules).
+[Concepts](concepts.md#the-six-rules-in-plain-english) and
+[Motivation](motivation.md#the-non-negotiable-rules).
 
 ## I-1. Log canonicality
 
@@ -217,7 +217,7 @@ A v0.1 conformance test consists of demonstrating that each
 invariant holds under a battery of concrete operations and
 sequences. The seven scenarios planned to ship with the
 reference implementation (see
-[Implementations](../implementations.md)) are intended to
+[Implementations](implementations.md)) are intended to
 collectively cover I-1 through I-10. Until those scenarios are
 public, the path to "behaviourally conformant for v0.1" is to
 construct equivalent coverage from this chapter's invariants

@@ -4,7 +4,7 @@ This chapter describes the protocol in five minutes, no code. If you
 want the *why* first, read [Motivation](motivation.md) — this chapter
 assumes you already accept that owning your own knowledge graph is
 worth specifying. If you want the wire-level rules, jump to
-[Conventions](spec/00-conventions.md).
+[Conventions](00-conventions.md).
 
 ## The picture
 
@@ -78,12 +78,12 @@ narrative clusters of evidence and claims, and
 system surfaces to a user — are *application-layer conventions*
 used by the reference implementation, not part of the substrate
 proper. They are documented in
-[Annex: Application Conventions](spec/annex-conventions.md). A
+[Annex: Application Conventions](annex-conventions.md). A
 node that does not surface records to a user — for example, an
 organisation's node — has no need to emit them.
 
 The full substrate taxonomy is in
-[Operations](spec/02-operations.md). For now the important point
+[Operations](02-operations.md). For now the important point
 is: every state change is one of these operations, every operation
 is signed by its author, every operation is timestamped with a
 hybrid logical clock so causal order is total across the mesh.
@@ -112,7 +112,7 @@ A fourth projection — a small, in-memory, ranking-oriented view
 used to decide what's *salient now* — is an application-layer
 convention used by the reference implementation, not part of the
 substrate. It is documented in
-[Annex: Application Conventions §A.3](spec/annex-conventions.md#a3-salience-projection).
+[Annex: Application Conventions §A.3](annex-conventions.md#a3-salience-projection).
 A node that does not surface records to a user has no need for it.
 
 ## How nodes converge
@@ -256,5 +256,5 @@ or undo.
   diagrams.
 - [Comparison](comparison.md) — how this protocol relates to Solid,
   AT Protocol, Nostr, Iroh, the local-first manifesto, and UCAN.
-- [Conventions](spec/00-conventions.md) — the start of the normative
+- [Conventions](00-conventions.md) — the start of the normative
   specification.
