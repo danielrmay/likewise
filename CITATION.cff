@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+title: Likewise
+message: >-
+  If you reference Likewise in academic or professional work, please
+  cite it using the metadata below.
+type: software
+authors:
+  - family-names: May
+    given-names: Daniel
+    email: daniel@danielmay.co.uk
+    website: "https://danielmay.co.uk/"
+abstract: >-
+  Likewise is a protocol for decentralized personal knowledge graphs.
+  It specifies a wire-level standard that lets users own the claims
+  AI systems infer about them, with capability-based delegation,
+  conditional inference auditing, and a mesh of user-owned nodes
+  converging on an append-only signed operation log.
+date-released: 2026-05-05
+url: "https://getlikewise.ai/spec/"
+repository-code: "https://github.com/danielrmay/likewise"
+license: CC-BY-4.0
+keywords:
+  - protocol
+  - decentralization
+  - personal-ai
+  - local-first
+  - knowledge-graph
+  - user-owned-data
+  - ucan
+  - specification
