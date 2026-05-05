@@ -6,6 +6,23 @@ The simplicity is intentional: synchronisation is the most
 load-bearing operation in a decentralised system, and richer
 protocols are harder to implement compatibly.
 
+```mermaid
+sequenceDiagram
+    autonumber
+    participant A as Peer A (requester)
+    participant B as Peer B (responder)
+    A->>B: GET /ops?since=[frontier] + bearer + mesh-hash
+    alt mesh-rules hashes agree
+        B->>B: filter ops by requester's caveats
+        B-->>A: 200 OK + postcard ops + next-frontier
+        A->>A: HLC-sort, dedup, apply, tick HLC
+    else hashes disagree
+        B-->>A: 409 Conflict
+        A->>A: pause sync; surface drift to operator
+    end
+    Note over A,B: A may also POST /ops to push authored ops to B
+```
+
 ## 1. Transport
 
 Nodes communicate over **HTTP/1.1 or later** with TLS recommended

@@ -24,6 +24,27 @@ A claim's lifecycle is the most consequential FSM in the
 protocol because user-visible recommendations depend on whether
 the underlying claims are believed.
 
+```mermaid
+stateDiagram-v2
+    direction LR
+    [*] --> Hint: CreateClaim
+    [*] --> Claim: CreateClaim<br/>(above threshold)
+    Hint --> Claim: threshold passed
+    Claim --> Fact: UserAssert(Confirm)
+    Claim --> Rejected: UserAssert(Reject)
+    Claim --> Disputed: conflicting claim
+    Hint --> Superseded: SupersedeClaim
+    Claim --> Superseded: SupersedeClaim
+    Disputed --> Superseded: SupersedeClaim
+    Hint --> Stale: cascade
+    Claim --> Stale: cascade
+    Disputed --> Stale: cascade
+    note right of Fact
+        frozen against automatic
+        state changes (§1.4)
+    end note
+```
+
 ### 1.1 States
 
 | State | Meaning |
@@ -85,6 +106,16 @@ constraints apply:
 Restated from [Mesh Coordination](09-mesh-coordination.md#2-the-job-state-machine)
 for completeness.
 
+```mermaid
+stateDiagram-v2
+    direction LR
+    [*] --> Pending: ScheduleJob
+    Pending --> Claimed: ClaimWork
+    Claimed --> Pending: YieldWork or ExpireWork
+    Claimed --> Completed: CompleteJob
+    Completed --> [*]
+```
+
 | State | Meaning |
 |-------|---------|
 | `Pending` | Scheduled but not claimed. Eligible for claim. |
@@ -105,6 +136,18 @@ Transitions:
 A node's lifecycle in a mesh is governed by the UCAN delegation
 graph rather than by an explicit state field, but the
 observable states are useful to name.
+
+```mermaid
+stateDiagram-v2
+    direction LR
+    [*] --> Pending: first op from<br/>unknown node
+    Pending --> Active: bootstrap DelegateUcan<br/>observed and verified
+    Active --> Suspended: time-bound delegation<br/>expired
+    Suspended --> Active: renewed delegation
+    Active --> Revoked: RevokeUcan of parent
+    Suspended --> Revoked: RevokeUcan of parent
+    Revoked --> Active: re-admitted by<br/>new chain
+```
 
 ### 3.1 States
 
