@@ -14,6 +14,13 @@ them up front. Second, an open public list of known issues is
 how the specification gets corrected — it invites the
 discussion that produces v0.2 and v1.0.
 
+Most entries describe true cross-implementation hazards.
+A small number describe **decisions whose original justification
+was the reference implementation's internal needs** and which
+deserve re-evaluation now that the spec has a public audience
+of would-be implementers in non-Rust languages. Entries of that
+kind are flagged as such.
+
 If you discover a hazard not listed here, please open an issue
 against the specification repository.
 
@@ -245,6 +252,64 @@ mechanism for third-party namespaces.
 where possible. For application-specific extensions, use the
 custom-metadata field on evidence and let consumers interpret
 it; do not author claims with non-vocabulary predicates.
+
+## OI-11. Wire encoding choice was implementation-led
+
+> **Decision under review based on the spec's publishing
+> situation.** This entry is a re-evaluation of an originally-
+> defensible default, not a known defect.
+
+**The canonical wire encoding (postcard) was chosen because the
+reference implementation is in Rust** (see
+[Wire Format §1](03-wire-format.md#1-encoding-format)). Postcard
+is compact and deterministic by construction, which satisfies
+the protocol's bit-exact-output requirement, and the encoding is
+fully specified in the wire-format chapter without reference to
+the postcard library. From inside the reference implementation
+the choice is invisible.
+
+From outside, postcard has near-zero tier-1 implementation
+support outside Rust. There is no schema language, no
+validator, and no widely-deployed cross-language tooling. The
+wire-format chapter specifies enough that a determined
+implementer in Go, Swift, or TypeScript can produce
+byte-identical output, but the work is materially larger than
+it would be against a more universally-supported encoding.
+
+**Risk.** Implementer friction. The single biggest external
+signal that a protocol specification is legitimate is the
+appearance of a second, independent implementation. Anything
+that raises the cost of that work — including the choice of a
+wire codec with limited cross-language support — slows the
+appearance of that signal.
+
+**Direction.** A future major version is expected to migrate
+the canonical encoding to one of:
+
+- **CBOR (RFC 8949)** with the deterministic encoding profile
+  (§4.2). CBOR is an IETF-track standard, has tier-1 libraries
+  in every language, and aligns with UCAN v1.0's DAG-CBOR
+  envelope (see [OI-6](#oi-6-ucan-v010-is-the-wire-format)) —
+  consolidating the protocol to one binary codec.
+- **Borsh.** Smaller and simpler than CBOR, deterministic by
+  default, used in the NEAR / Solana ecosystem so it has
+  non-Rust implementations, but less universal than CBOR.
+
+Both candidates preserve the bit-exact deterministic property
+the protocol requires. The wire-format chapter is already
+careful about encoding mechanics (option discriminant, varint
+conventions, field ordering) that mostly carry over with
+vocabulary changes. Signing canonicalization is independent of
+the underlying codec.
+
+**Workaround in v0.1.** Postcard remains the canonical encoding
+for v0.1 conformance. Implementations targeting v0.1 SHOULD
+isolate the serialization layer behind a narrow interface so a
+future migration is a contained change. Implementers
+considering an exploratory port to a different codec can use the
+wire-format chapter as a structural guide; the encoding rules
+specified there are codec-agnostic in spirit even though the
+canonical codec named in v0.1 is postcard.
 
 ## How to propose changes
 
