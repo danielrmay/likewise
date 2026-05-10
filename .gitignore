@@ -1,2 +1,8 @@
 book/
 .DS_Store
+
+# Local-only working notes (Claude / human). Never committed —
+# this is a public repo and per-machine context belongs on the
+# maintainer's machine.
+CLAUDE.md
+.claude/
